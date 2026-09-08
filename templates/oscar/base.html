@@ -1,0 +1,4 @@
+{% extends "oscar/base.html" %}
+
+{# Extend the installed template, preserving all Oscar head and script blocks. #}
+{% block title %}{{ shop_name }}{% if shop_tagline %} - {{ shop_tagline }}{% endif %}{% endblock %}

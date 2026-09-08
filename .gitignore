@@ -8,6 +8,11 @@ __pycache__/
 # Django
 db.sqlite3
 media/
+staticfiles/
+
+# Frontend dependencies and compiled Tailwind output
+node_modules/
+static/abdeen/css/tailwind.css
 
 # Environment
 .env
@@ -18,3 +23,6 @@ media/
 
 # OS
 .DS_Store
+
+design-reference/
+node_modules/

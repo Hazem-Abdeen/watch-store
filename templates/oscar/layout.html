@@ -1,0 +1,44 @@
+{% extends "oscar/layout.html" %}
+{% load i18n static %}
+
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'abdeen/css/tailwind.css' %}">
+{% endblock %}
+
+{% block layout %}
+    <a class="sr-only sr-only-focusable" href="#main-content">{% trans "Skip to content" %}</a>
+
+    {% block announcement_bar %}
+        {% include "oscar/partials/announcement_bar.html" %}
+    {% endblock %}
+
+    {% include "oscar/partials/nav_accounts.html" %}
+
+    <header class="container tw:py-6">
+        <div class="tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-4">
+            <a class="tw:text-2xl tw:font-semibold tw:text-stone-900" href="{% url 'home' %}">{{ shop_name }}</a>
+            {% block mini_basket %}
+                {% include "oscar/partials/mini_basket.html" %}
+            {% endblock %}
+        </div>
+        {% block navigation %}
+            {% include "oscar/partials/nav_primary.html" %}
+        {% endblock %}
+    </header>
+
+    <main id="main-content" tabindex="-1">
+        {% comment %}
+            Retain Oscar's messages, breadcrumbs, content block and AJAX hooks.
+            Oscar's column layouts can still override content_wrapper.
+        {% endcomment %}
+        {% block content_wrapper %}{{ block.super }}{% endblock %}
+    </main>
+
+    {% include "oscar/partials/footer.html" %}
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'abdeen/js/storefront.js' %}" defer></script>
+{% endblock %}

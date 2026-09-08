@@ -1,0 +1,12 @@
+{
+  "name": "abdeen-watches-templates",
+  "private": true,
+  "scripts": {
+    "dev:css": "tailwindcss -i ./assets/styles/tailwind.css -o ./static/abdeen/css/tailwind.css --watch",
+    "build:css": "tailwindcss -i ./assets/styles/tailwind.css -o ./static/abdeen/css/tailwind.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.0",
+    "tailwindcss": "^4.3.0"
+  }
+}

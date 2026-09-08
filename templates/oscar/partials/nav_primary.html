@@ -1,0 +1,8 @@
+{% load i18n %}
+
+{# Foundation navigation; future menus will use Oscar's existing named URLs. #}
+<nav aria-label="{% trans 'Main navigation' %}" class="tw:flex tw:flex-wrap tw:gap-x-6 tw:gap-y-2 tw:py-4">
+    <a href="{% url 'home' %}">{% trans "Home" %}</a>
+    <a href="{% url 'catalogue:index' %}">{% trans "Watches" %}</a>
+    <a href="{% url 'basket:summary' %}">{% trans "Basket" %}</a>
+</nav>

@@ -1,0 +1,8 @@
+/* No Preflight: Oscar's existing pages still depend on Bootstrap's base styles. */
+@layer theme;
+@import "tailwindcss/theme.css" layer(theme) prefix(tw);
+/* Keep utilities unlayered so Oscar's unlayered CSS cannot outrank them by layer. */
+@import "tailwindcss/utilities.css" prefix(tw) source(none);
+
+@source "../../templates";
+@source "../../static/abdeen/js";
