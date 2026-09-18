@@ -1,0 +1,12 @@
+<section id="new-arrivals" class="abdeen-section abdeen-section-muted" aria-labelledby="new-arrivals-heading">
+    <div class="abdeen-shell">
+        {% include "oscar/partials/home/section_heading.html" with heading_id="new-arrivals-heading" eyebrow="A Fresh Perspective" title="New Arrivals" description="Discover our hand-picked New Arrivals collection." %}
+        <div class="tw:grid tw:grid-cols-1 tw:gap-6 tw:sm:grid-cols-2 tw:lg:grid-cols-4">
+            {% for product in new_arrivals %}
+                {% include "oscar/partials/home/product_card.html" with product=product badge="New Arrival" %}
+            {% empty %}
+                <p class="abdeen-preview-note tw:col-span-full">Our New Arrivals selection is being prepared. <a href="{% url 'catalogue:index' %}">Browse all watches</a>.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>

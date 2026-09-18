@@ -1,0 +1,20 @@
+<section id="brands" class="abdeen-section abdeen-section-muted" aria-labelledby="brands-heading">
+    <div class="abdeen-shell">
+        {% include "oscar/partials/home/section_heading.html" with heading_id="brands-heading" eyebrow="The Brand Edit" title="Shop by Brand" description="Explore the brands in our watch collection." %}
+        <div class="tw:grid tw:grid-cols-2 tw:gap-4 tw:md:grid-cols-4 tw:sm:gap-6">
+            {% for brand in homepage_brands %}
+                <article class="abdeen-brand-card">
+                    <span class="abdeen-small-tag">Brand</span>
+                    <h3>{{ brand.name }}</h3>
+                    <p>{{ brand.description|striptags|truncatechars:100 }}</p>
+                    <div class="abdeen-brand-bottom">
+                        <span>Collection</span>
+                        <a href="{{ brand.get_absolute_url }}" aria-label="Browse {{ brand.name }} watches">View Watches {% include "oscar/partials/home/icon.html" with name="arrow" %}</a>
+                    </div>
+                </article>
+            {% empty %}
+                <p class="abdeen-preview-note tw:col-span-full">Our brand collection is being prepared. <a href="{% url 'catalogue:index' %}">Browse all watches</a>.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>

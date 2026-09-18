@@ -1,6 +1,33 @@
 {% extends "oscar/layout.html" %}
+{% load static %}
 
-{# Future homepage. The existing home route still redirects to the catalogue. #}
 {% block title %}{{ shop_name }}{% endblock %}
-{% block header %}{% endblock %}
-{% block content %}{% endblock %}
+{% block description %}Explore watches, brands and styles at Abdeen Watches.{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content_wrapper %}
+    <div class="abdeen-home">
+        {% include "oscar/partials/alert_messages.html" %}
+        {% block content %}
+            {% include "oscar/partials/home/hero.html" %}
+            {% include "oscar/partials/home/categories.html" %}
+            {% include "oscar/partials/home/brands.html" %}
+            {% include "oscar/partials/home/best_sellers.html" %}
+            {% include "oscar/partials/home/new_arrivals.html" %}
+            {% include "oscar/partials/home/promo_banner.html" %}
+            {% include "oscar/partials/home/why_choose.html" %}
+            {% include "oscar/partials/home/newsletter.html" %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'abdeen/js/homepage.js' %}" defer></script>
+{% endblock %}

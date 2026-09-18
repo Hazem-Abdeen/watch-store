@@ -1,0 +1,20 @@
+<section id="best-sellers" class="abdeen-section" aria-labelledby="best-sellers-heading" data-home-filter-section>
+    <div class="abdeen-shell">
+        {% include "oscar/partials/home/section_heading.html" with heading_id="best-sellers-heading" eyebrow="The Featured Edit" title="Best Sellers" description="Explore our hand-picked Best Sellers collection." %}
+        {% if best_sellers %}
+            <div class="abdeen-filter-row" role="group" aria-label="Filter featured watches" hidden data-home-filters>
+                {% for value, label in product_filters %}
+                    <button type="button" class="abdeen-filter" data-home-filter="{{ value }}" aria-pressed="{% if value == 'all' %}true{% else %}false{% endif %}">{{ label }}</button>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="tw:grid tw:grid-cols-1 tw:gap-6 tw:sm:grid-cols-2 tw:lg:grid-cols-4" id="best-sellers-grid">
+            {% for product in best_sellers %}
+                {% include "oscar/partials/home/product_card.html" with product=product badge="Best Seller" %}
+            {% empty %}
+                <p class="abdeen-preview-note tw:col-span-full">Our Best Sellers selection is being prepared. <a href="{% url 'catalogue:index' %}">Browse all watches</a>.</p>
+            {% endfor %}
+        </div>
+        <p class="abdeen-preview-note" role="status" aria-live="polite" data-home-filter-status></p>
+    </div>
+</section>

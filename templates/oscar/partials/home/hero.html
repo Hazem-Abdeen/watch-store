@@ -1,0 +1,23 @@
+<section id="hero" class="abdeen-hero" aria-labelledby="hero-heading">
+    <img class="abdeen-hero-image" src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&amp;fit=crop&amp;w=2000&amp;q=85" alt="" width="2000" height="1333" fetchpriority="high">
+    <div class="abdeen-hero-shade"></div>
+    <div class="abdeen-shell abdeen-hero-content">
+        <div class="tw:max-w-2xl">
+            <p class="abdeen-hero-badge"><span class="abdeen-dot"></span>Abdeen Watches</p>
+            <h1 id="hero-heading">Find Your Next<br>Signature Timepiece.</h1>
+            <p class="abdeen-hero-description">From everyday simplicity to distinctive details. Explore watches that complement your style, your occasion, and your next chapter.</p>
+            <div class="tw:flex tw:flex-col tw:gap-4 tw:sm:flex-row">
+                <a href="{% url 'catalogue:index' %}" class="abdeen-button abdeen-button-red">Shop Now {% include "oscar/partials/home/icon.html" with name="arrow" %}</a>
+                <a href="#brands" class="abdeen-button abdeen-button-glass">Explore Brands</a>
+            </div>
+        </div>
+    </div>
+    <div class="abdeen-hero-strip">
+        <div class="abdeen-shell tw:grid tw:grid-cols-2 tw:gap-4 tw:md:grid-cols-4">
+            <a href="#categories">{% include "oscar/partials/home/icon.html" with name="watch" %}Discover Your Style</a>
+            <a href="#brands">{% include "oscar/partials/home/icon.html" with name="grid" %}Explore Our Brands</a>
+            <a href="{% url 'basket:summary' %}">{% include "oscar/partials/home/icon.html" with name="bag" %}Your Shopping Basket</a>
+            <a href="{% url 'customer:summary' %}">{% include "oscar/partials/home/icon.html" with name="user" %}Your Account</a>
+        </div>
+    </div>
+</section>

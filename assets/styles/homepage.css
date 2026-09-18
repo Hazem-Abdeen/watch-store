@@ -1,0 +1,154 @@
+/* Scoped to the homepage: Oscar's catalogue, forms and dashboard keep their CSS. */
+.abdeen-home {
+    --abdeen-red: #e01a22;
+    color: #171717;
+    background: #fff;
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+.abdeen-home *, .abdeen-home *::before, .abdeen-home *::after { box-sizing: border-box; }
+.abdeen-home [hidden] { display: none !important; }
+.abdeen-home h1, .abdeen-home h2, .abdeen-home h3,
+.abdeen-home p, .abdeen-home figure { margin: 0; }
+.abdeen-home a { text-decoration: none; }
+.abdeen-home button, .abdeen-home input { font: inherit; }
+.abdeen-home a:focus-visible, .abdeen-home button:focus-visible {
+    outline: 3px solid var(--abdeen-red);
+    outline-offset: 5px;
+}
+.abdeen-home section { scroll-margin-top: 24px; }
+.abdeen-home ::selection { background: var(--abdeen-red); color: #fff; }
+.abdeen-shell { width: 100%; max-width: 1280px; padding-inline: 16px; margin-inline: auto; }
+.abdeen-section { padding-block: 64px; border-bottom: 1px solid #e5e5e5; background: #fff; }
+.abdeen-section-muted { background: #fafafa; }
+.abdeen-icon { flex-shrink: 0; display: inline-block; vertical-align: middle; }
+.abdeen-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--abdeen-red); flex-shrink: 0; }
+.abdeen-home .abdeen-eyebrow { display: flex; align-items: center; gap: 8px; color: #737373; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 8px; }
+.abdeen-home h2 { font-size: 24px; font-weight: 800; letter-spacing: -.025em; line-height: 1.25; }
+.abdeen-section-heading { padding-bottom: 16px; margin-bottom: 40px; border-bottom: 1px solid #e5e5e5; }
+.abdeen-section-description { color: #737373; font-size: 12px; max-width: 448px; }
+.abdeen-home .abdeen-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 32px; border: 1px solid transparent; border-radius: 8px; font-size: 12px; font-weight: 700; line-height: 1.5; letter-spacing: .075em; text-transform: uppercase; text-align: center; transition: background .2s, border-color .2s; }
+.abdeen-home .abdeen-button-red { color: #fff; background: var(--abdeen-red); box-shadow: 0 6px 16px #0002; }
+.abdeen-home .abdeen-button-red:hover { background: #b9151c; }
+.abdeen-home .abdeen-button-black { color: #fff; background: #171717; }
+.abdeen-home .abdeen-button-black:hover { background: #000; }
+.abdeen-home .abdeen-button-glass { color: #fff; background: #ffffff1a; border-color: #ffffff33; }
+.abdeen-home .abdeen-button-glass:hover { background: #fff3; border-color: #fff6; }
+.abdeen-home .abdeen-button-outline { color: #fff; background: transparent; border-color: #525252; border-radius: 0; letter-spacing: .15em; padding: 14px 28px; }
+.abdeen-home .abdeen-button-outline:hover { border-color: #fff; background: #ffffff0d; }
+.abdeen-hero { position: relative; overflow: hidden; color: #fff; background: #171717; }
+.abdeen-hero-image, .abdeen-hero-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.abdeen-hero-image { object-fit: cover; object-position: center 55%; opacity: .5; filter: grayscale(1); }
+.abdeen-hero-shade { background: linear-gradient(90deg, #000f 0%, #000c 45%, #0002 100%); }
+.abdeen-hero-content { position: relative; z-index: 1; padding-block: 80px; }
+.abdeen-home .abdeen-hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: #ffffff1a; border: 1px solid #ffffff26; border-radius: 999px; color: #e5e5e5; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; margin-bottom: 24px; }
+.abdeen-home h1 { font-size: 32px; font-weight: 800; line-height: 1.15; letter-spacing: -.03em; margin-bottom: 24px; color: #fff; }
+.abdeen-home .abdeen-hero-description { max-width: 576px; margin-bottom: 32px; font-size: 14px; color: #d4d4d4; line-height: 1.75; }
+.abdeen-hero-strip { position: relative; z-index: 1; border-top: 1px solid #ffffff1a; background: #0006; padding-block: 16px; }
+.abdeen-home .abdeen-hero-strip a { display: flex; align-items: center; gap: 10px; color: #fff; font-size: 11px; font-weight: 500; }
+.abdeen-hero-strip .abdeen-icon { width: 16px; height: 16px; color: var(--abdeen-red); }
+.abdeen-category-card { position: relative; display: flex; flex-direction: column; justify-content: space-between; height: 320px; padding: 24px; border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; background: #171717; }
+.abdeen-category-card img, .abdeen-category-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.abdeen-category-card img { object-fit: cover; opacity: .7; transition: transform .5s, opacity .5s; }
+.abdeen-category-card:hover img { transform: scale(1.05); opacity: .8; }
+.abdeen-category-shade { background: linear-gradient(0deg, #000e, #0006, transparent); }
+.abdeen-category-tag { position: relative; z-index: 1; align-self: flex-start; background: #ffffffe6; color: #171717; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; }
+.abdeen-category-copy { position: relative; z-index: 1; }
+.abdeen-home .abdeen-category-copy h3 { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 4px; letter-spacing: -.025em; }
+.abdeen-home .abdeen-category-copy p { color: #d4d4d4; font-size: 12px; margin-bottom: 16px; }
+.abdeen-inline-link { display: inline-flex; align-items: center; gap: 6px; color: #fff; font-size: 12px; font-weight: 600; }
+.abdeen-inline-link .abdeen-icon { width: 14px; height: 14px; }
+.abdeen-category-card:hover .abdeen-inline-link { color: #ff7379; }
+.abdeen-home .abdeen-preview-note { margin-top: 16px; font-size: 11px; color: #737373; }
+.abdeen-preview-note a { color: #a81219; text-decoration: underline; }
+.abdeen-preview-note:empty { display: none; }
+.abdeen-brand-card { min-width: 0; padding: 24px; display: flex; flex-direction: column; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; transition: border-color .2s, box-shadow .2s; }
+.abdeen-brand-card:hover { border-color: #a3a3a3; box-shadow: 0 4px 8px #0000000d; }
+.abdeen-small-tag { align-self: flex-start; padding: 2px 8px; border-radius: 4px; color: #737373; background: #f5f5f5; text-transform: uppercase; font-size: 9px; font-weight: 700; letter-spacing: .08em; }
+.abdeen-home .abdeen-brand-card h3 { display: flex; align-items: center; justify-content: center; min-height: 56px; margin-block: 16px; color: #171717; font-size: clamp(15px, 2.1vw, 28px); font-weight: 800; letter-spacing: .035em; text-transform: uppercase; }
+.abdeen-home .abdeen-brand-card p { color: #737373; text-align: center; font-size: 12px; margin-bottom: 16px; }
+.abdeen-brand-bottom { margin-top: auto; padding-top: 12px; border-top: 1px solid #f5f5f5; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; }
+.abdeen-brand-bottom > span { color: #737373; }
+.abdeen-brand-bottom a { color: #be151d; display: inline-flex; align-items: center; gap: 4px; font-weight: 600; }
+.abdeen-brand-bottom .abdeen-icon { width: 14px; height: 14px; }
+.abdeen-filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin: -16px 0 32px; }
+.abdeen-home .abdeen-filter { border: 0; border-radius: 8px; padding: 8px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: #525252; background: #f5f5f5; cursor: pointer; }
+.abdeen-home .abdeen-filter:hover { background: #e5e5e5; }
+.abdeen-home .abdeen-filter[aria-pressed="true"] { background: #171717; color: #fff; }
+.abdeen-product-card { min-width: 0; display: flex; flex-direction: column; border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; background: #fff; transition: border-color .2s, box-shadow .2s; }
+.abdeen-product-card:hover { border-color: #a3a3a3; box-shadow: 0 4px 10px #00000012; }
+.abdeen-product-image { position: relative; aspect-ratio: 1; background: #f9f9f9; overflow: hidden; }
+.abdeen-product-image img { width: 100%; height: 100%; object-fit: contain; padding: 24px; transition: transform .3s; }
+.abdeen-product-card:hover img { transform: scale(1.05); }
+.abdeen-product-badge { position: absolute; top: 12px; left: 12px; z-index: 1; border-radius: 4px; padding: 2px 8px; background: #f5f5f5; border: 1px solid #d4d4d4; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.abdeen-product-badge-dark { background: #171717; color: #fff; border-color: #171717; }
+.abdeen-product-heart { position: absolute; top: 12px; right: 12px; z-index: 1; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #e5e5e5; background: #ffffffe6; color: #737373; }
+.abdeen-product-heart .abdeen-icon { width: 16px; height: 16px; }
+.abdeen-home .abdeen-product-quick { position: absolute; bottom: 12px; inset-inline: 16px; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 8px; border: 1px solid #e5e5e5; border-radius: 8px; background: #fffffff2; color: #171717; font-size: 11px; font-weight: 600; }
+.abdeen-product-quick .abdeen-icon { width: 14px; height: 14px; }
+.abdeen-product-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 16px; }
+.abdeen-home .abdeen-product-brand { color: #737373; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+.abdeen-home .abdeen-product-info h3 { min-height: 40px; font-size: 14px; font-weight: 600; line-height: 1.45; }
+.abdeen-home .abdeen-product-meta { color: #737373; font-size: 11px; margin-top: 4px; }
+.abdeen-product-bottom { margin-top: 16px; padding-top: 12px; border-top: 1px solid #f5f5f5; }
+.abdeen-home .abdeen-product-price { font-weight: 700; font-size: 16px; letter-spacing: -.025em; margin-bottom: 12px; }
+.abdeen-product-price span { font-size: 12px; }
+.abdeen-product-bottom .abdeen-button { width: 100%; padding: 10px; font-size: 11px; }
+.abdeen-product-bottom .abdeen-icon { width: 14px; height: 14px; }
+.abdeen-editorial { padding-block: 64px; background: #141414; color: #fff; border-block: 1px solid #262626; }
+.abdeen-editorial-image { position: relative; aspect-ratio: 4 / 3; background: #262626; overflow: hidden; border: 1px solid #333; border-radius: 2px; }
+.abdeen-editorial-image img { width: 100%; height: 100%; object-fit: cover; }
+.abdeen-editorial-image figcaption { position: absolute; inset-inline: 0; bottom: 0; padding: 24px 16px 12px; background: linear-gradient(transparent, #000b); color: #fff; font-size: 10px; }
+.abdeen-editorial .abdeen-eyebrow { color: #ff525b; font-size: 12px; letter-spacing: .25em; margin-bottom: 16px; }
+.abdeen-home .abdeen-editorial h2 { color: #fff; font-family: "Playfair Display", Georgia, serif; font-size: 32px; font-weight: 400; line-height: 1.18; margin-bottom: 24px; }
+.abdeen-home .abdeen-editorial-description { color: #d4d4d4; line-height: 1.75; margin-bottom: 32px; }
+.abdeen-centered-heading { text-align: center; max-width: 672px; margin-inline: auto; margin-bottom: 48px; }
+.abdeen-centered-heading .abdeen-eyebrow { justify-content: center; }
+.abdeen-home .abdeen-centered-heading h2 { margin-bottom: 12px; }
+.abdeen-centered-heading > p:last-child { color: #737373; font-size: 13px; }
+.abdeen-service-card { padding: 24px; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; }
+.abdeen-service-icon { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: #f5f5f5; color: var(--abdeen-red); border: 1px solid #e5e5e5; border-radius: 8px; margin-bottom: 20px; }
+.abdeen-service-icon .abdeen-icon { width: 24px; height: 24px; }
+.abdeen-home .abdeen-service-eyebrow { color: #be151d; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 4px; }
+.abdeen-home .abdeen-service-card h3 { font-size: 18px; font-weight: 700; letter-spacing: -.025em; margin-bottom: 8px; }
+.abdeen-service-card > p:last-child { color: #737373; font-size: 12px; line-height: 1.7; }
+.abdeen-newsletter-panel { border: 1px solid #e5e5e5; border-radius: 16px; padding: 32px; background: #fafafa; }
+.abdeen-home .abdeen-newsletter-badge { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 4px 12px; border-radius: 999px; background: #e5e5e5; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 16px; }
+.abdeen-newsletter-badge .abdeen-icon { width: 14px; height: 14px; color: var(--abdeen-red); }
+.abdeen-home .abdeen-newsletter-description { margin: 16px auto 32px; max-width: 448px; color: #737373; font-size: 13px; }
+.abdeen-newsletter-fields { display: flex; flex-direction: column; gap: 8px; max-width: 480px; padding: 0; margin: 0 auto; border: 0; }
+.abdeen-newsletter-fields input { min-width: 0; flex: 1; border: 1px solid #d4d4d4; border-radius: 8px; padding: 14px 16px; background: #fff; font-size: 12px; }
+.abdeen-newsletter-fields .abdeen-button { padding: 14px 20px; font-size: 11px; }
+.abdeen-newsletter-fields :disabled { cursor: not-allowed; opacity: .65; }
+@media (min-width: 640px) {
+    .abdeen-shell { padding-inline: 24px; }
+    .abdeen-section { padding-block: 80px; }
+    .abdeen-home h2 { font-size: 30px; }
+    .abdeen-section-description { font-size: 13px; }
+    .abdeen-hero-content { padding-block: 112px; }
+    .abdeen-home h1 { font-size: 48px; }
+    .abdeen-home .abdeen-hero-description { font-size: 16px; }
+    .abdeen-home .abdeen-hero-strip a { font-size: 12px; }
+    .abdeen-editorial { padding-block: 80px; }
+    .abdeen-home .abdeen-editorial h2 { font-size: 40px; }
+    .abdeen-newsletter-panel { padding: 48px; }
+    .abdeen-newsletter-fields { flex-direction: row; }
+}
+@media (min-width: 1024px) {
+    .abdeen-shell { padding-inline: 32px; }
+    .abdeen-hero-content { padding-block: 144px; }
+    .abdeen-home h1 { font-size: 60px; }
+    .abdeen-home .abdeen-hero-description { font-size: 18px; }
+    .abdeen-editorial { padding-block: 96px; }
+    .abdeen-home .abdeen-editorial h2 { font-size: 44px; }
+}
+@media (hover: hover) and (pointer: fine) {
+    .abdeen-home .abdeen-product-quick { opacity: 0; transition: opacity .2s; }
+    .abdeen-product-card:hover .abdeen-product-quick,
+    .abdeen-product-card:focus-within .abdeen-product-quick { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .abdeen-home *, .abdeen-home *::before, .abdeen-home *::after { transition: none !important; }
+}

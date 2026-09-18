@@ -1,0 +1,41 @@
+{% load currency_filters purchase_info_tags static %}
+{% purchase_info_for_product request product as purchase %}
+<article class="abdeen-product-card" data-home-product data-filters="{{ product.homepage_filter_tokens }}">
+    <div class="abdeen-product-image">
+        <span class="abdeen-product-badge{% if badge == 'New Arrival' %} abdeen-product-badge-dark{% endif %}">{{ badge }}</span>
+        <span class="abdeen-product-heart" aria-hidden="true">{% include "oscar/partials/home/icon.html" with name="heart" %}</span>
+        <a href="{{ product.get_absolute_url }}" class="tw:block tw:h-full">
+        {% with image=product.primary_image %}
+            {% if image.is_missing %}
+                <img src="{% static 'abdeen/images/watch-placeholder.svg' %}" alt="Image coming soon for {{ product.get_title }}" width="800" height="800" loading="lazy">
+            {% else %}
+                <img src="{{ image.original.url }}" alt="{{ image.caption|default:product.get_title }}" width="800" height="800" loading="lazy" data-image-fallback="{% static 'abdeen/images/watch-placeholder.svg' %}">
+            {% endif %}
+        {% endwith %}
+        </a>
+        <a class="abdeen-product-quick" href="{{ product.get_absolute_url }}">View Watch {% include "oscar/partials/home/icon.html" with name="arrow" %}</a>
+    </div>
+    <div class="abdeen-product-info">
+        <div>
+            <p class="abdeen-product-brand">{{ product.homepage_brand_name|default:product.get_product_class.name }}</p>
+            <h3><a href="{{ product.get_absolute_url }}" class="tw:text-inherit">{{ product.get_title }}</a></h3>
+            <p class="abdeen-product-meta">{{ purchase.availability.short_message }}</p>
+        </div>
+        <div class="abdeen-product-bottom">
+            <p class="abdeen-product-price">
+                {% if purchase.price.exists and purchase.price.currency == 'JOD' %}
+                    {% if purchase.price.is_tax_known %}
+                        {{ purchase.price.incl_tax|currency:purchase.price.currency }}
+                    {% else %}
+                        {{ purchase.price.excl_tax|currency:purchase.price.currency }} <span>excl. tax</span>
+                    {% endif %}
+                {% elif purchase.price.exists %}
+                    <span>JOD price unavailable</span>
+                {% else %}
+                    <span>Price unavailable</span>
+                {% endif %}
+            </p>
+            <a href="{{ product.get_absolute_url }}" class="abdeen-button abdeen-button-black">{% include "oscar/partials/home/icon.html" with name="bag" %}{% if product.is_parent %}Choose Options{% else %}View Details{% endif %}</a>
+        </div>
+    </div>
+</article>

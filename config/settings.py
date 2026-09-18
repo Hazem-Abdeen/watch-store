@@ -83,6 +83,8 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 OSCAR_SHOP_NAME = 'Abdeen Watches'
+OSCAR_HOMEPAGE = '/'
+OSCAR_DEFAULT_CURRENCY = 'JOD'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

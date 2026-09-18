@@ -25,4 +25,5 @@ static/abdeen/css/tailwind.css
 .DS_Store
 
 design-reference/
-node_modules/
+
+import-data/
