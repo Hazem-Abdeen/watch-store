@@ -1,0 +1,51 @@
+{% load static category_tags storefront_display_tags %}
+{% if catalogue_browse %}
+    {% category_tree depth=1 as homepage_categories %}
+{% endif %}
+<footer class="abdeen-chrome abdeen-footer">
+    <div class="abdeen-shell">
+        <div class="abdeen-footer-grid">
+            <div class="abdeen-footer-about">
+                <a class="abdeen-logo" href="{% url 'home' %}" aria-label="Abdeen Watches home">
+                    <img src="{% static 'abdeen/images/black.png' %}" alt="Abdeen Watches" width="1773" height="885" loading="lazy">
+                </a>
+                <p>For the everyday moments.<br>For the milestones that matter.<br>Find your timepiece at Abdeen Watches.</p>
+                <span class="abdeen-footer-signature"><span class="abdeen-dot"></span>Time, beautifully considered.</span>
+            </div>
+            <nav aria-label="Shop departments">
+                <h2>Explore</h2>
+                <a href="{% url 'catalogue:index' %}">All watches</a>
+                {% for category in homepage_categories %}{% if category.slug != 'brands' %}<a href="{{ category.get_absolute_url }}">{{ category.name }}</a>{% endif %}{% endfor %}
+                <a href="{% if catalogue_browse %}{% url 'home' %}{% endif %}#best-sellers">Best Sellers</a>
+                <a href="{% if catalogue_browse %}{% url 'home' %}{% endif %}#new-arrivals">New Arrivals</a>
+            </nav>
+            <nav aria-label="Browse brands">
+                <h2>Our brands</h2>
+                {% if catalogue_browse %}
+                    {% for root in homepage_categories %}
+                        {% if root.slug == 'brands' %}
+                            {% category_tree depth=1 parent=root.category as browse_brands %}
+                            {% for brand in browse_brands|slice:':4' %}<a href="{{ brand.get_absolute_url }}">{{ brand.name }}</a>{% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {% for brand in homepage_brands|slice:':4' %}<a href="{{ brand.get_absolute_url }}">{{ brand.name }}</a>{% endfor %}
+                {% endif %}
+                <a href="{% if catalogue_browse %}{% url 'home' %}{% endif %}#brands">Explore all featured brands {% include "oscar/partials/home/icon.html" with name="arrow" %}</a>
+            </nav>
+            <nav aria-label="Your account">
+                <h2>Your Abdeen</h2>
+                <a href="{% url 'customer:summary' %}">My account</a>
+                <a href="{% url 'customer:order-list' %}">Order history</a>
+                {% iffeature "wishlists" %}<a href="{% url 'customer:wishlists-list' %}">My wishlists</a>{% endiffeature %}
+                <a href="{% url 'basket:summary' %}">Shopping bag</a>
+                <a href="{% if catalogue_browse %}{% url 'home' %}{% endif %}#why-choose">Why Abdeen Watches</a>
+            </nav>
+        </div>
+        <div class="abdeen-footer-bottom">
+            <p>© {% now "Y" %} Abdeen Watches. All rights reserved.</p>
+            <span>Prices in JOD · Jordanian Dinar</span>
+            <a href="{% if catalogue_browse %}#catalogue-top{% else %}#hero{% endif %}">Back to top <span aria-hidden="true">↑</span></a>
+        </div>
+    </div>
+</footer>

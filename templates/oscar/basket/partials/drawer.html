@@ -1,0 +1,11 @@
+{% load i18n %}
+<dialog class="abdeen-cart" id="cart-drawer" aria-labelledby="cart-drawer-title" data-cart-drawer data-url="{% url 'cart-drawer' %}" data-error="{% trans 'We could not load your cart. Please open your shopping bag to check it.' %}" data-update-error="{% trans 'We could not confirm your cart update. Open your shopping bag to check before trying again.' %}" data-updating="{% trans 'Updating your cart…' %}">
+    <header class="abdeen-cart-header">
+        <h2 id="cart-drawer-title">{% include 'oscar/partials/home/icon.html' with name='bag' %}<span data-cart-title>{% trans 'Your cart' %}</span></h2>
+        <button class="abdeen-cart-close" type="button" data-cart-close aria-label="{% trans 'Close cart' %}" autofocus>{% include 'oscar/partials/home/icon.html' with name='close' %}</button>
+    </header>
+    <p class="abdeen-cart-status" data-cart-status role="status" aria-live="polite"></p>
+    <div class="abdeen-cart-error" data-cart-error role="alert" hidden></div>
+    <div class="abdeen-cart-body" data-cart-body></div>
+    <a class="abdeen-cart-recovery" data-cart-recovery href="{% url 'basket:summary' %}" hidden>{% trans 'Open shopping bag' %} →</a>
+</dialog>

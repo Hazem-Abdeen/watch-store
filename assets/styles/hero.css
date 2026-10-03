@@ -1,0 +1,44 @@
+/* Shared tracks keep the image, dots and optional mobile copy stable across slides. */
+.campaign-hero { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto; width: 100%; min-width: 0; background: #111; color: #fff; }
+.campaign-hero-slides { display: grid; grid-template-rows: subgrid; grid-column: 1; grid-row: 1 / 4; min-width: 0; touch-action: pan-y pinch-zoom; }
+.campaign-hero-slide { display: grid; grid-template-rows: subgrid; grid-column: 1; grid-row: 1 / 4; min-width: 0; }
+.campaign-hero-slide picture { display: flex; align-items: center; grid-column: 1; grid-row: 1; min-width: 0; }
+.campaign-hero-slide img { display: block; width: 100%; height: clamp(420px, 46vw, 780px); object-fit: cover; }
+/* Invisible slides still size the shared tracks but cannot receive focus or clicks. */
+.abdeen-home .campaign-hero.is-enhanced [data-hero-slide][hidden] { display: grid !important; visibility: hidden; pointer-events: none; }
+.campaign-hero.is-enhanced [data-hero-slide]:not([hidden]) { animation: campaign-reveal 180ms ease-out; }
+@keyframes campaign-reveal { from { opacity: .75; } to { opacity: 1; } }
+.campaign-hero-copy { grid-column: 1; grid-row: 1; align-self: end; justify-self: start; z-index: 1; max-width: min(560px, calc(100% - 48px)); margin: 32px max(24px, calc((100% - 1280px) / 2)); padding: 24px; background: #111e; overflow-wrap: anywhere; }
+.abdeen-home .campaign-hero-copy h2 { color: #fff; font-size: clamp(24px, 3vw, 42px); }
+.abdeen-home .campaign-hero-copy p { margin-top: 12px; line-height: 1.65; }
+.campaign-hero-copy .abdeen-button { margin-top: 20px; max-width: 100%; white-space: normal; }
+.campaign-hero-controls { display: contents; }
+.campaign-hero-controls button { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; border: 0; cursor: pointer; }
+.campaign-hero-arrow, .campaign-hero-rotation { grid-column: 1; grid-row: 1; z-index: 2; width: 44px; height: 44px; border-radius: 50%; color: #fff; background: #1118; transition: background .18s; }
+.campaign-hero-arrow { align-self: center; margin-inline: clamp(10px, 2vw, 28px); }
+.campaign-hero-previous { justify-self: start; }
+.campaign-hero-next { justify-self: end; }
+.campaign-hero-controls svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.campaign-hero-rotation { align-self: end; justify-self: end; margin: 10px clamp(10px, 2vw, 28px); background: radial-gradient(circle, #1118 0 15px, transparent 16px); }
+.campaign-hero-rotation svg { width: 18px; height: 18px; }
+.campaign-hero-rotation .campaign-hero-play-icon { display: none; }
+.campaign-hero-rotation[data-paused="true"] .campaign-hero-pause-icon { display: none; }
+.campaign-hero-rotation[data-paused="true"] .campaign-hero-play-icon { display: block; }
+.campaign-hero-dots { grid-column: 1; grid-row: 2; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; min-width: 0; width: 100%; padding: 0 12px; background: #fff; }
+.campaign-hero-dots button { width: 28px; height: 44px; background: transparent; color: #171717; }
+.campaign-hero-dots span { width: 6px; height: 6px; border: 1px solid #aaa; border-radius: 50%; background: transparent; transition: background .18s, border-color .18s; }
+.campaign-hero-dots [aria-current="true"] span { background: #171717; border-color: #171717; }
+.abdeen-home .campaign-hero-arrow:focus-visible, .abdeen-home .campaign-hero-rotation:focus-visible { outline: 2px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 5px #171717; }
+.abdeen-home .campaign-hero-dots button:focus-visible { outline: 2px solid #171717; outline-offset: -6px; border-radius: 8px; }
+@media (hover: hover) {
+    .campaign-hero-arrow:hover { background: #111b; }
+    .campaign-hero-rotation:hover { background: radial-gradient(circle, #111b 0 15px, transparent 16px); }
+    .campaign-hero-dots button:hover span { border-color: #171717; }
+}
+@media (max-width: 767px) {
+    .campaign-hero-slide img { height: auto; }
+    .campaign-hero-copy { grid-row: 3; justify-self: stretch; align-self: stretch; max-width: none; margin: 0; padding: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .campaign-hero *, .campaign-hero *::before, .campaign-hero *::after { animation: none !important; transition: none !important; }
+}

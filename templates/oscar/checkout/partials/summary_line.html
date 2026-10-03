@@ -1,0 +1,15 @@
+{% load static i18n currency_filters %}
+<li class="abdeen-checkout-line">
+    {% with image=line.product.primary_image %}
+        <img class="abdeen-checkout-line-image" src="{% if image.original and not image.is_missing %}{{ image.original.url }}{% else %}{% static 'abdeen/images/watch-placeholder.svg' %}{% endif %}"
+             alt="" width="72" height="72" loading="lazy" data-image-fallback="{% static 'abdeen/images/watch-placeholder.svg' %}">
+    {% endwith %}
+    <div>
+        <h3>{% if line.product %}<a href="{{ line.product.get_absolute_url }}">{{ line.description }}</a>{% else %}{{ line.description }}{% endif %}</h3>
+        {% if confirmed %}{% if line.partner_sku %}<p class="abdeen-checkout-line-reference">{% trans 'SKU' %}: {{ line.partner_sku }}</p>{% endif %}{% else %}{% if line.stockrecord.partner_sku %}<p class="abdeen-checkout-line-reference">{% trans 'SKU' %}: {{ line.stockrecord.partner_sku }}</p>{% endif %}{% endif %}
+        <div class="abdeen-checkout-line-price">
+            <span>{% trans 'Qty' %} {{ line.quantity }}</span>
+            <strong>{% if confirmed %}{% if show_tax_separately %}{{ line.line_price_before_discounts_excl_tax|currency:order.currency }}{% else %}{{ line.line_price_before_discounts_incl_tax|currency:order.currency }}{% endif %}{% else %}{% if not show_tax_separately and line.is_tax_known %}{{ line.line_price_incl_tax|currency:basket.currency }}{% else %}{{ line.line_price_excl_tax|currency:basket.currency }}{% endif %}{% endif %}</strong>
+        </div>
+    </div>
+</li>

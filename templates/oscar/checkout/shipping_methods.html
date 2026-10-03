@@ -1,0 +1,28 @@
+{% extends "oscar/checkout/shipping_methods.html" %}
+{% load i18n currency_filters shipping_tags %}
+
+{% block shipping_method %}
+<section class="abdeen-checkout-methods" aria-labelledby="shipping-method-heading">
+    <div class="sub-header"><h2 id="shipping-method-heading">{% trans 'Choose your delivery method' %}</h2></div>
+    {% for error in form.non_field_errors %}{% include 'oscar/partials/messages/alert.html' with level='danger' message=error dismissible=False %}{% endfor %}
+    {% for error in form.method_code.errors %}{% include 'oscar/partials/messages/alert.html' with level='danger' message=error dismissible=False %}{% endfor %}
+    {% for method in methods %}
+    <article class="abdeen-checkout-method card card-body">
+        <div>
+            <h3>{{ method.name }}</h3>
+            {% if method.description %}<div class="abdeen-checkout-method-description">{{ method.description|safe }}</div>{% endif %}
+            {% if method.is_discounted %}
+                {% shipping_charge_discount method basket as discount %}
+                <p class="abdeen-checkout-method-discount">{% blocktrans with amount=discount|currency:basket.currency name=method.discount_name %}Includes a discount of {{ amount }} from the {{ name }} offer.{% endblocktrans %}</p>
+            {% endif %}
+        </div>
+        <p class="abdeen-checkout-method-price">{% shipping_charge method basket as charge %}{% if charge.is_tax_known %}{{ charge.incl_tax|currency:basket.currency }}{% else %}{{ charge.excl_tax|currency:basket.currency }}{% endif %}</p>
+        <form method="post" action="{% url 'checkout:shipping-method' %}">
+            {% csrf_token %}
+            <input type="hidden" name="method_code" value="{{ method.code }}">
+            <button type="submit" class="btn btn-primary" data-loading-text="{% trans 'Submitting...' %}">{% trans 'Select option' %}<span class="sr-only"> — {{ method.name }}</span></button>
+        </form>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "oscar/checkout/checkout.html" %}
+{% load i18n %}
+
+{# Actual lines and original totals are shown once, in the shared sidebar. #}
+{% block order_contents %}{% endblock %}
+
+{% block payment_method %}
+<div class="col-sm-6">
+    <div class="sub-header"><h2>{% trans 'Payment' %}</h2></div>
+    <div class="card card-body bg-light">
+        <h3>{% trans 'Payment information' %}<a class="float-right" href="{% url 'checkout:payment-details' %}">{% trans 'Review' %}</a></h3>
+        <p>{% trans 'No online payment is collected during this checkout.' %}</p>
+    </div>
+</div>
+{% endblock %}

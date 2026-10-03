@@ -1,0 +1,7 @@
+{% load static %}
+{% with image=product.primary_image %}
+<a class="abdeen-basket-image" href="{{ product.get_absolute_url }}" tabindex="-1" aria-hidden="true">
+    <img src="{% if image.original and not image.is_missing %}{{ image.original.url }}{% else %}{% static 'abdeen/images/watch-placeholder.svg' %}{% endif %}"
+         alt="" width="160" height="160" loading="lazy" data-basket-image-fallback="{% static 'abdeen/images/watch-placeholder.svg' %}">
+</a>
+{% endwith %}

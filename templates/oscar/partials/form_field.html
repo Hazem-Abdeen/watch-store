@@ -1,0 +1,12 @@
+{% extends 'oscar/partials/form_field.html' %}
+{% load storefront_tags %}
+{% block errors %}
+    {% if field.errors %}
+    <ul class="error-block abdeen-field-errors"{% if field.auto_id %} id="{{ field.auto_id }}_error"{% endif %}>
+        {% for error in field.errors %}<li>{{ error|stock_safe_message }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+{% endblock %}
+{% block help_text %}
+    {% if field.help_text %}<small class="form-text text-muted"{% if field.auto_id %} id="{{ field.auto_id }}_helptext"{% endif %}>{{ field.help_text|safe }}</small>{% endif %}
+{% endblock %}

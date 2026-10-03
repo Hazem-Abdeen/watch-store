@@ -1,0 +1,31 @@
+{% extends 'oscar/dashboard/homepage/base.html' %}
+{% block dashboard_content %}
+<p><a class="btn btn-primary" href="{% url 'dashboard:hero-slide-create' %}">Add hero slide</a>
+<a class="btn btn-secondary" href="{% url 'home' %}">View homepage</a></p>
+<p>Lower order numbers appear first. Slides with the same number appear in creation order. Only active slides appear on the homepage.</p>
+{% if formset.forms %}
+<form method="post">
+    {% csrf_token %}{{ formset.management_form }}{{ formset.non_form_errors }}
+    <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead><tr><th>Campaign</th><th>Order</th><th>Active</th><th>Actions</th></tr></thead>
+        <tbody>{% for form in formset %}
+            <tr>
+                <td>{{ form.id }}{{ form.non_field_errors }}
+                    {% if form.instance.desktop_image %}<img src="{{ form.instance.desktop_image.url }}" alt="" width="160" style="max-width: 100%; height: auto;" loading="lazy">{% endif %}
+                    <p>{{ form.instance }}</p>
+                    {% if form.instance.mobile_image %}<small>Mobile artwork uploaded</small>{% endif %}
+                </td>
+                <td><label class="sr-only" for="{{ form.display_order.id_for_label }}">Order for {{ form.instance }}</label>{{ form.display_order }}{{ form.display_order.errors }}</td>
+                <td><label for="{{ form.is_active.id_for_label }}">{{ form.is_active }} Active<span class="sr-only">: {{ form.instance }}</span></label>{{ form.is_active.errors }}</td>
+                <td><a class="btn btn-secondary" href="{% url 'dashboard:hero-slide-update' pk=form.instance.pk %}">Edit<span class="sr-only"> {{ form.instance }}</span></a>
+                    <a class="btn btn-danger" href="{% url 'dashboard:hero-slide-delete' pk=form.instance.pk %}">Delete<span class="sr-only"> {{ form.instance }}</span></a></td>
+            </tr>
+        {% endfor %}</tbody>
+    </table></div>
+    <button class="btn btn-primary" type="submit">Save order and active status</button>
+</form>
+{% else %}
+<p>No hero slides yet. Add campaign artwork to display the homepage carousel.</p>
+{% endif %}
+{% endblock %}

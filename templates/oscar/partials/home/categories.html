@@ -1,26 +1,28 @@
 {% load static %}
 <section id="categories" class="abdeen-section" aria-labelledby="categories-heading">
     <div class="abdeen-shell">
-        {% include "oscar/partials/home/section_heading.html" with heading_id="categories-heading" eyebrow="Departments" title="Shop by Category" description="Explore styles for your everyday, your special occasions, and everything in between." %}
-        <div class="tw:grid tw:grid-cols-1 tw:gap-6 tw:sm:grid-cols-2 tw:lg:grid-cols-4">
+        {% include "oscar/partials/home/section_heading.html" with heading_id="categories-heading" title="Shop by Gender" only %}
+        <div class="abdeen-category-grid">
             {% for category in homepage_categories %}
-                <a class="abdeen-category-card" href="{{ category.get_absolute_url }}">
-                    {% if category.image %}
-                        <img src="{{ category.image.url }}" alt="" width="600" height="800" loading="lazy" data-image-fallback="{% static 'abdeen/images/watch-placeholder.svg' %}">
-                    {% else %}
-                        <img src="{% static 'abdeen/images/watch-placeholder.svg' %}" alt="Temporary category image placeholder" width="600" height="800" loading="lazy">
-                    {% endif %}
-                    <span class="abdeen-category-shade"></span>
-                    <span class="abdeen-category-tag">{% if category.image %}Collection{% else %}Image coming soon{% endif %}</span>
-                    <div class="abdeen-category-copy">
-                        <h3>{{ category.name }}</h3>
-                        <p>{{ category.description|striptags|truncatechars:70 }}</p>
-                        <span class="abdeen-inline-link">Explore Collection {% include "oscar/partials/home/icon.html" with name="arrow" %}</span>
-                    </div>
-                </a>
-            {% empty %}
-                <p class="abdeen-preview-note tw:col-span-full">Our categories are being prepared. <a href="{% url 'catalogue:index' %}">Browse all watches</a>.</p>
+                {% if category.slug == 'men' or category.slug == 'women' %}
+                    <a class="abdeen-category-card" href="{{ category.get_absolute_url }}" aria-labelledby="category-title-{{ category.pk }}" aria-describedby="category-description-{{ category.pk }}">
+                        <div class="abdeen-category-visual abdeen-category-visual-{{ category.slug }}">
+                            {% if category.slug == 'men' %}
+                                <img src="{% static 'abdeen/images/home/categories/men.jpg' %}" alt="" width="1448" height="1086" loading="lazy" decoding="async" data-category-image>
+                            {% else %}
+                                <img src="{% static 'abdeen/images/home/categories/women.jpg' %}" alt="" width="1448" height="1086" loading="lazy" decoding="async" data-category-image>
+                            {% endif %}
+                        </div>
+                        <div class="abdeen-category-copy">
+                            <span class="abdeen-category-eyebrow">The collection</span>
+                            <h3 id="category-title-{{ category.pk }}">{% if category.slug == 'men' %}Men{% else %}Women{% endif %}</h3>
+                            <p id="category-description-{{ category.pk }}">{% if category.slug == 'men' %}Distinctive details. Everyday presence.{% else %}A little elegance, every day.{% endif %}</p>
+                            <span class="abdeen-category-cta"><span>Explore Collection</span> {% include "oscar/partials/home/icon.html" with name="arrow" %}</span>
+                        </div>
+                    </a>
+                {% endif %}
             {% endfor %}
+            <p class="abdeen-preview-note abdeen-category-empty">Our categories are being prepared. <a href="{% url 'catalogue:index' %}">Browse all watches</a>.</p>
         </div>
     </div>
 </section>

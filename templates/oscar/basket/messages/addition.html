@@ -1,0 +1,7 @@
+{% extends "oscar/basket/messages/addition.html" %}
+{% block message_content %}
+    <span class="abdeen-basket-confirmation">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 7h14l1 14H4L5 7Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2m-6 6 2 2 4-4"/></svg>
+        <span>{{ block.super }}</span>
+    </span>
+{% endblock %}

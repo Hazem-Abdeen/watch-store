@@ -1,0 +1,10 @@
+{% extends 'oscar/dashboard/layout.html' %}
+{% block title %}Hero Slides | {{ block.super }}{% endblock %}
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item">Homepage</li>
+    <li class="breadcrumb-item"><a href="{% url 'dashboard:hero-slide-list' %}">Hero Slides</a></li>
+</ol></nav>
+{% endblock %}
+{% block headertext %}Hero Slides{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "oscar/checkout/payment_details.html" %}
+{% load i18n %}
+
+{% block checkout_title %}{% trans 'Payment information' %}{% endblock %}
+{% block payment_details_content %}
+<section class="card card-body abdeen-checkout-payment" aria-labelledby="payment-information-heading">
+    <p class="abdeen-checkout-eyebrow">{% trans 'Before you review' %}</p>
+    <h2 id="payment-information-heading">{% trans 'Review your order next' %}</h2>
+    <p>{% trans 'No online payment is collected during this checkout.' %}</p>
+    <p>{% trans 'You can review your delivery details and order total before placing your order.' %}</p>
+    {# Keep Oscar's current preview transition. No payment form is configured. #}
+    <a id="view_preview" href="{% url 'checkout:preview' %}" class="btn btn-primary btn-lg">{% trans 'Continue to review' %}<span aria-hidden="true">→</span></a>
+</section>
+{% endblock %}

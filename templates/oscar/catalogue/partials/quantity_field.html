@@ -1,0 +1,9 @@
+{% extends 'oscar/partials/form_field.html' %}
+{% load i18n widget_tweaks %}
+{% block widget %}
+<div class="abdeen-detail-quantity" data-detail-quantity>
+    <button type="button" data-quantity-step="-1" aria-label="{% trans 'Decrease quantity' %}" aria-controls="{{ field.auto_id }}" hidden>−</button>
+    {% render_field field class+="form-control" inputmode="numeric" %}
+    <button type="button" data-quantity-step="1" aria-label="{% trans 'Increase quantity' %}" aria-controls="{{ field.auto_id }}" hidden>+</button>
+</div>
+{% endblock %}

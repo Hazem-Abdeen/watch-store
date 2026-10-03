@@ -1,0 +1,12 @@
+{% load display_tags i18n %}
+{% if paginator.num_pages > 1 %}
+<nav class="abdeen-pagination" aria-label="{% trans 'Catalogue pagination' %}">
+    {% if page_obj.has_previous %}
+        <a rel="prev" href="?{% get_parameters 'page' %}page={{ page_obj.previous_page_number }}"><span aria-hidden="true">←</span> {% trans 'Previous' %}</a>
+    {% else %}<span class="abdeen-pagination-disabled" aria-disabled="true"><span aria-hidden="true">←</span> {% trans 'Previous' %}</span>{% endif %}
+    <span aria-current="page">{% blocktrans with page=page_obj.number total=paginator.num_pages %}Page {{ page }} of {{ total }}{% endblocktrans %}</span>
+    {% if page_obj.has_next %}
+        <a rel="next" href="?{% get_parameters 'page' %}page={{ page_obj.next_page_number }}">{% trans 'Next' %} <span aria-hidden="true">→</span></a>
+    {% else %}<span class="abdeen-pagination-disabled" aria-disabled="true">{% trans 'Next' %} <span aria-hidden="true">→</span></span>{% endif %}
+</nav>
+{% endif %}

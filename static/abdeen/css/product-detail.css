@@ -1,0 +1,107 @@
+/* Product detail only: all forms, permissions and purchase data remain Oscar's. */
+.abdeen-detail { --abdeen-red: #e01a22; padding-bottom: 72px; color: #171717; background: #fff; font: 14px/1.65 "Plus Jakarta Sans", sans-serif; -webkit-font-smoothing: antialiased; }
+.abdeen-detail *, .abdeen-detail *::before, .abdeen-detail *::after { box-sizing: border-box; }
+.abdeen-detail :is(h1, h2, h3, p, dl, figure) { margin: 0; }
+.abdeen-detail a { color: inherit; text-decoration: none; }
+.abdeen-detail a:hover { color: #b9151c; }
+.abdeen-detail :is(a, button, input, select, textarea, summary):focus-visible { outline: 2px solid var(--abdeen-red); outline-offset: 4px; }
+.abdeen-detail :is(img, video, iframe, input, select, textarea) { max-width: 100%; }
+.abdeen-detail :is(button, input, select, textarea) { font-family: inherit; }
+.abdeen-detail :is(h1, h2, h3, p, a, label, dd, td, th) { overflow-wrap: anywhere; }
+.abdeen-detail :is(#product_description, #product_information) { scroll-margin-top: 150px; }
+.abdeen-detail-breadcrumbs { display: flex; flex-wrap: wrap; gap: 8px 12px; padding: 24px 0; margin: 0; list-style: none; color: #737373; font-size: 11px; }
+.abdeen-detail-breadcrumbs li + li::before { content: "/"; margin-right: 12px; color: #a3a3a3; }
+.abdeen-detail-breadcrumbs [aria-current] { color: #171717; }
+.abdeen-detail-back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-bottom: 12px; font-size: 11px; }
+.abdeen-detail .product_page > .row:first-child { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; margin: 12px 0 48px; }
+.abdeen-detail-gallery, .abdeen-detail-summary { min-width: 0; }
+.abdeen-detail-image { position: relative; display: block; aspect-ratio: 1; border: 0; background: #fafafa; overflow: hidden; }
+.abdeen-detail-image > img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 28px; mix-blend-mode: multiply; }
+.abdeen-detail-image-hint { position: absolute; bottom: 12px; right: 12px; display: flex; align-items: center; gap: 12px; padding: 8px 12px; border: 1px solid #e5e5e5; border-radius: 4px; background: #fffffff2; color: #737373; font-size: 10px; }
+.abdeen-detail-image:hover .abdeen-detail-image-hint { color: #171717; border-color: #a3a3a3; }
+.abdeen-detail-gallery-controls { margin-top: 16px; }
+.abdeen-detail-gallery-controls > p { margin-bottom: 10px; color: #737373; font-size: 10px; }
+.abdeen-detail-thumbnails { display: flex; flex-wrap: wrap; gap: 8px; }
+.abdeen-detail-thumbnails a { display: block; width: 64px; height: 64px; padding: 4px; border: 1px solid #e5e5e5; border-radius: 6px; background: #fafafa; }
+.abdeen-detail-thumbnails a[aria-current] { border-color: #171717; box-shadow: inset 0 0 0 1px #171717; }
+.abdeen-detail-thumbnails img { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.abdeen-detail .abdeen-detail-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; color: #737373; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .13em; }
+.abdeen-detail .product_main h1 { color: #171717; font-size: clamp(26px, 2.7vw, 40px); line-height: 1.25; font-weight: 600; letter-spacing: -.035em; }
+.abdeen-detail .abdeen-detail-sku { margin-top: 12px; color: #737373; font-size: 11px; letter-spacing: .025em; }
+.abdeen-detail-edit { display: inline-block; font-size: 11px; text-decoration: underline !important; margin-top: 16px; }
+.abdeen-detail-pricing { margin-top: 30px; color: #737373; }
+.abdeen-detail .product_main .price_color { color: #171717; font-size: 30px; font-weight: 600; line-height: 1.3; letter-spacing: -.025em; margin-bottom: 8px; }
+.abdeen-detail .abdeen-detail-shipping { margin-bottom: 28px; color: #737373; font-size: 11px; }
+.abdeen-detail .product_main .availability { display: inline-flex; align-items: center; gap: 7px; max-width: 100%; margin: 0; padding: 0; color: #525252; background: transparent; font-size: 11px; }
+.abdeen-detail .availability::before { content: ""; width: 6px; height: 6px; border-radius: 50%; flex: 0 0 6px; background: #737373; }
+.abdeen-detail .availability.instock::before { background: #3d7052; }
+.abdeen-detail .availability.outofstock::before { background: #b9151c; }
+.abdeen-detail-purchase { margin-top: 24px; }
+.abdeen-detail .add-to-basket { display: block; width: 100%; margin-right: 0; }
+.abdeen-detail .form-group { margin-bottom: 18px; }
+.abdeen-detail .form-group .col-form-label { display: block; padding: 0 0 8px; color: #525252; font-size: 12px; font-weight: 600; }
+.abdeen-detail .form-control { min-width: 0; height: auto; min-height: 46px; padding: 10px 12px; border: 1px solid #d4d4d4; border-radius: 6px; background-color: #fff; color: #171717; font-size: 13px; }
+.abdeen-detail input[name="quantity"] { max-width: 100px; }
+.abdeen-detail #add_to_basket_form > .form-group:last-child { margin-top: 24px; margin-bottom: 0; }
+.abdeen-detail #add_to_basket_form > .form-group:last-child > label { font-size: 10px; text-transform: uppercase; letter-spacing: .12em; }
+.abdeen-detail-quantity { display: inline-flex; align-items: center; max-width: 100%; border: 1px solid #d4d4d4; }
+.abdeen-detail-quantity .form-control { width: 58px; min-height: 46px; padding: 8px 2px; border: 0; border-radius: 0; text-align: center; box-shadow: none; }
+.abdeen-detail-quantity[data-enhanced] input { appearance: textfield; -moz-appearance: textfield; }
+.abdeen-detail-quantity[data-enhanced] input::-webkit-inner-spin-button, .abdeen-detail-quantity[data-enhanced] input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.abdeen-detail-quantity button { width: 44px; height: 46px; padding: 0; border: 0; background: #fff; color: #171717; font-size: 18px; cursor: pointer; }
+.abdeen-detail-quantity button:hover { background: #fafafa; }
+.abdeen-detail-quantity button:disabled { color: #aaa; cursor: default; }
+.abdeen-detail input[type="checkbox"], .abdeen-detail input[type="radio"] { min-height: auto; }
+.abdeen-detail .form-text { font-size: 11px; }
+.abdeen-detail .error-block { display: block; margin-top: 6px; color: #b9151c; font-size: 12px; }
+.abdeen-detail .btn { border-radius: 6px; min-height: 44px; padding: 10px 16px; font-size: 12px; font-weight: 600; white-space: normal; box-shadow: none; }
+.abdeen-detail .add-to-basket > .btn { min-height: 54px; margin-top: 6px; border-color: #171717; border-radius: 2px; background: #171717; color: #fff; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.abdeen-detail .add-to-basket > .btn:hover { background: #333; border-color: #333; }
+.abdeen-detail #alert_form > p { color: #737373; font-size: 12px; margin-bottom: 18px; }
+.abdeen-detail-purchase form:not(.add-to-basket) { font-size: 12px; }
+.abdeen-detail-purchase form::after { content: ""; display: block; clear: both; }
+.abdeen-detail-purchase h2 { font-size: 14px; font-weight: 700; margin-bottom: 16px; }
+.abdeen-detail-variants { display: flex; flex-direction: column; gap: 8px; }
+.abdeen-detail-variants a { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 16px; border: 1px solid #d4d4d4; border-radius: 6px; font-size: 12px; }
+.abdeen-detail-variants a:hover { border-color: #171717; color: #171717; }
+.abdeen-detail-disclosure { margin-top: 24px; border-top: 1px solid #e5e5e5; }
+.abdeen-detail-spec-link { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; padding-block: 14px; font-size: 11px; font-weight: 600; cursor: pointer; list-style: none; }
+.abdeen-detail-spec-link::-webkit-details-marker { display: none; }
+.abdeen-detail-spec-link:focus-visible { outline: 2px solid #171717; outline-offset: 4px; }
+.abdeen-detail-spec-link span { font-size: 18px; transition: transform .15s ease; }
+.abdeen-detail-disclosure[open] .abdeen-detail-spec-link span { transform: rotate(180deg); }
+.abdeen-recommendations { padding-block: 40px; border-top: 1px solid #e5e5e5; }
+.abdeen-recommendations .abdeen-section-heading h2 { margin: 0; font-family: "Playfair Display", Georgia, serif; font-size: clamp(30px, 3.3vw, 44px); font-weight: 400; line-height: 1.2; letter-spacing: -.025em; text-wrap: balance; }
+.abdeen-detail-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 36px; border-top: 1px solid #e5e5e5; }
+.abdeen-detail-section > * { min-width: 0; }
+.abdeen-detail-section h2, .abdeen-detail .sub-header h2 { color: #171717; font-size: 22px; line-height: 1.3; font-weight: 700; letter-spacing: -.025em; }
+.abdeen-detail-section .abdeen-detail-eyebrow { margin-bottom: 10px; }
+.abdeen-detail-description { color: #525252; white-space: normal; font-size: 13px; line-height: 1.9; overflow-wrap: anywhere; }
+.abdeen-detail-description :is(p, ul, ol) { margin-bottom: 16px; }
+.abdeen-detail-description :is(table, pre) { display: block; max-width: 100%; overflow-x: auto; white-space: normal; }
+.abdeen-detail-description img { height: auto; }
+.abdeen-detail-specs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+.abdeen-detail-specs > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid #eee; font-size: 12px; }
+.abdeen-detail-specs dt { color: #737373; font-weight: 400; overflow-wrap: anywhere; }
+.abdeen-detail-specs dd { color: #171717; margin: 0; min-width: 0; }
+.abdeen-detail .sub-header { padding: 0; margin: 0 0 24px; border: 0; }
+.abdeen-detail .product_page > .sub-header { border-top: 1px solid #e5e5e5; padding-top: 36px; }
+@media (min-width: 768px) {
+    .abdeen-detail .product_page > .row:first-child { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 32px; margin-top: 24px; margin-bottom: 64px; }
+    .abdeen-detail-section { grid-template-columns: minmax(0, 1fr) minmax(0, 2.3fr); gap: 32px; padding-block: 48px; }
+}
+@media (min-width: 1024px) {
+    .abdeen-detail .product_page > .row:first-child { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 64px; }
+    .abdeen-detail-summary { padding-top: 24px; }
+    .abdeen-detail-image > img { padding: 40px; }
+    .abdeen-watch-gallery { position: sticky; top: 145px; }
+    .abdeen-detail-specs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+    .abdeen-detail-specs > div { display: block; }
+    .abdeen-detail-specs dd { margin-top: 6px; }
+}
+@media (max-width: 767px) {
+    .abdeen-detail-breadcrumbs { padding-block: 20px; font-size: 10px; }
+    .abdeen-detail .product_page > .row:first-child { margin-top: 0; }
+    .abdeen-detail .product_main .price_color { font-size: 28px; }
+}
+@media (prefers-reduced-motion: reduce) { .abdeen-detail * { scroll-behavior: auto !important; transition: none !important; } }

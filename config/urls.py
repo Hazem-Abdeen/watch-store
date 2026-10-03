@@ -20,10 +20,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from .homepage import HomepageView
+from .cart import CartDrawerView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomepageView.as_view(), name='home'),
+    path('basket/drawer/', CartDrawerView.as_view(), name='cart-drawer'),
     path('', include(apps.get_app_config('oscar').urls[0])),
 ]
 

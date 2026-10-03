@@ -1,0 +1,20 @@
+{% extends 'oscar/dashboard/layout.html' %}
+{% block title %}{{ category.name }} logo | {{ block.super }}{% endblock %}
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item">Homepage</li>
+    <li class="breadcrumb-item"><a href="{% url 'dashboard:brand-logo-list' %}">Brand Logos</a></li>
+    <li class="breadcrumb-item active">{{ category.name }}</li>
+</ol></nav>
+{% endblock %}
+{% block headertext %}{{ category.name }} logo{% endblock %}
+{% block dashboard_content %}
+<p>Upload a logo with a transparent background. It will be centered in the brand showcase without cropping. Clear the file or disable “Use logo” to display the brand name.</p>
+<form method="post" enctype="multipart/form-data" class="card card-body form-stacked">
+    {% csrf_token %}
+    {% include 'oscar/dashboard/partials/form_fields.html' with form=form %}
+    <div class="form-actions"><button class="btn btn-primary" type="submit">Save logo</button>
+        <a href="{% url 'dashboard:brand-logo-list' %}">Cancel</a></div>
+</form>
+{% endblock %}

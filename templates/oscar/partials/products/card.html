@@ -1,0 +1,38 @@
+{% load i18n static purchase_info_tags storefront_tags %}
+{% purchase_info_for_product request product as purchase %}
+{% product_card_brand product as brand %}
+<article class="abdeen-product-card"{% if home_card %} data-home-product data-filters="{{ product.homepage_filter_tokens }}"{% endif %}>
+    <a class="abdeen-product-link" href="{{ product.get_absolute_url }}">
+        <div class="abdeen-product-image">
+            {% if not purchase.availability.is_available_to_buy %}
+                <span class="abdeen-product-badge">{% trans 'Sold out' %}</span>
+            {% elif badge %}
+                <span class="abdeen-product-badge">{% if badge == 'New Arrival' %}{% trans 'New' %}{% else %}{{ badge }}{% endif %}</span>
+            {% endif %}
+            {% with image=product.primary_image %}
+                <img src="{% if image.original and not image.is_missing %}{{ image.original.url }}{% else %}{% static 'abdeen/images/watch-placeholder.svg' %}{% endif %}"
+                     alt="{% if image.is_missing %}{% trans 'Image coming soon for' %} {{ product.get_title }}{% else %}{{ image.caption|default:product.get_title }}{% endif %}" width="800" height="800" loading="lazy"
+                     data-image-fallback="{% static 'abdeen/images/watch-placeholder.svg' %}">
+            {% endwith %}
+        </div>
+        <div class="abdeen-product-info">
+            {% if brand %}<p class="abdeen-product-brand">{{ brand }}</p>{% endif %}
+            <h3 class="abdeen-product-title">{{ product.get_title }}</h3>
+            <p class="abdeen-product-price">
+                {% if purchase.price.exists %}
+                    {% if home_card and purchase.price.currency != 'JOD' %}
+                        <span>{% trans 'JOD price unavailable' %}</span>
+                    {% elif purchase.price.is_tax_known %}
+                        {{ purchase.price.incl_tax|card_currency:purchase.price.currency }}
+                    {% else %}
+                        {{ purchase.price.excl_tax|card_currency:purchase.price.currency }} <span>{% trans 'excl. tax' %}</span>
+                    {% endif %}
+                {% else %}
+                    <span>{% trans 'Price unavailable' %}</span>
+                {% endif %}
+            </p>
+            <p class="abdeen-product-availability">{{ purchase.availability|storefront_availability }}</p>
+            {% if product.is_parent or product.has_options %}<p class="abdeen-product-options">{% trans 'Choose options' %}</p>{% endif %}
+        </div>
+    </a>
+</article>

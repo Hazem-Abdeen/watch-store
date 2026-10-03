@@ -1,0 +1,14 @@
+{% load i18n %}
+<div id="messages" aria-live="polite" aria-relevant="additions" data-dismiss-label="{% trans 'Dismiss message' %}">
+    {% for message in messages %}
+        {% if 'error' in message.tags or 'danger' in message.tags %}
+            {% include 'oscar/partials/messages/alert.html' with level='danger' dismissible=True %}
+        {% elif 'success' in message.tags %}
+            {% include 'oscar/partials/messages/alert.html' with level='success' dismissible=True %}
+        {% elif 'warning' in message.tags %}
+            {% include 'oscar/partials/messages/alert.html' with level='warning' dismissible=True %}
+        {% else %}
+            {% include 'oscar/partials/messages/alert.html' with level='info' dismissible=True %}
+        {% endif %}
+    {% endfor %}
+</div>

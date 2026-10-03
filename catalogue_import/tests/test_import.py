@@ -15,6 +15,7 @@ from PIL import Image
 
 from catalogue_import.catalogue import OscarImporter, description_html, models, price_value
 from catalogue_import.images import UploadsRedirectHandler, download_image, uploads_url
+from catalogue_import.models import CatalogueSource
 from catalogue_import.sql_dump import ImportDataError, literal_rows
 
 
@@ -125,7 +126,7 @@ class ParserAndImageTests(SimpleTestCase):
                 price_value(value, 'price')
 
 
-class CommandTests(TestCase):
+class ImportTestCase(TestCase):
     def setUp(self):
         self.temp = TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
@@ -136,6 +137,10 @@ class CommandTests(TestCase):
         self.override.enable()
         self.addCleanup(self.override.disable)
         self.m = models()
+        self.watch = self.m['ProductClass'].objects.create(name='Watch', slug='watch', track_stock=True)
+
+    def imported_product(self, source_id):
+        return CatalogueSource.objects.get(source_id=source_id).product
 
     def run_import(self, **kwargs):
         stdout, stderr = StringIO(), StringIO()
@@ -143,6 +148,8 @@ class CommandTests(TestCase):
                      stdout=stdout, stderr=stderr, **kwargs)
         return stdout.getvalue(), stderr.getvalue()
 
+
+class CommandTests(ImportTestCase):
     def test_dry_run_has_no_writes_or_downloads(self):
         with patch('catalogue_import.catalogue.download_image') as download:
             with CaptureQueriesContext(connection) as queries:
@@ -160,19 +167,25 @@ class CommandTests(TestCase):
         self.assertIn('created=2 updated=0 skipped=0 failed=0', output)
         self.assertEqual(self.m['Product'].objects.count(), 2)
         self.assertEqual(get_user_model().objects.count(), 0)
-        first = self.m['Product'].objects.get(upc='wc-abdeen-1')
+        first = self.imported_product(1)
         self.assertEqual(first.title, "Watch; O'Reilly, عربي")
         self.assertEqual(first.description, '<p>Useful <strong>description</strong></p>')
         stock = first.stockrecords.get()
         self.assertEqual((stock.partner_sku, stock.price, stock.price_currency, stock.num_in_stock),
                          ('ABC/1', Decimal('12.50'), 'JOD', 1))
-        self.assertEqual(first.attr.wc_regular_price, '15.00')
-        self.assertEqual(first.attr.wc_sale_price, '12.50')
+        self.assertEqual(CatalogueSource.objects.get(product=first).metadata['regular_price'], '15.00')
+        self.assertEqual(CatalogueSource.objects.get(product=first).metadata['sale_price'], '12.50')
+        self.assertFalse(first.upc)
+        self.assertEqual(first.product_class_id, self.watch.pk)
+        self.assertEqual(stock.partner.name, 'Abdeen Watches')
+        self.assertFalse(self.m['ProductAttribute'].objects.filter(code__startswith='wc_').exists())
+        self.assertEqual(first.attr.brand, 'CASIO')
+        self.assertEqual(first.attr.gender, 'Men')
         self.assertEqual(set(first.categories.values_list('name', flat=True)), {'Men', 'CASIO', 'CASIO DIGITAL'})
         digital = self.m['Category'].objects.get(name='CASIO DIGITAL')
         self.assertEqual(digital.get_parent().name, 'CASIO')
         self.assertEqual(digital.get_parent().get_parent().name, 'Brands')
-        second = self.m['Product'].objects.get(upc='wc-abdeen-2')
+        second = self.imported_product(2)
         self.assertEqual(second.stockrecords.get().num_in_stock, 0)
         self.assertEqual(list(second.categories.values_list('name', flat=True)), ['Women'])
         category = self.m['Category'].add_root(name='Manual category')
@@ -189,7 +202,7 @@ class CommandTests(TestCase):
 
     def test_updated_sku_uses_same_product_and_stock(self):
         self.run_import(skip_images=True)
-        product = self.m['Product'].objects.get(upc='wc-abdeen-1')
+        product = self.imported_product(1)
         stock_id = product.stockrecords.get().pk
         self.sql.write_text(fixture().replace('ABC/1', 'CHANGED/1'), encoding='utf-8')
         self.run_import(skip_images=True)
@@ -229,7 +242,8 @@ class CommandTests(TestCase):
         with patch.object(OscarImporter, 'category', category):
             with self.assertRaisesMessage(CommandError, 'Stopped at product 2'):
                 self.run_import(skip_images=True)
-        self.assertEqual(list(self.m['Product'].objects.values_list('upc', flat=True)), ['wc-abdeen-1'])
+        self.assertEqual(list(CatalogueSource.objects.values_list('source_id', flat=True)), [1])
+        self.assertEqual(self.m['Product'].objects.count(), 1)
         self.assertEqual(self.m['StockRecord'].objects.count(), 1)
         self.assertFalse(self.m['Category'].objects.filter(name='Women').exists())
 

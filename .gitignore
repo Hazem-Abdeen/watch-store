@@ -9,6 +9,7 @@ __pycache__/
 db.sqlite3
 media/
 staticfiles/
+var/whoosh_index/
 
 # Frontend dependencies and compiled Tailwind output
 node_modules/
@@ -27,3 +28,14 @@ static/abdeen/css/tailwind.css
 design-reference/
 
 import-data/
+
+# Local database backups
+*.sqlite3.backup*
+db.sqlite3.backup*
+
+# Local media backups
+media.backup*/
+
+# Local review/report artifacts
+variant-review.csv
+docs/screenshots/

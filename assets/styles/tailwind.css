@@ -4,6 +4,8 @@
 /* Keep utilities unlayered so Oscar's unlayered CSS cannot outrank them by layer. */
 @import "tailwindcss/utilities.css" prefix(tw) source(none);
 @import "./homepage.css";
+@import "./product-card.css";
+@import "./hero.css";
 
 @source "../../templates";
 @source "../../static/abdeen/js";

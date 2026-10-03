@@ -1,0 +1,13 @@
+{% extends 'oscar/dashboard/homepage/base.html' %}
+{% block headertext %}{% if object %}Edit{% else %}Add{% endif %} hero slide{% endblock %}
+{% block dashboard_content %}
+<p>Leave title, subtitle and button fields empty when your artwork already contains its own text. Images are displayed in full without cropping.</p>
+<form method="post" enctype="multipart/form-data" class="card card-body form-stacked">
+    {% csrf_token %}
+    {% include 'oscar/dashboard/partials/form_fields.html' with form=form %}
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Save slide</button>
+        <a href="{% url 'dashboard:hero-slide-list' %}">Cancel</a>
+    </div>
+</form>
+{% endblock %}

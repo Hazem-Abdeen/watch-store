@@ -1,0 +1,22 @@
+{% load i18n %}
+<nav class="abdeen-checkout-progress" aria-label="{% trans 'Checkout progress' %}">
+    <ol>
+        <li{% if step == 1 %} aria-current="step"{% elif step > 1 %} class="is-complete"{% endif %}>
+            {% if step == 2 or step == 3 or step == 4 %}<a href="{% url 'checkout:shipping-address' %}">{% else %}<span>{% endif %}
+                <span class="abdeen-checkout-step-number" aria-hidden="true">01</span>{% trans 'Address' %}
+            {% if step == 2 or step == 3 or step == 4 %}</a>{% else %}</span>{% endif %}
+        </li>
+        <li{% if step == 2 %} aria-current="step"{% elif step > 2 %} class="is-complete"{% endif %}>
+            {% if step == 3 or step == 4 %}<a href="{% url 'checkout:shipping-method' %}">{% else %}<span>{% endif %}
+                <span class="abdeen-checkout-step-number" aria-hidden="true">02</span>{% trans 'Delivery' %}
+            {% if step == 3 or step == 4 %}</a>{% else %}</span>{% endif %}
+        </li>
+        <li{% if step == 3 %} aria-current="step"{% elif step > 3 %} class="is-complete"{% endif %}>
+            {% if step == 4 %}<a href="{% url 'checkout:payment-details' %}">{% else %}<span>{% endif %}
+                <span class="abdeen-checkout-step-number" aria-hidden="true">03</span>{% trans 'Payment' %}
+            {% if step == 4 %}</a>{% else %}</span>{% endif %}
+        </li>
+        <li{% if step == 4 %} aria-current="step"{% elif step > 4 %} class="is-complete"{% endif %}><span><span class="abdeen-checkout-step-number" aria-hidden="true">04</span>{% trans 'Review' %}</span></li>
+        <li{% if step == 5 %} aria-current="step"{% endif %}><span><span class="abdeen-checkout-step-number" aria-hidden="true">05</span>{% trans 'Confirmation' %}</span></li>
+    </ol>
+</nav>

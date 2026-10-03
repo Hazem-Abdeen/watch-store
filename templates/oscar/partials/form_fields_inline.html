@@ -1,0 +1,19 @@
+{% load storefront_tags %}
+{% load widget_tweaks %}
+{% for error in form.non_field_errors %}
+    {% include 'oscar/partials/messages/alert.html' with level='danger' message=error heading='' dismissible=False %}
+{% endfor %}
+{% for field in form %}
+    {% if field.is_hidden %}{{ field }}{% else %}
+        <span class="form-group {% if field.errors %}error{% endif %}">
+            <span class="mr-sm-1">{{ field.label_tag }}</span>
+            {% render_field field class+="form-control mr-sm-2" %}
+            {% if field.errors %}
+                <span class="error-block abdeen-field-errors"{% if field.auto_id %} id="{{ field.auto_id }}_error"{% endif %}>
+                    {% for error in field.errors %}<span>{{ error|stock_safe_message }}</span>{% endfor %}
+                </span>
+            {% endif %}
+            {% if field.help_text %}<span class="sr-only" id="{{ field.auto_id }}_helptext">{{ field.help_text|safe }}</span>{% endif %}
+        </span>
+    {% endif %}
+{% endfor %}

@@ -1,3 +1,37 @@
 {% extends "oscar/basket/basket.html" %}
+{% load static i18n %}
 
-{# Keep Oscar's basket forms, totals and JavaScript hooks intact. #}
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'abdeen/css/basket.css' %}">
+{% endblock %}
+{% block storefront_header %}{% include "oscar/partials/home/header.html" with catalogue_browse=True %}{% endblock %}
+{% block storefront_footer %}{% include "oscar/partials/home/footer.html" with catalogue_browse=True %}{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'abdeen/js/homepage.js' %}" defer></script>
+    <script src="{% static 'abdeen/js/basket.js' %}" defer></script>
+{% endblock %}
+
+{% block content_wrapper %}
+<div class="abdeen-basket" id="catalogue-top">
+    <div class="abdeen-shell">
+        <nav aria-label="{% trans 'Breadcrumb' %}">
+            <ol class="abdeen-basket-breadcrumbs">
+                <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+                <li aria-current="page">{% trans 'Shopping bag' %}</li>
+            </ol>
+        </nav>
+        <header class="abdeen-basket-heading">
+            <div>
+                <p class="abdeen-basket-eyebrow"><span class="abdeen-dot"></span>{% trans 'Your selection' %}</p>
+                <h1>{% trans 'Shopping bag' %}</h1>
+            </div>
+            <a class="abdeen-basket-continue" href="{% url 'catalogue:index' %}"><span aria-hidden="true">←</span> {% trans 'Continue shopping' %}</a>
+        </header>
+        {% include "oscar/partials/alert_messages.html" %}
+        <div id="content_inner">{% block content %}{{ block.super }}{% endblock %}</div>
+        <p class="sr-only" data-basket-status aria-live="polite" aria-atomic="true"></p>
+    </div>
+</div>
+{% endblock %}

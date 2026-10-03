@@ -1,3 +1,128 @@
 {% extends "oscar/catalogue/detail.html" %}
+{% load static i18n history_tags storefront_display_tags purchase_info_tags currency_filters storefront_tags recommendation_tags %}
 
-{# Keep Oscar's product data, availability and purchase forms intact. #}
+{% block description %}{% product_details product as meta_details %}{{ meta_details.description|default:product.get_title|truncatewords:40 }}{% endblock %}
+
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'abdeen/css/product-detail.css' %}">
+{% endblock %}
+{% block storefront_header %}{% include "oscar/partials/home/header.html" with catalogue_browse=True %}{% endblock %}
+{% block storefront_footer %}{% include "oscar/partials/home/footer.html" with catalogue_browse=True %}{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'abdeen/js/homepage.js' %}" defer></script>
+    <script src="{% static 'abdeen/js/product-detail.js' %}" defer></script>
+{% endblock %}
+
+{% block content_wrapper %}
+<div class="abdeen-detail" id="catalogue-top">
+    <div class="abdeen-shell">
+        {% block breadcrumbs %}
+        <nav aria-label="{% trans 'Breadcrumb' %}">
+            <ol class="abdeen-detail-breadcrumbs">
+                <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+                <li><a href="{% url 'catalogue:index' %}">{% trans 'All watches' %}</a></li>
+                {% with category=product.get_categories.first %}
+                    {% for ancestor in category.get_ancestors_and_self %}<li><a href="{{ ancestor.get_absolute_url }}">{{ ancestor.name }}</a></li>{% endfor %}
+                {% endwith %}
+                <li aria-current="page">{{ product.get_title }}</li>
+            </ol>
+        </nav>
+        {% get_back_button as backbutton %}
+        {% if backbutton %}<a class="abdeen-detail-back" href="{{ backbutton.url }}"><span aria-hidden="true">←</span> {{ backbutton.title }}</a>{% endif %}
+        {% endblock %}
+        {% include "oscar/partials/alert_messages.html" %}
+        <div id="content_inner">{% block content %}{% product_details product as details %}
+<article class="product_page">
+    <div class="row">
+
+{% block product_gallery %}
+<div class="abdeen-detail-gallery">
+    {% include "oscar/catalogue/partials/detail_gallery.html" %}
+</div>
+{% endblock %}
+
+{% block product_main %}
+<div class="product_main abdeen-detail-summary">
+    {% purchase_info_for_product request product as session %}
+    {% if details.brand %}<p class="abdeen-detail-eyebrow">{{ details.brand }}</p>{% endif %}
+    <h1>{{ product.get_title }}</h1>
+    {% with sku=session.stockrecord|customer_partner_sku %}
+        {% if sku %}<p class="abdeen-detail-sku">{% trans 'SKU' %}: <span>{{ sku }}</span></p>{% endif %}
+    {% endwith %}
+    <div class="abdeen-detail-pricing">
+        {% block product_stock_record %}{% include "oscar/catalogue/partials/stock_record.html" with detail_summary=True %}{% endblock %}
+    </div>
+    {% iffeature "reviews" %}
+        <div class="abdeen-detail-rating">{% include "oscar/catalogue/reviews/partials/review_stars.html" %}</div>
+    {% endiffeature %}
+    <div class="abdeen-detail-purchase">
+        {% if not product.is_parent %}
+            {% block product_basket_form %}{% include "oscar/catalogue/partials/add_to_basket_form.html" %}{% endblock %}
+        {% else %}
+            {% block variants %}
+            <h2>{% trans 'Choose your variant' %}</h2>
+            <div class="abdeen-detail-variants">
+                {% for child in product.get_public_children %}
+                    {% purchase_info_for_product request child as child_session %}
+                    {% if child_session.availability.is_available_to_buy %}
+                        <a href="{{ child.get_absolute_url }}">{{ child.get_title }} <span aria-hidden="true">→</span></a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endblock %}
+        {% endif %}
+    </div>
+    {% if details.specifications %}
+    <details class="abdeen-detail-disclosure" data-specifications>
+        <summary class="abdeen-detail-spec-link" id="specifications-toggle" aria-controls="product-specifications">{% trans 'Explore specifications' %}<span aria-hidden="true">⌄</span></summary>
+        <div id="product-specifications" role="region" aria-labelledby="specifications-toggle">
+            <dl class="abdeen-detail-specs">
+                {% for label, value in details.specifications %}
+                    <div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>
+                {% endfor %}
+            </dl>
+        </div>
+    </details>
+    {% endif %}
+    {% if user.is_authenticated and user.is_staff %}<a class="abdeen-detail-edit" href="{% url 'dashboard:catalogue-product' pk=product.id %}">{% trans 'Edit this product' %}</a>{% endif %}
+</div>
+{% endblock %}
+
+    </div>
+
+{% block product_description %}
+{% if details.description %}
+<section class="abdeen-detail-section" aria-labelledby="product_description">
+    <div class="abdeen-detail-section-heading">
+        <p class="abdeen-detail-eyebrow">{% trans 'A closer look' %}</p>
+        <h2 id="product_description">{% trans 'Product description' %}</h2>
+    </div>
+    <div class="abdeen-detail-description">{{ details.description|linebreaks }}</div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block product_info %}{% endblock %}
+
+{% block product_review %}{% iffeature "reviews" %}{{ block.super }}{% endiffeature %}{% endblock %}
+
+{% product_recommendations product as recommendations %}
+{% if recommendations %}
+<section class="abdeen-recommendations" aria-labelledby="recommendations-heading">
+    {% trans 'You May Also Like' as recommendations_title %}
+    {% include 'oscar/partials/home/section_heading.html' with title=recommendations_title heading_id='recommendations-heading' eyebrow='' description='' %}
+    <div class="abdeen-product-grid">
+        {% for product in recommendations %}
+            {% include 'oscar/partials/products/card.html' with home_card=False badge='' %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% recently_viewed_products current_product=product %}
+</article>
+        {% endblock %}</div>
+    </div>
+</div>
+{% endblock %}

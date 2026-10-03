@@ -1,0 +1,10 @@
+{% load storefront_tags %}
+{% load i18n string_filters %}
+<div class="alert abdeen-message alert-{{ level|default:'info' }}{% if dismissible %} alert-dismissible fade show{% endif %}{% for tag in message.tags|default:''|split %} alert-{% if tag == 'error' %}danger{% else %}{{ tag }}{% endif %}{% endfor %}" role="{% if level == 'danger' or level == 'error' %}alert{% else %}status{% endif %}" aria-atomic="true">
+    {% if dismissible %}<button type="button" class="close" data-dismiss="alert" aria-label="{% trans 'Dismiss message' %}"><span aria-hidden="true">&times;</span></button>{% endif %}
+    <div class="abdeen-message-content">
+        {% if heading %}<strong>{{ heading }}</strong>{% endif %}
+        {% if heading and message %} - {% endif %}
+        {% if 'safe' in message.tags %}{{ message|stock_safe_message|safe }}{% else %}{{ message|stock_safe_message }}{% endif %}
+    </div>
+</div>

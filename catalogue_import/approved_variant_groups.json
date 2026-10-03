@@ -1,0 +1,536 @@
+[
+  {
+    "brand": "casio",
+    "family": "GBD-200",
+    "proposed_parent_title": "CASIO GBD-200",
+    "children": [
+      {
+        "source_id": 3335,
+        "sku": "GBD-200-1DR",
+        "title": "CASIO G-SHOCK G-SQUAD GBD-200-1DR",
+        "specifications": {
+          "gender": "Men",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Black",
+          "brand": "Casio",
+          "band_material": "Resin",
+          "band_color": "Black",
+          "case_color": "Black",
+          "case_size": "53 mm",
+          "case_material": "Resin",
+          "water_resistance": "200-meter",
+          "movement": "Analog Quartz (Battery) / Power Saving (Display goes blank to save power 3 hours everyday.)"
+        }
+      },
+      {
+        "source_id": 3301,
+        "sku": "GBD-200-9DR",
+        "title": "CASIO G-SHOCK G-SQUAD GBD-200-9DR",
+        "specifications": {
+          "gender": "Men",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Black",
+          "brand": "Casio",
+          "band_material": "Resin",
+          "band_color": "Lime Green",
+          "case_color": "Lime Green",
+          "case_size": "53 mm",
+          "case_material": "Resin",
+          "water_resistance": "200-meter",
+          "movement": "Analog Quartz (Battery) / Power Saving (Display goes blank to save power 3 hours everyday.)"
+        }
+      }
+    ]
+  },
+  {
+    "brand": "casio",
+    "family": "LA670WGA",
+    "proposed_parent_title": "CASIO LA670WGA",
+    "children": [
+      {
+        "source_id": 2797,
+        "sku": "LA670WGA-1DF",
+        "title": "CASIO LA670WGA-1DF FOR WOMEN",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Black",
+          "brand": "Casio",
+          "band_material": "Stainless Steel",
+          "band_color": "Gold",
+          "case_color": "Gold",
+          "case_size": "31 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "3 ATM",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 2799,
+        "sku": "LA670WGA-9DF",
+        "title": "CASIO LA670WGA-9DF FOR WOMEN",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Gold",
+          "brand": "Casio",
+          "band_material": "Stainless Steel",
+          "band_color": "Gold",
+          "case_color": "Gold",
+          "case_size": "31 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "3 ATM",
+          "movement": "Analog Quartz (Battery)"
+        }
+      }
+    ]
+  },
+  {
+    "brand": "casio",
+    "family": "LTP-1302DS",
+    "proposed_parent_title": "CASIO LTP-1302DS",
+    "children": [
+      {
+        "source_id": 2838,
+        "sku": "LTP-1302DS-2AVDF",
+        "title": "CASIO LTP-1302DS-2AVDF FOR WOMEN",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Blue",
+          "brand": "Casio",
+          "band_material": "Stainless Steel",
+          "band_color": "Silver",
+          "case_color": "Silver",
+          "case_size": "31 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "3 ATM",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 2817,
+        "sku": "LTP-1302DS-4AVDF",
+        "title": "CASIO LTP-1302DS-4AVDF FOR WOMEN",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Mother Of Pearl",
+          "brand": "Casio",
+          "band_material": "Stainless Steel",
+          "band_color": "Silver & Gold",
+          "case_color": "Silver",
+          "case_size": "31 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "3 ATM",
+          "movement": "Analog Quartz (Battery)"
+        }
+      }
+    ]
+  },
+  {
+    "brand": "casio",
+    "family": "LTP-1308D",
+    "proposed_parent_title": "CASIO LTP-1308D",
+    "children": [
+      {
+        "source_id": 3222,
+        "sku": "LTP-1308D-2AVDF",
+        "title": "CASIO LTP-1308D-2AVDF FOR WOMEN",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Blue",
+          "brand": "Casio",
+          "band_material": "Stainless Steel",
+          "band_color": "Silver",
+          "case_color": "Silver",
+          "case_size": "31 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "3 ATM",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 2761,
+        "sku": "LTP-1308D-9AVDF",
+        "title": "CASIO LTP-1308D-9AVDF FOR WOMEN",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Silver",
+          "brand": "Casio",
+          "band_material": "St.Steel",
+          "band_color": "Silver",
+          "case_color": "Silver",
+          "case_size": "31 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "3 ATM",
+          "movement": "Analog Quartz (Battery)"
+        }
+      }
+    ]
+  },
+  {
+    "brand": "casio",
+    "family": "MDV-107D",
+    "proposed_parent_title": "CASIO MDV-107D",
+    "children": [
+      {
+        "source_id": 2772,
+        "sku": "MDV-107D-1A2VDF",
+        "title": "CASIO MDV-107D-1A2VDF FOR MEN",
+        "specifications": {
+          "gender": "Men",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Black",
+          "brand": "Casio",
+          "band_material": "Stainless Steel",
+          "band_color": "Silver",
+          "case_color": "Black & Blue",
+          "case_size": "45 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "20 BAR",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 2914,
+        "sku": "MDV-107D-3AVDF",
+        "title": "CASIO MDV-107D-3AVDF FOR MEN",
+        "specifications": {
+          "gender": "Men",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Black",
+          "brand": "Casio",
+          "band_material": "Stainless Steel",
+          "band_color": "Silver",
+          "case_color": "Green",
+          "case_size": "45 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "20 BAR",
+          "movement": "Analog Quartz (Battery)"
+        }
+      }
+    ]
+  },
+  {
+    "brand": "casio",
+    "family": "MTP-1375D",
+    "proposed_parent_title": "CASIO MTP-1375D",
+    "children": [
+      {
+        "source_id": 3125,
+        "sku": "MTP-1375D-3AVDF",
+        "title": "CASIO MTP-1375D-3AVDF FOR MEN",
+        "specifications": {
+          "gender": "Men",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Green",
+          "brand": "Casio",
+          "band_material": "Stainless Steel",
+          "band_color": "Silver",
+          "case_color": "Silver",
+          "case_size": "43 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "5 BAR",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 2869,
+        "sku": "MTP-1375D-7A2VDF",
+        "title": "CASIO MTP-1375D-7A2VDF FOR MEN",
+        "specifications": {
+          "gender": "Men",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Gray",
+          "brand": "Casio",
+          "band_material": "Stainless Steel",
+          "band_color": "Silver",
+          "case_color": "Silver",
+          "case_size": "43 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "5 BAR",
+          "movement": "Analog Quartz (Battery)"
+        }
+      }
+    ]
+  },
+  {
+    "brand": "casio",
+    "family": "MTP-V002G",
+    "proposed_parent_title": "CASIO MTP-V002G",
+    "children": [
+      {
+        "source_id": 2883,
+        "sku": "MTP-V002G-1BUDF",
+        "title": "CASIO MTP-V002G-1BUDF FOR MEN",
+        "specifications": {
+          "gender": "Men",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Black",
+          "brand": "Casio",
+          "band_material": "Stainless Steel",
+          "band_color": "Gold",
+          "case_color": "Gold",
+          "case_size": "41 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "5 BAR",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 2782,
+        "sku": "MTP-V002G-7B2UDF",
+        "title": "CASIO MTP-V002G-7B2UDF FOR MEN",
+        "specifications": {
+          "gender": "Men",
+          "guarantee": "Two Years (International)",
+          "dial_color": "White",
+          "brand": "Casio",
+          "band_material": "Stainless Steel",
+          "band_color": "Gold",
+          "case_color": "Gold",
+          "case_size": "41 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "5 BAR",
+          "movement": "Analog Quartz (Battery)"
+        }
+      }
+    ]
+  },
+  {
+    "brand": "freelook",
+    "family": "FL.1.10410",
+    "proposed_parent_title": "FREELOOK FL.1.10410",
+    "children": [
+      {
+        "source_id": 2493,
+        "sku": "FL.1.10410-1",
+        "title": "FREELOOK FL.1.10410-1",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Silver",
+          "brand": "FreeLook",
+          "band_material": "Stainless Steel",
+          "band_color": "Silver",
+          "case_color": "Silver",
+          "case_size": "35 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "3 ATM",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 2523,
+        "sku": "FL.1.10410-2",
+        "title": "FREELOOK FL.1.10410-2",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "dial_color": "Silver",
+          "brand": "FreeLook",
+          "band_material": "Stainless Steel",
+          "band_color": "Gold",
+          "case_color": "Gold",
+          "case_size": "35 mm",
+          "case_material": "Stainless Steel",
+          "water_resistance": "3 ATM",
+          "movement": "Analog Quartz (Battery)"
+        }
+      }
+    ]
+  },
+  {
+    "brand": "jaguar",
+    "family": "J1024",
+    "proposed_parent_title": "JAGUAR J1024",
+    "children": [
+      {
+        "source_id": 4678,
+        "sku": "J1024/1",
+        "title": "JAGUAR RC, BLUE DIAL WATCH J1024/1",
+        "specifications": {
+          "gender": "Men",
+          "guarantee": "Two Years (International)",
+          "water_resistance": "10 Bar (Diving)",
+          "brand": "Jaguar",
+          "dial_color": "Blue",
+          "band_material": "Stainless Steel",
+          "band_color": "Silver",
+          "case_color": "Silver",
+          "case_size": "44 mm",
+          "case_material": "Stainless Steel",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 4684,
+        "sku": "J1024/2",
+        "title": "JAGUAR RC GREEN DIAL WATCH J1024/2",
+        "specifications": {
+          "gender": "Men",
+          "guarantee": "Two Years (International)",
+          "water_resistance": "10 Bar (Diving)",
+          "brand": "Jaguar",
+          "dial_color": "Green",
+          "band_material": "Stainless Steel",
+          "band_color": "Silver",
+          "case_color": "Silver",
+          "case_size": "44 mm",
+          "case_material": "Stainless Steel",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 4687,
+        "sku": "J1024/3",
+        "title": "JAGUAR RC, BLACK DIAL WATCH J1024/3",
+        "specifications": {
+          "gender": "Men",
+          "guarantee": "Two Years (International)",
+          "water_resistance": "10 Bar (Diving)",
+          "brand": "Jaguar",
+          "dial_color": "Black",
+          "band_material": "Stainless Steel",
+          "band_color": "Silver",
+          "case_color": "Silver",
+          "case_size": "44 mm",
+          "case_material": "Stainless Steel",
+          "movement": "Analog Quartz (Battery)"
+        }
+      }
+    ]
+  },
+  {
+    "brand": "jaguar",
+    "family": "J893",
+    "proposed_parent_title": "JAGUAR J893",
+    "children": [
+      {
+        "source_id": 1683,
+        "sku": "J893/1",
+        "title": "JAGUAR EXECUTIVE DAME WHITE DIAL J893/1",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "water_resistance": "20 Bar (Diving)",
+          "dial_color": "White",
+          "brand": "Jaguar",
+          "band_material": "St.Steel",
+          "band_color": "Silver & Gold",
+          "case_color": "Gold",
+          "case_size": "34.5 mm",
+          "case_material": "Stainless Steel",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 4735,
+        "sku": "J893/3",
+        "title": "JAGUAR EXECUTIVE DAME WATCH J893/3",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "water_resistance": "20 Bar (Diving)",
+          "brand": "Jaguar",
+          "dial_color": "Green",
+          "band_material": "Stainless Steel",
+          "band_color": "Gold & Silver",
+          "case_color": "Gold & Silver",
+          "case_size": "34.5 mm",
+          "case_material": "Stainless Steel",
+          "movement": "Analog Quartz (Battery)"
+        }
+      }
+    ]
+  },
+  {
+    "brand": "jaguar",
+    "family": "J895",
+    "proposed_parent_title": "JAGUAR J895",
+    "children": [
+      {
+        "source_id": 4742,
+        "sku": "J895/1",
+        "title": "JAGUAR EXECUTIVE DAME WATCH J895/1",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "water_resistance": "20 Bar (Diving)",
+          "brand": "Jaguar",
+          "dial_color": "White",
+          "band_material": "Stainless Steel",
+          "band_color": "Gold",
+          "case_color": "Gold",
+          "case_size": "34.5 mm",
+          "case_material": "Stainless Steel",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 4751,
+        "sku": "J895/4",
+        "title": "JAGUAR EXECUTIVE DAME WATCH J895/4",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "water_resistance": "20 Bar (Diving)",
+          "brand": "Jaguar",
+          "dial_color": "Black",
+          "band_material": "Stainless Steel",
+          "band_color": "Gold",
+          "case_color": "Gold",
+          "case_size": "34.5 mm",
+          "case_material": "Stainless Steel",
+          "movement": "Analog Quartz (Battery)"
+        }
+      }
+    ]
+  },
+  {
+    "brand": "lotus",
+    "family": "18886",
+    "proposed_parent_title": "LOTUS 18886",
+    "children": [
+      {
+        "source_id": 347,
+        "sku": "18886/3",
+        "title": "LOTUS SILVER & GOLD ST.STEEL FOR WOMEN",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "water_resistance": "5 Bar (Diving)",
+          "dial_color": "Blue",
+          "brand": "Lotus",
+          "band_material": "St.Steel",
+          "band_color": "Silver & Gold",
+          "case_color": "Gold",
+          "case_size": "31.5 mm",
+          "case_material": "Stainless Steel",
+          "movement": "Analog Quartz (Battery)"
+        }
+      },
+      {
+        "source_id": 830,
+        "sku": "18886/4",
+        "title": "LOTUS SILVER & GOLD WITH BLACK DIAL ST.STEEL FOR WOMEN",
+        "specifications": {
+          "gender": "Women",
+          "guarantee": "Two Years (International)",
+          "water_resistance": "5 Bar (Diving)",
+          "dial_color": "Black",
+          "brand": "Lotus",
+          "band_material": "St.Steel",
+          "band_color": "Silver & Gold",
+          "case_color": "Gold",
+          "case_size": "31.5 mm",
+          "case_material": "Stainless Steel",
+          "movement": "Analog Quartz (Battery)"
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+{% load static %}
+<section id="offers" class="abdeen-editorial abdeen-stores" aria-labelledby="stores-heading">
+    <div class="abdeen-shell abdeen-stores-layout">
+        <div class="abdeen-stores-copy">
+            <p class="abdeen-eyebrow">The Abdeen Spaces</p>
+            <h2 id="stores-heading">Visit Abdeen Watches</h2>
+            <p class="abdeen-editorial-description">Some details are best discovered in person. Visit our shops in Aqaba, explore the collections at your own pace, and find the watch that feels like yours.</p>
+            <a class="abdeen-button abdeen-button-outline" href="https://www.google.com/maps/search/?api=1&amp;query=Abdeen+Watches+Aqaba" aria-describedby="stores-location">Visit Our Stores {% include "oscar/partials/home/icon.html" with name="arrow" %}</a>
+            <p id="stores-location" class="abdeen-stores-location">Aqaba, Jordan <span aria-hidden="true">&middot;</span> Find us on Google Maps</p>
+        </div>
+        <div class="abdeen-stores-images">
+            <figure class="abdeen-stores-storefront">
+                <img src="{% static 'abdeen/images/home/abdeen-storefront.png' %}" alt="Abdeen Watches storefront with illuminated signage and watch displays" width="1448" height="1086" loading="lazy" decoding="async">
+            </figure>
+            <figure class="abdeen-stores-showroom">
+                <img src="{% static 'abdeen/images/home/abdeen-showroom.png' %}" alt="Inside Abdeen Watches, glass watch counters and collections line the showroom" width="1448" height="1086" loading="lazy" decoding="async">
+            </figure>
+        </div>
+    </div>
+</section>

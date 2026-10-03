@@ -1,0 +1,10 @@
+{% extends "oscar/catalogue/partials/product.html" %}
+{% load storefront_display_tags %}
+
+{% block product %}
+    {% if catalogue_browse %}
+        {% include "oscar/partials/products/card.html" with home_card=False badge="" %}
+    {% else %}{{ block.super }}{% endif %}
+{% endblock %}
+
+{% block product_review %}{% iffeature "reviews" %}{{ block.super }}{% endiffeature %}{% endblock %}

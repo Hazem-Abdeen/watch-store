@@ -4,12 +4,8 @@
 {% block title %}{{ shop_name }}{% endblock %}
 {% block description %}Explore watches, brands and styles at Abdeen Watches.{% endblock %}
 
-{% block extrahead %}
-    {{ block.super }}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
-{% endblock %}
+{% block storefront_header %}{% include "oscar/partials/home/header.html" with compact_home_header=True %}{% endblock %}
+{% block storefront_footer %}{% include "oscar/partials/home/footer.html" %}{% endblock %}
 
 {% block content_wrapper %}
     <div class="abdeen-home">
@@ -22,7 +18,6 @@
             {% include "oscar/partials/home/new_arrivals.html" %}
             {% include "oscar/partials/home/promo_banner.html" %}
             {% include "oscar/partials/home/why_choose.html" %}
-            {% include "oscar/partials/home/newsletter.html" %}
         {% endblock %}
     </div>
 {% endblock %}
@@ -30,4 +25,5 @@
 {% block scripts %}
     {{ block.super }}
     <script src="{% static 'abdeen/js/homepage.js' %}" defer></script>
+    <script src="{% static 'abdeen/js/hero.js' %}" defer></script>
 {% endblock %}

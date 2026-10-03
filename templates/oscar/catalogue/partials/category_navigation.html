@@ -1,0 +1,31 @@
+{% load category_tags i18n %}
+{% category_tree as tree_categories %}
+<nav class="abdeen-category-navigation" aria-label="{% trans 'Shop categories' %}">
+    <a class="abdeen-all-watches" href="{% url 'catalogue:index' %}"{% if not category and not request.GET.q %} aria-current="page"{% endif %}>{% trans 'All watches' %}</a>
+    <ul class="abdeen-category-tree">
+        {% for tree_category in tree_categories %}
+            {% if tree_category.level == 0 %}
+                {% if tree_category.slug == 'men' or tree_category.slug == 'women' %}
+                    {% ifchanged %}<li class="abdeen-category-group-label"><h3>{% trans 'Gender' %}</h3></li>{% endifchanged %}
+                {% endif %}
+            {% endif %}
+            <li{% if tree_category.level == 0 and tree_category.has_children %} class="abdeen-category-root"{% endif %}>
+                <div class="abdeen-category-row">
+                    <a href="{{ tree_category.url }}"{% if tree_category.pk == category.pk %} aria-current="page"{% endif %}>{{ tree_category.name }}</a>
+                    {% if tree_category.has_children %}
+                        <button type="button" class="abdeen-category-toggle" aria-expanded="true" aria-controls="shop-category-{{ tree_category.pk }}" aria-label="{% blocktrans with name=tree_category.name %}Toggle {{ name }} categories{% endblocktrans %}" hidden><span aria-hidden="true"></span></button>
+                    {% endif %}
+                </div>
+                {% if tree_category.has_children %}<ul id="shop-category-{{ tree_category.pk }}">{% else %}</li>{% endif %}
+                {% for n in tree_category.num_to_close %}</ul></li>{% endfor %}
+        {% endfor %}
+    </ul>
+</nav>
+{% if has_facets %}
+    <div class="abdeen-existing-facets">
+        <h3>{% trans 'Refine by' %}</h3>
+        {% for field, data in facet_data.items %}
+            {% if data.results %}{% include 'oscar/search/partials/facet.html' with name=data.name items=data.results %}{% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

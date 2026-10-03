@@ -1,0 +1,74 @@
+PARENT CASIO GBD-200 [family=GBD-200] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Men', 'movement': 'Analog Quartz (Battery) / Power Saving (Display goes blank to save power 3 hours everyday.)', 'case_size': '53 mm', 'case_material': 'Resin', 'band_material': 'Resin', 'water_resistance': '200-meter'}; color differences: band_color, case_color
+  CHILD source=3335 SKU=GBD-200-1DR title='CASIO G-SHOCK G-SQUAD GBD-200-1DR'
+  CHILD source=3301 SKU=GBD-200-9DR title='CASIO G-SHOCK G-SQUAD GBD-200-9DR'
+  BLOCKED: Missing imported source mappings: GBD-200-1DR, GBD-200-9DR
+PARENT CASIO LA670WGA [family=LA670WGA] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Women', 'movement': 'Analog Quartz (Battery)', 'case_size': '31 mm', 'case_material': 'Stainless Steel', 'band_material': 'Stainless Steel', 'water_resistance': '3 ATM'}; color differences: dial_color
+  CHILD source=2797 SKU=LA670WGA-1DF title='CASIO LA670WGA-1DF FOR WOMEN'
+  CHILD source=2799 SKU=LA670WGA-9DF title='CASIO LA670WGA-9DF FOR WOMEN'
+  BLOCKED: Missing imported source mappings: LA670WGA-1DF, LA670WGA-9DF
+PARENT CASIO LTP-1302DS [family=LTP-1302DS] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Women', 'movement': 'Analog Quartz (Battery)', 'case_size': '31 mm', 'case_material': 'Stainless Steel', 'band_material': 'Stainless Steel', 'water_resistance': '3 ATM'}; color differences: dial_color, band_color
+  CHILD source=2838 SKU=LTP-1302DS-2AVDF title='CASIO LTP-1302DS-2AVDF FOR WOMEN'
+  CHILD source=2817 SKU=LTP-1302DS-4AVDF title='CASIO LTP-1302DS-4AVDF FOR WOMEN'
+  BLOCKED: Missing imported source mappings: LTP-1302DS-2AVDF, LTP-1302DS-4AVDF
+PARENT CASIO LTP-1308D [family=LTP-1308D] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Women', 'movement': 'Analog Quartz (Battery)', 'case_size': '31 mm', 'case_material': 'Stainless Steel', 'band_material': 'St.Steel', 'water_resistance': '3 ATM'}; color differences: dial_color
+  CHILD source=3222 SKU=LTP-1308D-2AVDF title='CASIO LTP-1308D-2AVDF FOR WOMEN'
+  CHILD source=2761 SKU=LTP-1308D-9AVDF title='CASIO LTP-1308D-9AVDF FOR WOMEN'
+  BLOCKED: Missing imported source mappings: LTP-1308D-2AVDF, LTP-1308D-9AVDF
+PARENT CASIO MDV-107D [family=MDV-107D] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Men', 'movement': 'Analog Quartz (Battery)', 'case_size': '45 mm', 'case_material': 'Stainless Steel', 'band_material': 'Stainless Steel', 'water_resistance': '20 BAR'}; color differences: case_color
+  CHILD source=2772 SKU=MDV-107D-1A2VDF title='CASIO MDV-107D-1A2VDF FOR MEN'
+  CHILD source=2914 SKU=MDV-107D-3AVDF title='CASIO MDV-107D-3AVDF FOR MEN'
+  BLOCKED: Missing imported source mappings: MDV-107D-1A2VDF, MDV-107D-3AVDF
+PARENT CASIO MTP-1375D [family=MTP-1375D] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Men', 'movement': 'Analog Quartz (Battery)', 'case_size': '43 mm', 'case_material': 'Stainless Steel', 'band_material': 'Stainless Steel', 'water_resistance': '5 BAR'}; color differences: dial_color
+  CHILD source=3125 SKU=MTP-1375D-3AVDF title='CASIO MTP-1375D-3AVDF FOR MEN'
+  CHILD source=2869 SKU=MTP-1375D-7A2VDF title='CASIO MTP-1375D-7A2VDF FOR MEN'
+  BLOCKED: Missing imported source mappings: MTP-1375D-3AVDF, MTP-1375D-7A2VDF
+PARENT CASIO MTP-V002G [family=MTP-V002G] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Men', 'movement': 'Analog Quartz (Battery)', 'case_size': '41 mm', 'case_material': 'Stainless Steel', 'band_material': 'Stainless Steel', 'water_resistance': '5 BAR'}; color differences: dial_color
+  CHILD source=2883 SKU=MTP-V002G-1BUDF title='CASIO MTP-V002G-1BUDF FOR MEN'
+  CHILD source=2782 SKU=MTP-V002G-7B2UDF title='CASIO MTP-V002G-7B2UDF FOR MEN'
+  BLOCKED: Missing imported source mappings: MTP-V002G-1BUDF, MTP-V002G-7B2UDF
+PARENT FREELOOK FL.1.10410 [family=FL.1.10410] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Women', 'movement': 'Analog Quartz (Battery)', 'case_size': '35 mm', 'case_material': 'Stainless Steel', 'band_material': 'Stainless Steel', 'water_resistance': '3 ATM'}; color differences: band_color, case_color
+  CHILD source=2493 SKU=FL.1.10410-1 title='FREELOOK FL.1.10410-1'
+  CHILD source=2523 SKU=FL.1.10410-2 title='FREELOOK FL.1.10410-2'
+  BLOCKED: Missing imported source mappings: FL.1.10410-1, FL.1.10410-2
+PARENT JAGUAR J1024 [family=J1024] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Men', 'movement': 'Analog Quartz (Battery)', 'case_size': '44 mm', 'case_material': 'Stainless Steel', 'band_material': 'Stainless Steel', 'water_resistance': '10 Bar (Diving)'}; color differences: dial_color
+  CHILD source=4678 SKU=J1024/1 title='JAGUAR RC, BLUE DIAL WATCH J1024/1'
+  CHILD source=4684 SKU=J1024/2 title='JAGUAR RC GREEN DIAL WATCH J1024/2'
+  CHILD source=4687 SKU=J1024/3 title='JAGUAR RC, BLACK DIAL WATCH J1024/3'
+  BLOCKED: Missing imported source mappings: J1024/1, J1024/2, J1024/3
+PARENT JAGUAR J893 [family=J893] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Women', 'movement': 'Analog Quartz (Battery)', 'case_size': '34.5 mm', 'case_material': 'Stainless Steel', 'band_material': 'St.Steel', 'water_resistance': '20 Bar (Diving)'}; color differences: dial_color, case_color
+  CHILD source=1683 SKU=J893/1 title='JAGUAR EXECUTIVE DAME WHITE DIAL J893/1'
+  CHILD source=4735 SKU=J893/3 title='JAGUAR EXECUTIVE DAME WATCH J893/3'
+  BLOCKED: Missing imported source mappings: J893/1, J893/3
+PARENT JAGUAR J895 [family=J895] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Women', 'movement': 'Analog Quartz (Battery)', 'case_size': '34.5 mm', 'case_material': 'Stainless Steel', 'band_material': 'Stainless Steel', 'water_resistance': '20 Bar (Diving)'}; color differences: dial_color
+  CHILD source=4742 SKU=J895/1 title='JAGUAR EXECUTIVE DAME WATCH J895/1'
+  CHILD source=4751 SKU=J895/4 title='JAGUAR EXECUTIVE DAME WATCH J895/4'
+  BLOCKED: Missing imported source mappings: J895/1, J895/4
+PARENT LOTUS 18886 [family=18886] / Watch / no stock record
+  QUALIFIES: every child has the reviewed SKU family; all six core specifications match; color options are unique; no ambiguity or title-only identity.
+  Matching core: {'gender': 'Women', 'movement': 'Analog Quartz (Battery)', 'case_size': '31.5 mm', 'case_material': 'Stainless Steel', 'band_material': 'St.Steel', 'water_resistance': '5 Bar (Diving)'}; color differences: dial_color
+  CHILD source=347 SKU=18886/3 title='LOTUS SILVER & GOLD ST.STEEL FOR WOMEN'
+  CHILD source=830 SKU=18886/4 title='LOTUS SILVER & GOLD WITH BLACK DIAL ST.STEEL FOR WOMEN'
+  BLOCKED: 18886/3: explicit ranges require review: Best Sellers.
+DRY RUN — no database or media changes: selected=12 ready=0 already_converted=0 blocked=12

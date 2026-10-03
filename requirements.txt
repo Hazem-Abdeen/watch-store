@@ -1,5 +1,6 @@
 asgiref==3.12.1
 babel==2.18.0
+cached-property==2.0.1
 Django==5.2.16
 django-extra-views==0.16.0
 django-haystack==3.4.0
@@ -18,3 +19,4 @@ purl==1.6
 six==1.17.0
 sorl-thumbnail==13.0.0
 sqlparse==0.5.5
+Whoosh-Reloaded==2.7.5

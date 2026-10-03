@@ -1,23 +1,41 @@
-<section id="hero" class="abdeen-hero" aria-labelledby="hero-heading">
-    <img class="abdeen-hero-image" src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&amp;fit=crop&amp;w=2000&amp;q=85" alt="" width="2000" height="1333" fetchpriority="high">
-    <div class="abdeen-hero-shade"></div>
-    <div class="abdeen-shell abdeen-hero-content">
-        <div class="tw:max-w-2xl">
-            <p class="abdeen-hero-badge"><span class="abdeen-dot"></span>Abdeen Watches</p>
-            <h1 id="hero-heading">Find Your Next<br>Signature Timepiece.</h1>
-            <p class="abdeen-hero-description">From everyday simplicity to distinctive details. Explore watches that complement your style, your occasion, and your next chapter.</p>
-            <div class="tw:flex tw:flex-col tw:gap-4 tw:sm:flex-row">
-                <a href="{% url 'catalogue:index' %}" class="abdeen-button abdeen-button-red">Shop Now {% include "oscar/partials/home/icon.html" with name="arrow" %}</a>
-                <a href="#brands" class="abdeen-button abdeen-button-glass">Explore Brands</a>
+{% if hero_slides %}
+<section id="hero" class="campaign-hero" data-hero-carousel aria-label="Featured campaigns" aria-roledescription="carousel">
+    <div class="campaign-hero-slides" id="hero-slides" data-hero-slides aria-live="off">
+        {% for slide in hero_slides %}
+        <div class="campaign-hero-slide" data-hero-slide role="group" aria-roledescription="slide" aria-label="{{ forloop.counter }} of {{ hero_slides|length }}"{% if not forloop.first %} hidden{% endif %}>
+            <picture>
+                {% if slide.mobile_image %}<source media="(max-width: 767px)" srcset="{{ slide.mobile_image.url }}">{% endif %}
+                <img src="{{ slide.desktop_image.url }}" alt="{{ slide.image_alt }}"{% if forloop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %} decoding="async" draggable="false">
+            </picture>
+            {% if slide.title or slide.subtitle or slide.has_button %}
+            <div class="campaign-hero-copy">
+                {% if slide.title %}<h2>{{ slide.title }}</h2>{% endif %}
+                {% if slide.subtitle %}<p>{{ slide.subtitle|linebreaksbr }}</p>{% endif %}
+                {% if slide.has_button %}<a class="abdeen-button abdeen-button-red" href="{{ slide.button_url }}">{{ slide.button_label }}</a>{% endif %}
             </div>
+            {% endif %}
         </div>
+        {% endfor %}
     </div>
-    <div class="abdeen-hero-strip">
-        <div class="abdeen-shell tw:grid tw:grid-cols-2 tw:gap-4 tw:md:grid-cols-4">
-            <a href="#categories">{% include "oscar/partials/home/icon.html" with name="watch" %}Discover Your Style</a>
-            <a href="#brands">{% include "oscar/partials/home/icon.html" with name="grid" %}Explore Our Brands</a>
-            <a href="{% url 'basket:summary' %}">{% include "oscar/partials/home/icon.html" with name="bag" %}Your Shopping Basket</a>
-            <a href="{% url 'customer:summary' %}">{% include "oscar/partials/home/icon.html" with name="user" %}Your Account</a>
+    {% if hero_slides|length > 1 %}
+    <div class="campaign-hero-controls" data-hero-controls hidden>
+        <button type="button" class="campaign-hero-arrow campaign-hero-previous" data-hero-previous aria-label="Previous campaign" aria-controls="hero-slides">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m14 5-7 7 7 7"/></svg>
+        </button>
+        <div class="campaign-hero-dots" aria-label="Choose a campaign">
+            {% for slide in hero_slides %}
+            <button type="button" data-hero-dot aria-label="Show campaign {{ forloop.counter }}{% if slide.title %}: {{ slide.title }}{% endif %}" aria-controls="hero-slides" aria-current="{% if forloop.first %}true{% else %}false{% endif %}"><span></span></button>
+            {% endfor %}
         </div>
+        <button type="button" class="campaign-hero-arrow campaign-hero-next" data-hero-next aria-label="Next campaign" aria-controls="hero-slides">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m10 5 7 7-7 7"/></svg>
+        </button>
+        <button type="button" class="campaign-hero-rotation" data-hero-rotation aria-label="Pause rotation" aria-controls="hero-slides">
+            <svg class="campaign-hero-pause-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6v12M15 6v12"/></svg>
+            <svg class="campaign-hero-play-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 5 10 7-10 7Z"/></svg>
+        </button>
     </div>
+    <p class="sr-only" data-hero-status aria-live="polite" aria-atomic="true"></p>
+    {% endif %}
 </section>
+{% endif %}

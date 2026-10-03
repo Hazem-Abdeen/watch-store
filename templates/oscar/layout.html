@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="{% static 'abdeen/css/tailwind.css' %}">
 {% endblock %}
 
+{% block extrastyles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'abdeen/css/messages.css' %}">
+    <link rel="stylesheet" href="{% static 'abdeen/css/cart-drawer.css' %}">
+{% endblock %}
+
 {% block layout %}
     <a class="sr-only sr-only-focusable" href="#main-content">{% trans "Skip to content" %}</a>
 
@@ -13,6 +19,7 @@
         {% include "oscar/partials/announcement_bar.html" %}
     {% endblock %}
 
+    {% block storefront_header %}
     {% include "oscar/partials/nav_accounts.html" %}
 
     <header class="container tw:py-6">
@@ -26,6 +33,7 @@
             {% include "oscar/partials/nav_primary.html" %}
         {% endblock %}
     </header>
+    {% endblock %}
 
     <main id="main-content" tabindex="-1">
         {% comment %}
@@ -35,10 +43,13 @@
         {% block content_wrapper %}{{ block.super }}{% endblock %}
     </main>
 
-    {% include "oscar/partials/footer.html" %}
+    {% block storefront_footer %}{% include "oscar/partials/footer.html" %}{% endblock %}
+    {% include 'oscar/basket/partials/drawer.html' %}
 {% endblock %}
 
 {% block scripts %}
     {{ block.super }}
     <script src="{% static 'abdeen/js/storefront.js' %}" defer></script>
+    <script src="{% static 'abdeen/js/messages.js' %}" defer></script>
+    <script src="{% static 'abdeen/js/cart-drawer.js' %}" defer></script>
 {% endblock %}

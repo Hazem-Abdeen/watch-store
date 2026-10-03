@@ -1,0 +1,12 @@
+{% load i18n %}
+{% if form.is_bound and not form.is_valid %}
+    {% trans 'Oops! We found some errors' as error_heading %}
+    {% trans 'please check the error messages below and try again' as error_message %}
+    {% include 'oscar/partials/messages/alert.html' with level='danger' heading=error_heading message=error_message dismissible=False %}
+{% endif %}
+{% for error in form.non_field_errors %}
+    {% include 'oscar/partials/messages/alert.html' with level='danger' message=error heading='' dismissible=False %}
+{% endfor %}
+{% for field in form %}
+    {% include 'oscar/partials/form_field.html' with field=field style=style %}
+{% endfor %}

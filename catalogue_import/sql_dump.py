@@ -1,4 +1,4 @@
-"""Read phpMyAdmin INSERT literals. Never execute SQL or deserialize PHP data."""
+"""Read phpMyAdmin INSERT literals without executing SQL."""
 
 import re
 from collections import defaultdict
@@ -19,7 +19,7 @@ REQUIRED = {
     'wp_wc_product_meta_lookup': {'product_id'},
 }
 META_KEYS = {'_sku', '_price', '_regular_price', '_sale_price', '_stock_status',
-             '_thumbnail_id', '_wp_attached_file'}
+             '_thumbnail_id', '_wp_attached_file', '_product_attributes'}
 TAXONOMIES = {'product_cat', 'pa_gender', 'product_type'}
 NUMBER = re.compile(r'-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\Z')
 INSERT = re.compile(
@@ -191,7 +191,8 @@ class Catalogue:
     relationships: dict = field(default_factory=lambda: defaultdict(set))
 
 
-def load_catalogue(path):
+def load_catalogue(path, *, extra_meta_keys=()):
+    meta_keys = META_KEYS | set(extra_meta_keys)
     data = Catalogue()
     for table, row in sql_rows(path):
         if table == 'wp_posts':
@@ -202,7 +203,7 @@ def load_catalogue(path):
                 data.products[key] = {k: row[k] for k in ('post_title', 'post_content')}
             elif row['post_type'] == 'attachment':
                 data.attachments.add(source_id(row['ID']))
-        elif table == 'wp_postmeta' and row['meta_key'] in META_KEYS:
+        elif table == 'wp_postmeta' and row['meta_key'] in meta_keys:
             key, name = source_id(row['post_id']), row['meta_key']
             if name in data.meta[key] and data.meta[key][name] != row['meta_value']:
                 raise ImportDataError(f'Conflicting {name} metadata for source ID {key}.')
@@ -212,7 +213,8 @@ def load_catalogue(path):
             if key in data.terms:
                 raise ImportDataError(f'Duplicate term ID {key}.')
             data.terms[key] = row['name']
-        elif table == 'wp_term_taxonomy' and row['taxonomy'] in TAXONOMIES:
+        elif table == 'wp_term_taxonomy' and (
+                row['taxonomy'] in TAXONOMIES or (row['taxonomy'] or '').startswith('pa_')):
             key = source_id(row['term_taxonomy_id'])
             if key in data.taxonomies:
                 raise ImportDataError(f'Duplicate taxonomy ID {key}.')

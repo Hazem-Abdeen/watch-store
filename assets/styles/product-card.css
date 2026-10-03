@@ -1,0 +1,37 @@
+/* One open product presentation for homepage ranges and Oscar listing pages. */
+.abdeen-product-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px; }
+.abdeen-product-card { min-width: 0; height: 100%; border: 0; background: transparent; }
+:is(.abdeen-home, .abdeen-catalogue, .abdeen-detail, .abdeen-recently-viewed) .abdeen-product-link { display: flex; flex-direction: column; height: 100%; color: #171717; text-decoration: none; }
+.abdeen-product-image { position: relative; aspect-ratio: 1; overflow: hidden; }
+.abdeen-product-image img { display: block; width: 100%; height: 100%; padding: 12px 2px; object-fit: contain; mix-blend-mode: multiply; transition: transform .25s ease; }
+.abdeen-product-badge { position: absolute; top: 0; left: 0; z-index: 1; max-width: 100%; padding: 4px 0; color: #5c5c5c; font-size: 9px; font-weight: 600; line-height: 1.5; letter-spacing: .1em; text-transform: uppercase; }
+.abdeen-product-info { padding-top: 16px; overflow-wrap: anywhere; }
+:is(.abdeen-home, .abdeen-catalogue, .abdeen-detail, .abdeen-recently-viewed) .abdeen-product-brand { margin: 0 0 6px; color: #686868; font-size: 10px; font-weight: 600; line-height: 1.5; letter-spacing: .1em; text-transform: uppercase; }
+:is(.abdeen-home, .abdeen-catalogue, .abdeen-detail, .abdeen-recently-viewed) .abdeen-product-title { margin: 0; font-size: 12px; font-weight: 500; line-height: 1.6; letter-spacing: 0; }
+:is(.abdeen-home, .abdeen-catalogue, .abdeen-detail, .abdeen-recently-viewed) .abdeen-product-price { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: baseline; margin: 10px 0 0; color: #171717; font-size: 14px; font-weight: 600; line-height: 1.5; }
+.abdeen-product-price span { font-size: 10px; font-weight: 400; color: #686868; }
+:is(.abdeen-home, .abdeen-catalogue, .abdeen-detail, .abdeen-recently-viewed) :is(.abdeen-product-availability, .abdeen-product-options) { margin: 5px 0 0; font-size: 10px; font-weight: 400; line-height: 1.5; color: #686868; }
+@media (min-width: 640px) {
+    .abdeen-product-grid { gap: 48px 24px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .abdeen-product-grid:has(> .abdeen-product-card):not(:has(> :nth-child(3))) { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 620px; margin-inline: auto; }
+    .abdeen-product-grid:has(> .abdeen-product-card):not(:has(> :nth-child(2))) { grid-template-columns: minmax(0, 1fr); max-width: 300px; }
+    .abdeen-product-image img { padding: 16px 4px; }
+    .abdeen-product-info { padding-top: 20px; }
+    :is(.abdeen-home, .abdeen-catalogue, .abdeen-detail, .abdeen-recently-viewed) .abdeen-product-title { font-size: 13px; }
+    :is(.abdeen-home, .abdeen-catalogue, .abdeen-detail, .abdeen-recently-viewed) .abdeen-product-price { font-size: 15px; }
+}
+@media (min-width: 1024px) {
+    .abdeen-product-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 48px 28px; }
+    .abdeen-product-grid:has(> .abdeen-product-card:nth-child(3)):not(:has(> :nth-child(4))) { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 920px; margin-inline: auto; }
+}
+@media (hover: hover) and (pointer: fine) {
+    .abdeen-product-link:hover .abdeen-product-image img { transform: scale(1.025); }
+    .abdeen-product-link:hover .abdeen-product-title { text-decoration: underline; text-decoration-color: #aaa; text-underline-offset: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .abdeen-product-image img { transition: none; }
+    .abdeen-product-link:hover .abdeen-product-image img { transform: none; }
+}
+
+.abdeen-recently-viewed { padding-block: 40px; border-top: 1px solid #e5e5e5; color: #171717; font-family: "Plus Jakarta Sans", sans-serif; }
+.abdeen-recently-viewed .abdeen-section-heading h2 { margin: 0; font-family: "Playfair Display", Georgia, serif; font-size: clamp(30px, 3.3vw, 44px); font-weight: 400; line-height: 1.2; letter-spacing: -.025em; text-wrap: balance; }

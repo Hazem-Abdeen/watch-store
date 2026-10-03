@@ -1,0 +1,19 @@
+{% extends "oscar/checkout/thank_you.html" %}
+{% load i18n currency_filters %}
+
+{% block checkout_title %}{% trans 'Thank you for your order' %}{% endblock %}
+{# The shared sidebar reads the placed order, not the now-empty basket. #}
+{% block order_contents %}{% endblock %}
+{% block payment_info %}
+    <div class="sub-header"><h2>{% trans 'Payment' %}</h2></div>
+    <div class="card card-body bg-light">
+        <h3>{% trans 'Payment information' %}</h3>
+        {% for source in order.sources.all %}
+            <p>{% if source.reference %}{% blocktrans with amount=source.amount_allocated|currency:source.currency type=source.source_type.name reference=source.reference %}Allocation of {{ amount }} from type {{ type }} (reference: {{ reference }}){% endblocktrans %}{% else %}{% blocktrans with amount=source.amount_allocated|currency:source.currency type=source.source_type.name %}Allocation of {{ amount }} from type {{ type }}{% endblocktrans %}{% endif %}</p>
+        {% empty %}<p>{% trans 'No payment transaction is recorded for this order.' %}</p>{% endfor %}
+        {% if order.billing_address %}
+            <h4>{% trans 'Billing address' %}</h4>
+            <address>{% for field in order.billing_address.active_address_fields %}{{ field }}<br>{% endfor %}</address>
+        {% endif %}
+    </div>
+{% endblock %}

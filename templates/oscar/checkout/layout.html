@@ -1,3 +1,38 @@
 {% extends "oscar/checkout/layout.html" %}
+{% load static i18n %}
 
-{# Checkout retains its dedicated header, navigation, forms and footer. #}
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'abdeen/css/checkout.css' %}">
+{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'abdeen/js/homepage.js' %}" defer></script>
+{% endblock %}
+
+{% block layout %}
+    <a class="sr-only sr-only-focusable" href="#main-content">{% trans 'Skip to content' %}</a>
+    {% include 'oscar/partials/home/header.html' with catalogue_browse=True %}
+    <main id="main-content" class="abdeen-checkout" tabindex="-1">
+        <div class="abdeen-shell" id="catalogue-top">
+            <div class="abdeen-checkout-topline">
+                <a href="{% url 'basket:summary' %}"><span aria-hidden="true">←</span> {% trans 'Shopping bag' %}</a>
+                <span>{% trans 'Abdeen Watches' %}</span>
+            </div>
+            {% block checkout_nav %}{% endblock %}
+            <header class="abdeen-checkout-heading">
+                <p class="abdeen-checkout-eyebrow"><span class="abdeen-dot"></span>{% trans 'Your next chapter' %}</p>
+                <h1>{% block checkout_title %}{% endblock %}</h1>
+            </header>
+            {% include 'oscar/partials/alert_messages.html' %}
+            {% block modal %}{{ block.super }}{% endblock %}
+            <div class="abdeen-checkout-grid">
+                <div class="abdeen-checkout-main" id="content_inner">{% block content %}{% endblock %}</div>
+                {% if order or basket and not basket.is_empty %}
+                    {% include 'oscar/checkout/partials/summary.html' %}
+                {% endif %}
+            </div>
+        </div>
+    </main>
+    {% include 'oscar/partials/home/footer.html' with catalogue_browse=True %}
+{% endblock %}

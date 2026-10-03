@@ -1,0 +1,60 @@
+/* One storefront component for shared templates, inherited Oscar alerts and AJAX.
+   The dashboard and email templates are deliberately outside #main-content. */
+#main-content {
+    --abdeen-message-info-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 11v6M12 7v.1'/%3E%3C/g%3E%3C/svg%3E");
+    --abdeen-message-success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='m7.5 12 3 3 6-6'/%3E%3C/g%3E%3C/svg%3E");
+    --abdeen-message-error-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v6M12 17v.1'/%3E%3C/g%3E%3C/svg%3E");
+    --abdeen-message-warning-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m12 3 10 18H2ZM12 9v5M12 18v.1'/%3E%3C/g%3E%3C/svg%3E");
+}
+#main-content .alert {
+    --message-ink: #43515b; --message-border: #e1e5e8; --message-surface: #fafbfc;
+    --message-icon: var(--abdeen-message-info-icon);
+    position: relative; box-sizing: border-box; width: fit-content; max-width: min(100%, 52rem); min-width: 0;
+    margin: 0 0 14px; padding: 17px 20px 17px 54px; border: 1px solid var(--message-border);
+    border-radius: 12px; background: var(--message-surface); color: var(--message-ink);
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13px; font-weight: 400; line-height: 1.65; text-align: start;
+    box-shadow: 0 3px 14px #17171706, 0 1px 2px #17171703; overflow-wrap: anywhere;
+}
+#main-content .alert-success { --message-ink: #28533e; --message-border: #dce7df; --message-surface: #f9fcf9; --message-icon: var(--abdeen-message-success-icon); }
+#main-content :is(.alert-danger, .alert-error) { --message-ink: #92252d; --message-border: #efdbdd; --message-surface: #fff9f9; --message-icon: var(--abdeen-message-error-icon); }
+#main-content .alert-warning { --message-ink: #78531e; --message-border: #eae2d3; --message-surface: #fdfbf6; --message-icon: var(--abdeen-message-warning-icon); }
+#main-content .alert::before { content: ""; position: absolute; inset-inline-start: 19px; top: 18px; width: 21px; height: 21px; background: currentColor; mask: var(--message-icon) center / contain no-repeat; }
+#main-content .alert-noicon { padding-inline-start: 20px; }
+#main-content .alert-noicon::before { display: none; }
+#main-content .alert-dismissible { padding-inline-end: 56px; }
+#main-content .alert .close { position: absolute; top: 6px; inset-inline-end: 6px; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: inherit; font: 22px/1 Arial, sans-serif; text-shadow: none; opacity: .75; cursor: pointer; text-decoration: none; }
+#main-content .alert .close:hover { opacity: 1; background: #00000006; }
+#main-content .alert :is(a, button):focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+#main-content .alert .close:focus-visible { outline-offset: -6px; opacity: 1; }
+#main-content .alert a:not(.close) { color: inherit; text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+#main-content .alert :is(h1, h2, h3, h4) { margin: 0 0 6px; color: inherit; font: 600 14px/1.5 "Plus Jakarta Sans", sans-serif; }
+#main-content .alert p { margin: 0 0 6px; color: inherit; font-size: inherit; }
+#main-content .alert p:last-child { margin-bottom: 0; }
+#main-content .alert .alertinner { padding: 0; margin: 0; }
+#main-content .alert :is(.alertinner > .fas, .alertinner > .fa, .abdeen-message-content > .fas) { display: none; }
+#main-content .alert .btn { white-space: normal; margin-top: 8px; }
+#main-content .alert strong { font-weight: 600; }
+#main-content .abdeen-basket-confirmation { display: flex; align-items: center; gap: 13px; min-width: 0; }
+#main-content .abdeen-basket-confirmation > svg { flex: 0 0 32px; padding: 6px; box-sizing: border-box; border-radius: 50%; background: #e7f0e9; color: #28533e; }
+#main-content .abdeen-basket-confirmation > span { min-width: 0; }
+#main-content #messages:empty { display: none; }
+#main-content .abdeen-home > #messages { width: calc(100% - 32px); max-width: 52rem; margin-inline: auto; }
+#main-content .abdeen-home > #messages:has(.alert) { padding-top: 16px; }
+/* Inline errors stay beside their fields and use the same error icon and color. */
+#main-content :is(.error-block, .errorlist) { position: relative; display: block; box-sizing: border-box; min-width: 0; max-width: 100%; margin: 6px 0 0; padding: 0 0 0 23px; list-style: none; color: #92252d; font: 400 12px/1.6 "Plus Jakarta Sans", sans-serif; overflow-wrap: anywhere; }
+#main-content :is(.error-block, .errorlist)::before { content: ""; position: absolute; top: 2px; left: 0; width: 15px; height: 15px; background: currentColor; mask: var(--abdeen-message-error-icon) center / contain no-repeat; }
+#main-content :is(.error-block, .errorlist):empty { display: none; }
+#main-content :is(.error-block, .errorlist) :is(.error-block, .errorlist) { margin: 0; padding: 0; }
+#main-content :is(.error-block, .errorlist) :is(.error-block, .errorlist)::before { display: none; }
+#main-content .error-block > :is(.fas, .fa) { display: none; }
+#main-content .abdeen-field-errors > span { display: block; }
+#main-content [aria-invalid="true"]:not([type="hidden"]) { border-color: #b84d55; }
+#main-content [aria-invalid="true"]:focus-visible { outline: 2px solid #92252d; outline-offset: 2px; }
+@media (max-width: 479px) {
+    #main-content .alert { padding-block: 14px; font-size: 12px; }
+    #main-content .alert::before { top: 15px; }
+    #main-content .alert .close { top: 3px; inset-inline-end: 3px; }
+    #main-content .abdeen-basket-confirmation { gap: 10px; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) { #main-content .alert.fade { transition: none; } }

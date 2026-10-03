@@ -1,0 +1,30 @@
+{% load static i18n %}
+{% with images=product.get_all_images %}
+<div id="product_gallery" class="abdeen-watch-gallery" data-detail-gallery>
+    {% with primary=product.primary_image %}
+    <a class="abdeen-detail-image" data-gallery-link
+       href="{% if primary.original and not primary.is_missing %}{{ primary.original.url }}{% else %}{% static 'abdeen/images/watch-placeholder.svg' %}{% endif %}"
+       target="_blank" rel="noopener" aria-label="{% trans 'Open full-size product image' %}">
+        <img data-gallery-image data-detail-fallback="{% static 'abdeen/images/watch-placeholder.svg' %}"
+             src="{% if primary.original and not primary.is_missing %}{{ primary.original.url }}{% else %}{% static 'abdeen/images/watch-placeholder.svg' %}{% endif %}"
+             alt="{{ product.get_title }}" width="900" height="900" fetchpriority="high">
+        <span class="abdeen-detail-image-hint">{% trans 'View full size' %} <span aria-hidden="true">↗</span></span>
+    </a>
+    {% endwith %}
+    {% if images|length > 1 %}
+    <div class="abdeen-detail-gallery-controls">
+        <p data-gallery-status aria-live="polite" aria-atomic="true">{% blocktrans with total=images|length %}Image 1 of {{ total }}{% endblocktrans %}</p>
+        <nav class="abdeen-detail-thumbnails" aria-label="{% trans 'Product images' %}">
+            {% for image in images %}
+            <a href="{{ image.original.url }}" data-gallery-thumbnail
+               data-gallery-alt="{{ image.caption|default:product.get_title }}"
+               data-gallery-status-text="{% blocktrans with number=forloop.counter total=images|length %}Image {{ number }} of {{ total }}{% endblocktrans %}"
+               aria-label="{% blocktrans with number=forloop.counter %}View image {{ number }}{% endblocktrans %}"{% if forloop.first %} aria-current="true"{% endif %}>
+                <img src="{{ image.original.url }}" alt="" width="80" height="80" loading="lazy" data-image-fallback="{% static 'abdeen/images/watch-placeholder.svg' %}">
+            </a>
+            {% endfor %}
+        </nav>
+    </div>
+    {% endif %}
+</div>
+{% endwith %}

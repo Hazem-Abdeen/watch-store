@@ -1,3 +1,21 @@
 {% extends "oscar/catalogue/category.html" %}
+{% load i18n %}
 
-{# Keep Oscar's category listing intact until its frontend is designed. #}
+{% block breadcrumbs %}
+<nav aria-label="{% trans 'Breadcrumb' %}">
+    <ol class="abdeen-breadcrumbs">
+        <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+        <li><a href="{% url 'catalogue:index' %}">{% trans 'All watches' %}</a></li>
+        {% for ancestor in category.get_ancestors %}<li><a href="{{ ancestor.get_absolute_url }}">{{ ancestor.name }}</a></li>{% endfor %}
+        <li aria-current="page">{{ category.name }}</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block header %}
+<header class="abdeen-catalogue-heading">
+    <p class="abdeen-catalogue-eyebrow"><span class="abdeen-dot"></span>{% trans 'The collection' %}</p>
+    <h1>{{ category.name }}</h1>
+    {% if user.is_staff %}<a class="abdeen-category-edit" href="{% url 'dashboard:catalogue-category-update' pk=category.id %}">{% trans 'Edit this category' %}</a>{% endif %}
+</header>
+{% endblock %}

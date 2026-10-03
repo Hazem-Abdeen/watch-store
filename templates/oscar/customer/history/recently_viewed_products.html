@@ -1,0 +1,15 @@
+{% load i18n recommendation_tags %}
+{% with products_sliced=products|slice:':6' %}
+    {% if products_sliced %}
+    {% prepare_recent_cards products_sliced as products_sliced %}
+    <section class="abdeen-recently-viewed" aria-labelledby="recently-viewed-heading">
+        {% trans 'Recently Viewed' as recently_viewed_title %}
+        {% include 'oscar/partials/home/section_heading.html' with title=recently_viewed_title heading_id='recently-viewed-heading' eyebrow='' description='' %}
+        <div class="abdeen-product-grid">
+            {% for product in products_sliced %}
+                {% include 'oscar/partials/products/card.html' with home_card=False badge='' %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+{% endwith %}

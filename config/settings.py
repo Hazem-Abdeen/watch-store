@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'homepage.apps.HomepageConfig',
     'catalogue_import',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,7 +61,7 @@ INSTALLED_APPS = [
     'oscar.apps.search.apps.SearchConfig',
     'oscar.apps.voucher.apps.VoucherConfig',
     'oscar.apps.wishlists.apps.WishlistsConfig',
-    'oscar.apps.dashboard.apps.DashboardConfig',
+    'config.dashboard.DashboardConfig',
     'oscar.apps.dashboard.reports.apps.ReportsDashboardConfig',
     'oscar.apps.dashboard.users.apps.UsersDashboardConfig',
     'oscar.apps.dashboard.orders.apps.OrdersDashboardConfig',
@@ -85,7 +86,20 @@ SITE_ID = 1
 
 OSCAR_SHOP_NAME = 'Abdeen Watches'
 OSCAR_HOMEPAGE = '/'
+OSCAR_DASHBOARD_NAVIGATION = [*OSCAR_DASHBOARD_NAVIGATION, {
+    'label': 'Homepage',
+    'icon': 'fas fa-images',
+    'children': [
+        {'label': 'Hero Slides', 'url_name': 'dashboard:hero-slide-list'},
+        {'label': 'Brand Logos', 'url_name': 'dashboard:brand-logo-list'},
+    ],
+}]
 OSCAR_DEFAULT_CURRENCY = 'JOD'
+# Presentation only: keep Oscar's feature routes/models and purchase policies.
+ABDEEN_STOREFRONT_HIDDEN_FEATURES = ('reviews', 'wishlists')
+OSCAR_CURRENCY_FORMAT = {
+    'JOD': {'format': '0.### ¤¤', 'currency_digits': False, 'decimal_quantization': False},
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -141,9 +155,17 @@ AUTHENTICATION_BACKENDS = (
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+        'ENGINE': 'config.search_backend.LocalWhooshEngine',
+        'PATH': str(BASE_DIR / 'var' / 'whoosh_index'),
     },
 }
+
+# Local development index: rebuild after imports or catalogue edits, including
+# stock/category changes that Haystack's product-save signal does not cover.
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.BaseSignalProcessor'
+
+# Never let test fixtures or rebuild_index overwrite the development index.
+TEST_RUNNER = 'config.test_runner.SearchIsolatedDiscoverRunner'
 
 
 # Password validation
@@ -191,3 +213,5 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+OSCAR_SEND_REGISTRATION_EMAIL = False

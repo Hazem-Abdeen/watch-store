@@ -1,3 +1,95 @@
 {% extends "oscar/catalogue/browse.html" %}
+{% load static i18n product_tags storefront_tags %}
 
-{# Override individual blocks here when the product listing is designed. #}
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'abdeen/css/catalogue.css' %}">
+{% endblock %}
+{% block storefront_header %}{% include "oscar/partials/home/header.html" with catalogue_browse=True %}{% endblock %}
+{% block storefront_footer %}{% include "oscar/partials/home/footer.html" with catalogue_browse=True %}{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'abdeen/js/homepage.js' %}" defer></script>
+    <script src="{% static 'abdeen/js/catalogue.js' %}" defer></script>
+{% endblock %}
+
+{% block content_wrapper %}
+<div class="abdeen-catalogue" id="catalogue-top">
+    <div class="abdeen-shell">
+        {% block breadcrumbs %}
+        <nav aria-label="{% trans 'Breadcrumb' %}">
+            <ol class="abdeen-breadcrumbs">
+                <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+                <li aria-current="page">{% trans 'All watches' %}</li>
+            </ol>
+        </nav>
+        {% endblock %}
+        {% block header %}
+        <header class="abdeen-catalogue-heading">
+            <p class="abdeen-catalogue-eyebrow"><span class="abdeen-dot"></span>{% trans 'The collection' %}</p>
+            <h1>{% trans 'All watches' %}</h1>
+            <p>{% trans 'Find a timepiece for your everyday moments and milestones.' %}</p>
+        </header>
+        {% endblock %}
+        {% include "oscar/partials/alert_messages.html" %}
+        <div class="abdeen-catalogue-layout">
+            <aside class="abdeen-catalogue-sidebar" aria-label="{% trans 'Browse categories and filters' %}">
+                <details class="abdeen-browse-navigation">
+                    <summary>{% trans 'Shop by' %}<span aria-hidden="true">+</span></summary>
+                    <div class="abdeen-browse-navigation-content" data-category-navigation>
+                        <div class="abdeen-filter-heading">
+                            <h2 id="shop-by-heading">{% trans 'Shop by' %}</h2>
+                            <button type="button" class="abdeen-filter-close" data-filter-close aria-label="{% trans 'Close shop navigation' %}">{% include "oscar/partials/home/icon.html" with name="close" %}</button>
+                        </div>
+                        {% block column_left %}{% include "oscar/catalogue/partials/category_navigation.html" %}{% endblock %}
+                        {% block column_left_extra %}{% endblock %}
+                    </div>
+                </details>
+            </aside>
+            <dialog id="shop-navigation-drawer" class="abdeen-filter-dialog" aria-labelledby="shop-by-heading" data-filter-dialog></dialog>
+            <div class="abdeen-catalogue-results">
+                {% block pre_content %}{% endblock %}
+                {% block content %}
+                <form method="get" class="abdeen-catalogue-toolbar">
+                    <button type="button" class="abdeen-filter-trigger" data-filter-open aria-haspopup="dialog" aria-controls="shop-navigation-drawer" aria-expanded="false" hidden>
+                        <svg class="abdeen-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M3 7h4m4 0h10M3 17h10m4 0h4"/><circle cx="9" cy="7" r="2"/><circle cx="15" cy="17" r="2"/></svg>
+                        {% trans 'Shop by' %}
+                    </button>
+                    {% for value in selected_facets %}<input type="hidden" name="selected_facets" value="{{ value }}">{% endfor %}
+                    <input type="hidden" name="q" value="{{ form.q.value|default_if_none:'' }}">
+                    <p class="abdeen-result-count">
+                        {% blocktrans count count=paginator.count %}<strong>{{ count }}</strong>&nbsp;result{% plural %}<strong>{{ count }}</strong>&nbsp;results{% endblocktrans %}
+                        {% if paginator.num_pages > 1 %}<span> · {{ page_obj.start_index }}–{{ page_obj.end_index }}</span>{% endif %}
+                    </p>
+                    {% catalogue_sorting_available form as sorting_available %}
+                    {% if paginator.count and form.sort_by and sorting_available %}
+                    <div class="abdeen-catalogue-sort">
+                        <label for="{{ form.sort_by.id_for_label }}">{{ form.sort_by.label }}</label>
+                        {{ form.sort_by }}
+                        <noscript><button type="submit">{% trans 'Apply' %}</button></noscript>
+                    </div>
+                    {% endif %}
+                </form>
+                {% if products %}
+                    <ol class="abdeen-catalogue-grid">
+                    {% block products %}
+                        {% with catalogue_browse=True %}
+                        {% for product in products %}<li>{% render_product product.object %}</li>{% endfor %}
+                        {% endwith %}
+                    {% endblock %}
+                    </ol>
+                    {% include "oscar/catalogue/partials/browse_pagination.html" %}
+                {% else %}
+                    <div class="abdeen-catalogue-empty">
+                        {% include "oscar/partials/home/icon.html" with name="search" %}
+                        <h2>{% trans 'No products found.' %}</h2>
+                        <p>{% trans 'Explore another category or return to the full collection.' %}</p>
+                        <a href="{% url 'catalogue:index' %}">{% trans 'Browse all watches' %} <span aria-hidden="true">→</span></a>
+                    </div>
+                {% endif %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% load static i18n currency_filters storefront_tags %}
+<div class="abdeen-cart-content" data-cart-content data-count="{{ basket.num_items }}" data-title="{% blocktrans count counter=basket.num_items %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktrans %}" data-label="{% blocktrans count counter=basket.num_items %}Shopping bag, {{ counter }} item{% plural %}Shopping bag, {{ counter }} items{% endblocktrans %}">
+    <div class="abdeen-cart-scroll">
+        {% for warning in basket_warnings %}<p class="abdeen-cart-notice" role="status">{{ warning|stock_safe_message }}</p>{% endfor %}
+        {% for message in messages %}
+            {% if 'warning' in message.tags or 'error' in message.tags %}<p class="abdeen-cart-notice" role="status">{{ message|stock_safe_message|striptags }}</p>{% endif %}
+        {% endfor %}
+        {% if not basket.is_empty %}
+        <form action="{% url 'basket:summary' %}" method="post" data-cart-form>
+            {% csrf_token %}
+            {% for field in formset.management_form %}<input type="hidden" name="{{ field.html_name }}" value="{{ field.value }}">{% endfor %}
+            {% for form in formset %}
+            {% with line=form.instance product=form.instance.product %}
+            <article class="abdeen-cart-line" data-cart-line="{{ line.pk }}">
+                <input type="hidden" name="{{ form.id.html_name }}" value="{{ form.id.value }}">
+                <a class="abdeen-cart-image" href="{{ product.get_absolute_url }}" tabindex="-1" aria-hidden="true">
+                    {% with image=product.primary_image %}<img src="{% if image.original and not image.is_missing %}{{ image.original.url }}{% else %}{% static 'abdeen/images/watch-placeholder.svg' %}{% endif %}" alt="" width="100" height="120" data-cart-image-fallback="{% static 'abdeen/images/watch-placeholder.svg' %}">{% endwith %}
+                </a>
+                <div class="abdeen-cart-product">
+                    {% product_card_brand product as brand %}
+                    {% if brand %}<p class="abdeen-cart-brand">{{ brand }}</p>{% endif %}
+                    <div class="abdeen-cart-description">
+                        <a class="abdeen-cart-name" href="{{ product.get_absolute_url }}">{{ product.get_title }}</a>
+                        <div class="abdeen-cart-price">
+                            {% if line.is_tax_known %}{{ line.line_price_incl_tax_incl_discounts|currency:line.price_currency }}{% else %}{{ line.line_price_excl_tax_incl_discounts|currency:line.price_currency }}{% endif %}
+                            {% if line.discount_value %}<s>{% if line.is_tax_known %}{{ line.line_price_incl_tax|currency:line.price_currency }}{% else %}{{ line.line_price_excl_tax|currency:line.price_currency }}{% endif %}</s>{% endif %}
+                        </div>
+                    </div>
+                    {% for attribute in line.attributes.all %}<p class="abdeen-cart-option">{{ attribute.option.name }}: {{ attribute.value }}</p>{% endfor %}
+                    <div class="abdeen-cart-controls">
+                        <div class="abdeen-cart-quantity">
+                            <button type="button" data-cart-step="-1" aria-label="{% trans 'Decrease quantity' %} — {{ product.get_title }}"{% if line.quantity <= 1 %} disabled{% endif %}>−</button>
+                            <label class="sr-only" for="cart-quantity-{{ line.pk }}">{% trans 'Quantity' %} — {{ product.get_title }}</label>
+                            <input id="cart-quantity-{{ line.pk }}" type="number" name="{{ form.quantity.html_name }}" value="{{ line.quantity }}" min="1" step="1" required inputmode="numeric" data-cart-quantity>
+                            <button type="button" data-cart-step="1" aria-label="{% trans 'Increase quantity' %} — {{ product.get_title }}">+</button>
+                        </div>
+                        <button class="abdeen-cart-remove" type="button" data-cart-remove="{{ form.DELETE.html_name }}" aria-label="{% trans 'Remove' %} — {{ product.get_title }}">{% trans 'Remove' %}</button>
+                    </div>
+                </div>
+            </article>
+            {% endwith %}
+            {% endfor %}
+        </form>
+        {% else %}
+        <div class="abdeen-cart-empty">
+            {% include 'oscar/partials/home/icon.html' with name='bag' %}
+            <h3>{% trans 'Your cart is empty' %}</h3>
+            <p>{% trans 'Find a timepiece to make your own.' %}</p>
+            <a href="{% url 'catalogue:index' %}" class="abdeen-cart-shop">{% trans 'Explore watches' %}</a>
+        </div>
+        {% endif %}
+    </div>
+    {% if not basket.is_empty %}
+    <footer class="abdeen-cart-footer">
+        {% for discount in basket.offer_discounts %}<p class="abdeen-cart-discount">{{ discount.name }} <span>−{{ discount.discount|currency:basket.currency }}</span></p>{% endfor %}
+        {% for discount in basket.grouped_voucher_discounts %}<p class="abdeen-cart-discount">{{ discount.voucher.name }} <span>−{{ discount.discount|currency:basket.currency }}</span></p>{% endfor %}
+        <a class="abdeen-cart-view" href="{% url 'basket:summary' %}">{% trans 'View shopping bag' %}</a>
+        <p class="abdeen-cart-shipping">{% trans 'Shipping and any applicable taxes are confirmed at checkout.' %}</p>
+        <a class="abdeen-cart-checkout" href="{% url 'checkout:index' %}">
+            <svg width="16" height="18" viewBox="0 0 16 18" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 7h12v9H2zM5 7V4a3 3 0 0 1 6 0v3M8 10v3"/></svg>
+            <span>{% trans 'Checkout' %}</span><span aria-hidden="true">·</span>
+            <span>{% if basket.is_tax_known %}{{ basket.total_incl_tax|currency:basket.currency }}{% else %}{{ basket.total_excl_tax|currency:basket.currency }}{% endif %}</span>
+        </a>
+    </footer>
+    {% endif %}
+</div>

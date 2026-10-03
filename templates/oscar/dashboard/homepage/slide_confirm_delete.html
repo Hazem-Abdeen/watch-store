@@ -1,0 +1,10 @@
+{% extends 'oscar/dashboard/homepage/base.html' %}
+{% block headertext %}Delete hero slide{% endblock %}
+{% block dashboard_content %}
+<form method="post" class="card card-body">
+    {% csrf_token %}
+    <p>Delete “{{ object }}” from the homepage?</p>
+    <div><button class="btn btn-danger" type="submit">Delete slide</button>
+        <a href="{% url 'dashboard:hero-slide-list' %}">Cancel</a></div>
+</form>
+{% endblock %}

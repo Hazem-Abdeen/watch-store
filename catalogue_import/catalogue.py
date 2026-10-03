@@ -9,17 +9,23 @@ from html.parser import HTMLParser
 from pathlib import PurePosixPath
 
 from django.core.files.base import ContentFile
-from django.db import transaction
+from django.db import connection, transaction
 from django.db.models import Max
 from django.utils.text import slugify
 from oscar.core.loading import get_model
 
 from .images import download_image, uploads_url
+from .models import CatalogueSource
+from .specifications import SPECIFICATIONS, extract_specifications, php_attributes, specification_code
 from .sql_dump import ImportDataError, source_id
 
 
-PARTNER_CODE = 'woocommerce-abdeen'
-CLASS_SLUG = 'woocommerce-catalogue'
+PARTNER_CODE = 'abdeen-watches'
+PARTNER_NAME = 'Abdeen Watches'
+SOURCE = 'abdeenwatches.com'
+LEGACY_CLASS_SLUG = 'woocommerce-catalogue'
+LEGACY_PARTNER_CODE = 'woocommerce-abdeen'
+LEGACY_ATTRIBUTES = ('wc_source_id', 'wc_regular_price', 'wc_sale_price', 'wc_stock_status')
 BRANDS = {
     'casio': 'CASIO', 'lotus': 'LOTUS', 'jaguar': 'JAGUAR', 'swatch': 'SWATCH',
     'swiss military': 'SWISS MILITARY', 'santa barbara polo': 'Santa Barbara Polo',
@@ -99,11 +105,18 @@ class ProductPlan:
     categories: tuple
     image_url: str | None
     warnings: tuple
+    specifications: dict
     skip_reason: str = ''
 
     @property
-    def upc(self):
+    def legacy_upc(self):
         return f'wc-abdeen-{self.source_id}'
+
+    @property
+    def source_metadata(self):
+        return {'regular_price': None if self.regular is None else str(self.regular),
+                'sale_price': None if self.sale is None else str(self.sale),
+                'stock_status': self.status}
 
 
 def category_paths(data, product_id):
@@ -135,7 +148,8 @@ def category_paths(data, product_id):
         if key in BRANDS:
             return ('Brands', BRANDS[key])
         if key in {'all watches', 'watches'}:
-            return ('Watches',)
+            # Drop generic containers, retaining useful ancestors/descendants.
+            return prefix
         if key == 'uncategorized':
             return ()
         if key == 'guy laroche jewellery & accessory':
@@ -176,7 +190,7 @@ def build_plans(data, limit=None):
             sku = (meta.get('_sku') or '').strip()
             warnings = []
             if not sku:
-                sku = f'wc-abdeen-{key}'
+                sku = f'ABDEEN-{key}'
                 warnings.append('Missing SKU; using stable source-ID fallback.')
                 if sku_counts[sku]:
                     raise ImportDataError('Fallback SKU conflicts with a source SKU.')
@@ -201,11 +215,23 @@ def build_plans(data, limit=None):
             price = price_value(meta.get('_price'), '_price')
             if price is None:
                 warnings.append('Missing current price; price remains unavailable.')
+            description = description_html(row['post_content'])
+            taxonomy_values = {}
+            for taxonomy_id in data.relationships.get(key, ()):
+                taxonomy = data.taxonomies.get(taxonomy_id)
+                if taxonomy and specification_code(taxonomy['taxonomy']):
+                    term_id = source_id(taxonomy['term_id'])
+                    if term_id not in data.terms:
+                        raise ImportDataError('Missing specification taxonomy term.')
+                    taxonomy_values.setdefault(taxonomy['taxonomy'], []).append(data.terms[term_id])
             plans.append(ProductPlan(
-                key, title, description_html(row['post_content']), sku, price,
+                key, title, description, sku, price,
                 price_value(meta.get('_regular_price'), '_regular_price'),
                 price_value(meta.get('_sale_price'), '_sale_price'), status,
                 categories, image_url, tuple(warnings),
+                extract_specifications(description, categories=categories,
+                                       attributes=php_attributes(meta.get('_product_attributes')),
+                                       taxonomy_values=taxonomy_values.items()),
                 'Unsupported non-simple product type.' if product_types - {'simple'} else '',
             ))
         except ImportDataError as exc:
@@ -225,18 +251,80 @@ class OscarImporter:
     def __init__(self):
         self.models = models()
 
+    def require_mapping_schema(self):
+        if CatalogueSource._meta.db_table not in connection.introspection.table_names():
+            raise ImportDataError('Apply the catalogue_import schema migration before using this command.')
+
+    def watch_class(self):
+        matches = self.models['ProductClass'].objects.filter(name__iexact='Watch')
+        if matches.count() != 1:
+            raise ImportDataError('Exactly one existing product type named Watch is required.')
+        product_class = matches.get()
+        if not product_class.track_stock:
+            raise ImportDataError('Watch must track stock for this availability mapping.')
+        return product_class
+
+    def partner(self, create=False):
+        matches = self.models['Partner'].objects.filter(name__iexact=PARTNER_NAME)
+        if matches.count() > 1:
+            raise ImportDataError('Multiple partners named Abdeen Watches; review manually.')
+        partner = matches.first()
+        if partner is None:
+            if self.models['Partner'].objects.filter(code=PARTNER_CODE).exists():
+                raise ImportDataError('The Abdeen Watches partner code is already in use.')
+            if create:
+                partner = self.models['Partner'].objects.create(name=PARTNER_NAME, code=PARTNER_CODE)
+        return partner
+
+    def attribute(self, product_class, code, create=False):
+        matches = [attr for attr in product_class.attributes.all()
+                   if specification_code(attr.code) == code or specification_code(attr.name) == code]
+        if len(matches) > 1:
+            raise ImportDataError(f'Ambiguous Watch attribute for {SPECIFICATIONS[code]}.')
+        attribute = matches[0] if matches else None
+        if attribute and attribute.type != 'text':
+            raise ImportDataError(f'{attribute.name} must be reviewed: importer expects a text attribute.')
+        if attribute is None and create:
+            attribute = self.models['ProductAttribute'].objects.create(
+                product_class=product_class, code=code, name=SPECIFICATIONS[code], type='text', required=False)
+        return attribute
+
+    def validate_specifications(self, product_class, specs, product=None):
+        for code in specs:
+            self.attribute(product_class, code)
+        for attribute in product_class.attributes.filter(required=True):
+            code = specification_code(attribute.code) or specification_code(attribute.name)
+            if code in specs:
+                continue
+            existing = product.attribute_values.filter(attribute=attribute).first() if product else None
+            if existing is None or existing.value in (None, ''):
+                raise ImportDataError(f'Missing required Watch attribute: {attribute.name}.')
+
+    def set_specifications(self, product, specs):
+        for code, value in specs.items():
+            attribute = self.attribute(product.product_class, code, create=True)
+            setattr(product.attr, attribute.code, value)
+
     def existing(self, plan):
-        product = self.models['Product'].objects.filter(upc=plan.upc).first()
+        mapping = CatalogueSource.objects.select_related('product', 'stockrecord').filter(
+            source=SOURCE, source_id=plan.source_id).first()
+        product = mapping.product if mapping else None
+        if product is None and self.models['Product'].objects.filter(upc=plan.legacy_upc).exists():
+            raise ImportDataError('Legacy imported product found; run normalize_imported_catalogue before importing.')
         if product and (product.product_class_id is None
-                        or product.get_product_class().slug != CLASS_SLUG
+                        or product.product_class_id != self.watch_class().pk
                         or product.structure != product.STANDALONE):
             raise ImportDataError(f'Product {plan.source_id}: source identifier collision.')
-        stocks = self.models['StockRecord'].objects.filter(partner__code=PARTNER_CODE)
+        partner = self.partner()
+        stocks = self.models['StockRecord'].objects.filter(partner=partner)
         collision = stocks.filter(partner_sku=plan.sku).first()
         if collision and (product is None or collision.product_id != product.pk):
             raise ImportDataError(f'Product {plan.source_id}: partner SKU collision.')
         if product:
-            if product.stockrecords.exclude(partner__code=PARTNER_CODE).exists():
+            if (mapping.stockrecord.product_id != product.pk
+                    or mapping.stockrecord.partner_id != (partner.pk if partner else None)):
+                raise ImportDataError('Internal source mapping does not match the product stock record.')
+            if product.stockrecords.exclude(pk=mapping.stockrecord_id).exists():
                 raise ImportDataError(f'Product {plan.source_id}: has another supplier; review manually.')
             owned = stocks.filter(product=product)
             if owned.count() > 1 or owned.exclude(num_allocated__isnull=True).exclude(num_allocated=0).exists():
@@ -244,20 +332,14 @@ class OscarImporter:
         return product
 
     def preflight(self, plans):
-        product_class = self.models['ProductClass'].objects.filter(slug=CLASS_SLUG).first()
-        if product_class:
-            if not product_class.track_stock:
-                raise ImportDataError('Import product class must track stock.')
-            if product_class.attributes.filter(required=True).exists():
-                raise ImportDataError('Import product class has required attributes; review manually.')
-            if product_class.attributes.filter(code__in=(
-                'wc_source_id', 'wc_regular_price', 'wc_sale_price', 'wc_stock_status',
-            )).exclude(type='text').exists():
-                raise ImportDataError('Import attributes must have text type.')
+        self.require_mapping_schema()
+        product_class = self.watch_class()
+        self.partner()
         for plan in plans:
             if plan.skip_reason:
                 continue
-            self.existing(plan)
+            product = self.existing(plan)
+            self.validate_specifications(product_class, plan.specifications, product)
             for path in plan.categories:
                 self.category(path, create=False)
 
@@ -284,39 +366,19 @@ class OscarImporter:
         with transaction.atomic():
             product = self.existing(plan)
             created = product is None
-            product_class, _ = self.models['ProductClass'].objects.get_or_create(
-                slug=CLASS_SLUG,
-                defaults={'name': 'WooCommerce catalogue', 'track_stock': True},
-            )
-            if not product_class.track_stock:
-                raise ImportDataError('Import product class must track stock.')
-            partner, _ = self.models['Partner'].objects.get_or_create(
-                code=PARTNER_CODE, defaults={'name': 'Abdeen WooCommerce catalogue'},
-            )
+            product_class = self.watch_class()
+            partner = self.partner(create=True)
             if created:
-                product = self.models['Product'](upc=plan.upc, product_class=product_class)
+                product = self.models['Product'](product_class=product_class)
             product.title = plan.title
             product.description = plan.description
+            # Oscar's NullCharField reads SQL NULL as ''; normalize before unique validation.
+            product.upc = product.upc or None
             # Do not re-publish products hidden by the Oscar operator on a rerun.
-            product.slug = product.slug or slugify(plan.title)[:240] or plan.upc
+            product.slug = product.slug or slugify(plan.title)[:240] or 'watch'
+            self.set_specifications(product, plan.specifications)
             product.full_clean()
             product.save()
-            for code, name, value in (
-                ('wc_source_id', 'WooCommerce product ID', str(plan.source_id)),
-                ('wc_regular_price', 'WooCommerce regular price (JOD)', plan.regular),
-                ('wc_sale_price', 'WooCommerce sale price (JOD)', plan.sale),
-                ('wc_stock_status', 'WooCommerce stock status', plan.status),
-            ):
-                attribute, _ = self.models['ProductAttribute'].objects.get_or_create(
-                    product_class=product_class, code=code,
-                    defaults={'name': name, 'type': 'text', 'required': False},
-                )
-                if attribute.type != 'text':
-                    raise ImportDataError(f'Existing {code} attribute must be text.')
-                self.models['ProductAttributeValue'].objects.update_or_create(
-                    product=product, attribute=attribute,
-                    defaults={'value_text': '' if value is None else str(value)},
-                )
             stock = self.models['StockRecord'].objects.filter(product=product, partner=partner).first()
             if stock is None:
                 stock = self.models['StockRecord'](product=product, partner=partner)
@@ -326,6 +388,10 @@ class OscarImporter:
             stock.num_in_stock = 1 if plan.status == 'instock' else 0
             stock.full_clean()
             stock.save()
+            CatalogueSource.objects.update_or_create(
+                source=SOURCE, source_id=plan.source_id,
+                defaults={'product': product, 'stockrecord': stock, 'metadata': plan.source_metadata},
+            )
             # Additive only: retain any manually assigned categories.
             for path in plan.categories:
                 for depth in range(1, len(path) + 1):
@@ -339,12 +405,15 @@ class OscarImporter:
         if not plan.image_url:
             return False
         ProductImage = self.models['ProductImage']
-        code = f'{plan.upc}-thumbnail'
-        image = ProductImage.objects.filter(code=code).first()
+        mapping = CatalogueSource.objects.get(source=SOURCE, source_id=plan.source_id, product=product)
+        code = f'catalogue-image-{product.pk}'
+        image = mapping.image
         if image is not None and image.product_id != product.pk:
             raise ImportDataError('Image source identifier collision.')
-        token = f'{plan.upc}-{sha256(plan.image_url.encode()).hexdigest()[:16]}'
-        if (image and token in PurePosixPath(image.original.name).name
+        digest = sha256(plan.image_url.encode()).hexdigest()[:16]
+        token = f'watch-{product.pk}-{digest}'
+        if (image and (mapping.image_url == plan.image_url
+                       or f'{plan.legacy_upc}-{digest}' in PurePosixPath(image.original.name).name)
                 and image.original.storage.exists(image.original.name)):
             return False
         content, extension = download_image(plan.image_url)
@@ -358,6 +427,9 @@ class OscarImporter:
                 image.original.save(f'{token}.{extension}', ContentFile(content), save=False)
                 saved_name = image.original.name
                 image.save()
+                mapping.image = image
+                mapping.image_url = plan.image_url
+                mapping.save(update_fields=['image', 'image_url'])
         except Exception:
             # Only remove the newly written file if its DB transaction failed.
             if saved_name:

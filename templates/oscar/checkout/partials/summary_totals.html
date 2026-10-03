@@ -1,0 +1,11 @@
+{% extends "oscar/basket/partials/basket_totals.html" %}
+{% load i18n currency_filters %}
+
+{% block basket_header %}<tr><th colspan="2"><h3>{% trans 'Subtotal' %}</h3></th></tr>{% endblock %}
+{% block shipping_totals %}
+    {% if shipping_method %}{{ block.super }}{% else %}<tr><td colspan="2" class="abdeen-checkout-pending">{% trans 'Shipping and the final total will appear after your delivery method is selected.' %}</td></tr>{% endif %}
+{% endblock %}
+{% block order_total %}{% if order_total %}{{ block.super }}{% endif %}{% endblock %}
+{% block tax_totals %}
+    {% if shipping_method %}{{ block.super }}{% elif show_tax_separately and basket.is_tax_known %}<tr><th>{% trans 'Basket tax' %}</th><td class="text-right">{{ basket.total_tax|currency:basket.currency }}</td></tr>{% endif %}
+{% endblock %}

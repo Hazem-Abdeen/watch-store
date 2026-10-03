@@ -1,0 +1,35 @@
+{% extends "oscar/checkout/shipping_address.html" %}
+{% load i18n %}
+
+{% block new_address_form %}
+<div class="card card-body bg-light">
+    <p class="abdeen-checkout-form-note">{% trans 'Enter your delivery details. Required fields are marked with an asterisk.' %}</p>
+    <form action="{% url 'checkout:shipping-address' %}" method="post" id="new_shipping_address">
+        {% csrf_token %}
+        {% include 'oscar/partials/form_fields.html' with form=form style='stacked' %}
+        <div class="abdeen-checkout-form-actions">
+            <button type="submit" class="btn btn-primary btn-lg" data-loading-text="{% trans 'Continuing...' %}">{% trans 'Continue' %}<span aria-hidden="true">→</span></button>
+            <a href="{% url 'basket:summary' %}">{% trans 'Return to bag' %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block select_address_form %}
+<div class="col-sm-6 d-flex">
+    <div class="card card-body bg-light">
+        <address>{% block select_address_fields %}{% for field in address.active_address_fields %}{{ field }}<br>{% endfor %}{% endblock %}</address>
+        <form action="{% url 'checkout:shipping-address' %}" method="post" id="select_shipping_address_{{ address.id }}" class="mb-0">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="ship_to">
+            <input type="hidden" name="address_id" value="{{ address.id }}">
+            <button type="submit" class="btn btn-primary ship-address" data-loading-text="{% trans 'Saving...' %}">{% if address.is_default_for_shipping %}{% trans 'Ship to your default shipping address' %}{% else %}{% trans 'Ship to this address' %}{% endif %}</button>
+            <div class="abdeen-checkout-address-actions">
+                <a href="{% url 'checkout:user-address-update' pk=address.id %}">{% trans 'Edit address' %}</a>
+                <a href="{% url 'checkout:user-address-delete' pk=address.id %}">{% trans 'Delete' %}</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% if forloop.counter|divisibleby:2 %}</div><div class="row">{% endif %}
+{% endblock %}

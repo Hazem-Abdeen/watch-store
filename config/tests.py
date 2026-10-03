@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.test import RequestFactory, TestCase
 from django.urls import resolve, reverse
 from oscar.core.loading import get_class, get_model
-from oscar.templatetags.currency_filters import currency
+from catalogue_import.templatetags.storefront_tags import card_currency as currency
 
 from .homepage import HomepageView, range_products
 
@@ -121,7 +121,7 @@ class HomepageTests(TestCase):
         stock = product.stockrecords.get()
         stock.num_in_stock = 0
         stock.save()
-        self.assertContains(self.client.get('/'), 'Unavailable')
+        self.assertContains(self.client.get('/'), 'Out of stock')
 
     def test_missing_images_stock_and_foreign_currency(self):
         no_stock = self.product('No stock record')
@@ -148,7 +148,7 @@ class HomepageTests(TestCase):
         response = self.client.get('/')
         self.assertContains(response, currency(Decimal('210.00'), 'JOD'))
         self.assertNotContains(response, currency(Decimal('999.00'), 'JOD'))
-        self.assertContains(response, 'Choose Options')
+        self.assertContains(response, 'Choose options')
 
     def test_card_uses_request_strategy_and_handles_unknown_tax_and_zero(self):
         product = self.product('Strategy priced watch')
@@ -164,7 +164,7 @@ class HomepageTests(TestCase):
                 self.assertEqual('excl. tax' in html, tax is None)
         self.assertEqual(request.strategy.fetch_for_product.call_count, 3)
 
-    def test_real_categories_brand_pages_and_filter_tokens(self):
+    def test_real_categories_and_brands_without_homepage_filter_controls(self):
         root = Category.add_root(name='Brands', slug='brands')
         brand = root.add_child(name='Example brand', slug='example-brand')
         department = Category.add_root(name='Watches', slug='watches', image='categories/watches.jpg')
@@ -180,9 +180,13 @@ class HomepageTests(TestCase):
         self.assertEqual({c.pk for c in response.context['homepage_categories']}, {department.pk, missing_image.pk})
         self.assertContains(response, brand.get_absolute_url())
         self.assertContains(response, department.get_absolute_url())
-        self.assertContains(response, '/media/categories/watches.jpg')
+        # The editorial showcase is Men/Women only; other real department links
+        # remain available in navigation and the unchanged homepage context.
+        self.assertNotContains(response, 'class="abdeen-category-card"')
         self.assertContains(response, 'Image coming soon')
-        self.assertContains(response, f'data-home-filter="category-{brand.pk}"')
+        self.assertNotContains(response, 'data-home-filter=')
+        self.assertNotContains(response, 'data-home-filters')
+        self.assertContains(response, product.get_absolute_url())
         self.assertEqual(response.context['best_sellers'][0].homepage_brand_name, brand.name)
         self.assertNotContains(response, 'Private department')
 

@@ -1,0 +1,27 @@
+{% extends 'oscar/dashboard/layout.html' %}
+{% block title %}Brand Logos | {{ block.super }}{% endblock %}
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item">Homepage</li><li class="breadcrumb-item active">Brand Logos</li>
+</ol></nav>
+{% endblock %}
+{% block headertext %}Brand Logos{% endblock %}
+{% block dashboard_content %}
+<p>These are the direct children of the Brands category. Logos only change homepage presentation; category visibility and catalogue links stay the same.</p>
+<p><a href="{% url 'home' %}#brands" class="btn btn-secondary">View homepage brands</a></p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+    <thead><tr><th>Brand</th><th>Logo</th><th>Use logo</th><th></th></tr></thead>
+    <tbody>{% for brand in brands %}
+    <tr>
+        <td>{{ brand.name }}{% if not brand.is_public or brand.exclude_from_menu %}<br><small>Hidden from homepage</small>{% endif %}</td>
+        <td>{% with logo_url=brand.brand_presentation.logo_url %}
+            {% if logo_url %}<img src="{{ logo_url }}" alt="{{ brand.name }}" width="160" height="64" style="object-fit: contain; background: white;">
+            {% else %}Brand name fallback{% endif %}
+        {% endwith %}</td>
+        <td>{{ brand.brand_presentation.is_active|yesno:'Yes,No,No logo configured' }}</td>
+        <td><a class="btn btn-primary" href="{% url 'dashboard:brand-logo-update' pk=brand.pk %}">Edit logo<span class="sr-only"> for {{ brand.name }}</span></a></td>
+    </tr>
+    {% empty %}<tr><td colspan="4">No brand categories found. Add brands beneath the top-level Brands category in Catalogue → Categories.</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

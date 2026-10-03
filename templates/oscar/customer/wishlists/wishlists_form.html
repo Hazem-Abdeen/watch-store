@@ -1,0 +1,7 @@
+{% extends "oscar/customer/wishlists/wishlists_form.html" %}
+{% load storefront_display_tags i18n %}
+{% block title %}{% storefront_feature_visible 'wishlists' as visible %}{% if visible %}{{ block.super }}{% else %}{% trans 'Abdeen Watches' %}{% endif %}{% endblock %}
+{% block content_wrapper %}
+    {% storefront_feature_visible 'wishlists' as visible %}
+    {% if visible %}{{ block.super }}{% else %}{% include 'oscar/partials/feature_unavailable.html' %}{% endif %}
+{% endblock %}

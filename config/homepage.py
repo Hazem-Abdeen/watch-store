@@ -3,12 +3,13 @@
 from django.db.models import OuterRef, Subquery
 from django.views.generic import TemplateView
 from oscar.core.loading import get_model
+from homepage.models import HomeHeroSlide
+from homepage.brands import BRANDS_ROOT_SLUG
 
 
 PRODUCT_LIMIT = 8
 CATEGORY_LIMIT = 4
 BRAND_LIMIT = 8
-BRANDS_ROOT_SLUG = 'brands'
 
 
 def range_products(name):
@@ -54,7 +55,7 @@ class HomepageView(TemplateView):
         brands_root = menu_categories.filter(depth=1, slug=BRANDS_ROOT_SLUG).first()
         brands = list(menu_categories.filter(
             path__startswith=brands_root.path, depth=brands_root.depth + 1,
-        )) if brands_root else []
+        ).select_related('brand_presentation')) if brands_root else []
         brand_ids = {brand.pk for brand in brands}
         categories = menu_categories.filter(depth=1)
         if brands_root:
@@ -80,6 +81,7 @@ class HomepageView(TemplateView):
                 product.homepage_filter_tokens = ' '.join(tokens)
 
         context.update(
+            hero_slides=list(HomeHeroSlide.objects.filter(is_active=True).exclude(desktop_image='')),
             homepage_categories=list(categories[:CATEGORY_LIMIT]),
             homepage_brands=brands[:BRAND_LIMIT],
             best_sellers=best_sellers,

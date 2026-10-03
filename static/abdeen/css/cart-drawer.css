@@ -1,0 +1,70 @@
+html.abdeen-cart-open { overflow: hidden; }
+.abdeen-cart {
+    position: fixed; inset: 0 0 0 auto; margin: 0; padding: 0; border: 0;
+    width: 500px; max-width: 100%; height: 100%; height: 100dvh; max-height: 100dvh;
+    background: #fff; color: #161616; font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 13px; line-height: 1.6; box-shadow: -12px 0 48px #0000000d;
+}
+.abdeen-cart[open] { display: flex; flex-direction: column; animation: abdeen-cart-enter .25s ease-out; }
+.abdeen-cart:not([open]) { display: none; }
+.abdeen-cart::backdrop { background: rgb(0 0 0 / 32%); }
+.abdeen-cart *, .abdeen-cart *::before, .abdeen-cart *::after { box-sizing: border-box; }
+.abdeen-cart a { color: inherit; }
+.abdeen-cart button { font: inherit; color: inherit; cursor: pointer; }
+.abdeen-cart button:disabled { cursor: default; opacity: .4; }
+.abdeen-cart :is(a, button, input):focus-visible { outline: 2px solid #172a3a; outline-offset: 3px; }
+.abdeen-cart [hidden] { display: none !important; }
+.abdeen-cart-header { display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; padding: 22px 28px 22px 40px; border-bottom: 1px solid #dedede; }
+.abdeen-cart-header h2 { display: flex; align-items: center; gap: 13px; margin: 0; font-family: inherit; font-size: 13px; font-weight: 500; line-height: 1.5; text-transform: uppercase; }
+.abdeen-cart-header h2 svg { width: 22px; height: 22px; }
+.abdeen-cart-close { display: grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; }
+.abdeen-cart-close svg { width: 22px; height: 22px; }
+.abdeen-cart-body, .abdeen-cart-content { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
+.abdeen-cart-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 26px 40px; }
+.abdeen-cart-line { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 22px; padding-bottom: 26px; }
+.abdeen-cart-line:last-child { padding-bottom: 0; }
+.abdeen-cart-image { display: block; align-self: start; }
+.abdeen-cart-image img { display: block; width: 100%; height: 112px; object-fit: contain; mix-blend-mode: multiply; }
+.abdeen-cart-brand { margin: 0 0 5px; font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; }
+.abdeen-cart-description { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 14px; }
+.abdeen-cart-name { display: block; font-size: 13px; line-height: 1.55; overflow-wrap: anywhere; }
+.abdeen-cart-price { color: #b31d28; font-size: 12px; text-align: right; white-space: nowrap; }
+.abdeen-cart-price s { display: block; color: #737373; font-size: 11px; }
+.abdeen-cart-option { margin: 7px 0 0; color: #737373; font-size: 11px; overflow-wrap: anywhere; }
+.abdeen-cart-controls { display: flex; align-items: center; gap: 16px; margin-top: 14px; }
+.abdeen-cart-quantity { display: flex; height: 36px; border: 1px solid #dedede; }
+.abdeen-cart-quantity button { width: 30px; padding: 0; border: 0; background: #fff; font-size: 15px; }
+.abdeen-cart-quantity input { width: 34px; min-width: 0; padding: 0; border: 0; border-radius: 0; background: #fff; text-align: center; font: inherit; font-size: 12px; appearance: textfield; -moz-appearance: textfield; }
+.abdeen-cart-quantity input::-webkit-inner-spin-button, .abdeen-cart-quantity input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.abdeen-cart-remove { min-height: 36px; padding: 0; border: 0; background: none; color: #737373 !important; font-size: 11px !important; text-decoration: underline; text-underline-offset: 3px; }
+.abdeen-cart-footer { flex: 0 0 auto; padding: 22px 40px max(28px, env(safe-area-inset-bottom)); border-top: 1px solid #dedede; background: #fff; }
+.abdeen-cart-view { font-size: 11px; text-decoration: underline; text-underline-offset: 3px; }
+.abdeen-cart-shipping { margin: 4px 0 24px; color: #737373; font-size: 11px; }
+.abdeen-cart-checkout, .abdeen-cart-shop { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 13px 16px; background: #10283e; color: #fff !important; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; text-decoration: none !important; }
+.abdeen-cart-checkout:hover, .abdeen-cart-shop:hover { background: #1d3a52; }
+.abdeen-cart-checkout svg { margin-right: auto; flex-shrink: 0; }
+.abdeen-cart-checkout > :last-child { margin-right: auto; white-space: nowrap; }
+.abdeen-cart-discount { display: flex; justify-content: space-between; gap: 16px; margin: 0 0 8px; font-size: 11px; }
+.abdeen-cart-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 55vh; text-align: center; }
+.abdeen-cart-empty > svg { width: 40px; height: 40px; margin-bottom: 24px; }
+.abdeen-cart-empty h3 { font-family: "Playfair Display", Georgia, serif; font-size: 28px; font-weight: 400; }
+.abdeen-cart-empty p { margin: 8px 0 24px; color: #737373; }
+.abdeen-cart-error, .abdeen-cart-notice { margin: 12px 24px; padding: 12px; background: #fff7f2; color: #802a18; font-size: 12px; overflow-wrap: anywhere; }
+.abdeen-cart-notice { margin: 0 0 16px; }
+.abdeen-cart-status { margin: 0; }
+.abdeen-cart-status:not(:empty) { padding: 10px 40px; color: #737373; font-size: 12px; }
+.abdeen-cart-recovery { margin: 0 40px 24px; text-decoration: underline; }
+.abdeen-cart[aria-busy="true"] .abdeen-cart-body { opacity: .6; }
+.abdeen-cart[aria-busy="true"] .abdeen-cart-footer { pointer-events: none; }
+@keyframes abdeen-cart-enter { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@media (max-width: 540px) {
+    .abdeen-cart-header { padding: 14px 12px 14px 24px; }
+    .abdeen-cart-scroll { padding: 24px; }
+    .abdeen-cart-footer { padding: 18px 24px max(20px, env(safe-area-inset-bottom)); }
+    .abdeen-cart-line { grid-template-columns: 65px minmax(0, 1fr); gap: 16px; }
+    .abdeen-cart-image img { height: 95px; }
+    .abdeen-cart-description { gap: 8px; }
+    .abdeen-cart-controls { gap: 12px; }
+    .abdeen-cart-checkout { gap: 8px; letter-spacing: .08em; }
+}
+@media (prefers-reduced-motion: reduce) { .abdeen-cart[open] { animation: none; } }

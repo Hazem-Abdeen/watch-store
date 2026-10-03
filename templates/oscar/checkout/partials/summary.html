@@ -1,0 +1,19 @@
+{% load i18n %}
+<aside class="abdeen-checkout-summary" aria-labelledby="order-summary-heading">
+    <div class="abdeen-checkout-summary-heading">
+        <div><p class="abdeen-checkout-eyebrow">{% trans 'Your selection' %}</p><h2 id="order-summary-heading">{% trans 'Order summary' %}</h2></div>
+        {% if not order %}<a href="{% url 'basket:summary' %}">{% trans 'Edit bag' %}</a>{% endif %}
+    </div>
+    <ul class="abdeen-checkout-lines">
+        {% if order %}
+            {% for line in order.lines.all %}{% include 'oscar/checkout/partials/summary_line.html' with confirmed=True %}{% endfor %}
+        {% else %}
+            {% for line in basket.all_lines %}{% include 'oscar/checkout/partials/summary_line.html' %}{% endfor %}
+        {% endif %}
+    </ul>
+    {% if order %}
+        {% include 'oscar/order/partials/basket_totals.html' %}
+    {% else %}
+        {% include 'oscar/checkout/partials/summary_totals.html' %}
+    {% endif %}
+</aside>
