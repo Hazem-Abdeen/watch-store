@@ -17,6 +17,8 @@ static/abdeen/css/tailwind.css
 
 # Environment
 .env
+.env.*
+!.env.production.example
 
 # IDE
 .idea/
