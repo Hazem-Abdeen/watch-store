@@ -10,6 +10,15 @@
 :is(.abdeen-home, .abdeen-catalogue, .abdeen-detail, .abdeen-recently-viewed) .abdeen-product-title { margin: 0; font-size: 12px; font-weight: 500; line-height: 1.6; letter-spacing: 0; }
 :is(.abdeen-home, .abdeen-catalogue, .abdeen-detail, .abdeen-recently-viewed) .abdeen-product-price { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: baseline; margin: 10px 0 0; color: #171717; font-size: 14px; font-weight: 600; line-height: 1.5; }
 .abdeen-product-price span { font-size: 10px; font-weight: 400; color: #686868; }
+.abdeen-detail-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; }
+:is(.abdeen-product-price, .abdeen-detail-price) .abdeen-sale-prices { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; min-width: 0; font-size: inherit; color: inherit; }
+.abdeen-price-regular, .abdeen-price-current { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.abdeen-price-regular { color: #686868; font-size: .85em; font-weight: 400; text-decoration-thickness: 1px; }
+.abdeen-price-current { color: #171717; font-size: inherit; font-weight: 700; }
+:is(.abdeen-product-price, .abdeen-detail-price) .abdeen-price-discount { display: inline-block; padding: 3px 6px; border-radius: 3px; background: #f4ede3; color: #684518; font-size: 10px; font-weight: 700; line-height: 1.5; letter-spacing: .025em; white-space: nowrap; }
+.abdeen-price-discount > span { color: inherit; font-size: inherit; font-weight: inherit; }
+.abdeen-detail-price .abdeen-price-discount { font-size: 12px; }
+.abdeen-detail-price .abdeen-price-tax { font-size: 12px; font-weight: 400; }
 :is(.abdeen-home, .abdeen-catalogue, .abdeen-detail, .abdeen-recently-viewed) :is(.abdeen-product-availability, .abdeen-product-options) { margin: 5px 0 0; font-size: 10px; font-weight: 400; line-height: 1.5; color: #686868; }
 @media (min-width: 640px) {
     .abdeen-product-grid { gap: 48px 24px; grid-template-columns: repeat(3, minmax(0, 1fr)); }

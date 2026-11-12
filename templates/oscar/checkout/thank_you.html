@@ -1,19 +1,28 @@
-{% extends "oscar/checkout/thank_you.html" %}
-{% load i18n currency_filters %}
-
-{% block checkout_title %}{% trans 'Thank you for your order' %}{% endblock %}
-{# The shared sidebar reads the placed order, not the now-empty basket. #}
-{% block order_contents %}{% endblock %}
-{% block payment_info %}
-    <div class="sub-header"><h2>{% trans 'Payment' %}</h2></div>
-    <div class="card card-body bg-light">
-        <h3>{% trans 'Payment information' %}</h3>
-        {% for source in order.sources.all %}
-            <p>{% if source.reference %}{% blocktrans with amount=source.amount_allocated|currency:source.currency type=source.source_type.name reference=source.reference %}Allocation of {{ amount }} from type {{ type }} (reference: {{ reference }}){% endblocktrans %}{% else %}{% blocktrans with amount=source.amount_allocated|currency:source.currency type=source.source_type.name %}Allocation of {{ amount }} from type {{ type }}{% endblocktrans %}{% endif %}</p>
-        {% empty %}<p>{% trans 'No payment transaction is recorded for this order.' %}</p>{% endfor %}
-        {% if order.billing_address %}
-            <h4>{% trans 'Billing address' %}</h4>
-            <address>{% for field in order.billing_address.active_address_fields %}{{ field }}<br>{% endfor %}</address>
-        {% endif %}
-    </div>
+{% extends 'oscar/checkout/layout.html' %}
+{% load currency_filters %}
+{% block title %}Order {{ order.number }}: confirmation | {{ block.super }}{% endblock %}
+{% block checkout_title %}Thank you for your order{% endblock %}
+{% block checkout_nav %}{% include 'oscar/checkout/nav.html' with step=5 %}{% endblock %}
+{% block content %}
+<p class="lead">Your order has been placed. Your order number is <strong>{{ order.number }}</strong>.</p>
+<section class="cod-section">
+    <h2>Delivery</h2>
+    {% if order.shipping_address %}<address>{% for field in order.shipping_address.active_address_fields %}{{ field }}<br>{% endfor %}</address>
+    <p>{{ order.shipping_address.phone_number }}</p>
+    {% if order.shipping_address.notes %}<p>{{ order.shipping_address.notes|linebreaksbr }}</p>{% endif %}{% endif %}
+    <p>{{ order.guest_email|default:order.email }}</p>
+    <p>{{ order.shipping_method }} · {{ order.shipping_incl_tax|floatformat:"2u" }} {{ order.currency }}</p>
+    <p>Delivery within 1–2 business days</p>
+</section>
+<section class="cod-section">
+    <h2>Payment</h2>
+    {% for source in order.sources.all %}
+    <h3>{{ source.source_type.name }}</h3>
+    {% if source.source_type.code == 'cash-on-delivery-cod' %}<p>Payment due on delivery: {{ source.balance|currency:order.currency }}</p>{% endif %}
+    {% empty %}<p>No payment transaction is recorded for this order.</p>{% endfor %}
+</section>
+<div class="abdeen-checkout-form-actions">
+    <a class="btn btn-primary" href="{% url 'catalogue:index' %}">Continue shopping</a>
+    {% if user.is_authenticated %}<a href="{% url 'customer:order' order_number=order.number %}">View order</a>{% endif %}
+</div>
 {% endblock %}

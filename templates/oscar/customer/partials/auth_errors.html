@@ -1,0 +1,10 @@
+{% if form.errors %}
+    {% include 'oscar/partials/messages/alert.html' with level='danger' heading='Please check your details' message='Review the errors below and try again.' dismissible=False %}
+{% endif %}
+{% for error in form.non_field_errors.as_data %}
+    {% if error.code == 'invalid_login' %}
+        {% include 'oscar/partials/messages/alert.html' with level='danger' message='The email or password is incorrect.' heading='' dismissible=False %}
+    {% else %}
+        {% for message in error.messages %}{% include 'oscar/partials/messages/alert.html' with level='danger' message=message heading='' dismissible=False %}{% endfor %}
+    {% endif %}
+{% endfor %}

@@ -1,0 +1,52 @@
+{% extends 'oscar/checkout/layout.html' %}
+{% load static widget_tweaks %}
+{% block title %}Checkout | {{ block.super }}{% endblock %}
+{% block extrastyles %}{{ block.super }}<link rel="stylesheet" href="{% static 'abdeen/css/account.css' %}">{% endblock %}
+{% block checkout_nav %}{% include 'oscar/checkout/nav.html' with step=0 %}{% endblock %}
+{% block checkout_title %}Checkout{% endblock %}
+{% block content %}
+<div class="abdeen-gateway">
+    {% include 'oscar/customer/partials/auth_errors.html' %}
+    {% if form.errors %}
+        {% for error in form.options.errors %}{% include 'oscar/partials/messages/alert.html' with level='danger' message=error heading='' dismissible=False %}{% endfor %}
+    {% endif %}
+    <section aria-labelledby="guest-heading">
+        <h2 id="guest-heading">Continue as a guest</h2>
+        <p>No account needed. Enter your email to continue.</p>
+        <form id="guest_checkout_form" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="options" value="anonymous">
+            <div class="form-group">
+                <label class="col-form-label" for="id_guest_email">Email</label>
+                {% if form.data.options != 'existing' and form.username.errors %}
+                {% render_field form.username id="id_guest_email" class="form-control" autocomplete="email" aria-invalid="true" aria-describedby="id_guest_email_error" %}
+                <ul class="error-block abdeen-field-errors" id="id_guest_email_error">{% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% else %}
+                <input type="email" name="{{ form.username.html_name }}" id="id_guest_email" class="form-control" autocomplete="email" value="{{ form.username.value|default_if_none:'' }}" required aria-invalid="false">
+                {% endif %}
+            </div>
+            <button class="btn btn-primary abdeen-auth-submit" type="submit">Continue as guest</button>
+        </form>
+    </section>
+    <section class="abdeen-gateway-signin" aria-labelledby="signin-heading">
+        <h2 id="signin-heading">Already have an account?</h2>
+        <form id="checkout_login_form" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="options" value="existing">
+            <div class="form-group">
+                <label class="col-form-label" for="id_login_email">Email</label>
+                {% if form.data.options == 'existing' and form.username.errors %}
+                {% render_field form.username id="id_login_email" class="form-control" autocomplete="username" aria-invalid="true" aria-describedby="id_login_email_error" %}
+                <ul class="error-block abdeen-field-errors" id="id_login_email_error">{% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% else %}
+                <input type="email" name="{{ form.username.html_name }}" id="id_login_email" class="form-control" autocomplete="username" value="{{ form.username.value|default_if_none:'' }}" required aria-invalid="false">
+                {% endif %}
+            </div>
+            {% include 'oscar/partials/form_field.html' with field=form.password %}
+            <button class="btn abdeen-auth-submit" type="submit">Sign in</button>
+        </form>
+        <p class="abdeen-auth-link"><a href="{% url 'password-reset' %}">Forgot your password?</a></p>
+        <p class="abdeen-auth-link"><a href="{% url 'customer:register' %}?next={% url 'checkout:shipping-address' %}">Create an account</a> <span class="abdeen-account-muted">— optional</span></p>
+    </section>
+</div>
+{% endblock %}

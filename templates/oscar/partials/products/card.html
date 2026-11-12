@@ -22,16 +22,14 @@
                 {% if purchase.price.exists %}
                     {% if home_card and purchase.price.currency != 'JOD' %}
                         <span>{% trans 'JOD price unavailable' %}</span>
-                    {% elif purchase.price.is_tax_known %}
-                        {{ purchase.price.incl_tax|card_currency:purchase.price.currency }}
                     {% else %}
-                        {{ purchase.price.excl_tax|card_currency:purchase.price.currency }} <span>{% trans 'excl. tax' %}</span>
+                        {% include 'oscar/partials/products/price.html' %}
                     {% endif %}
                 {% else %}
                     <span>{% trans 'Price unavailable' %}</span>
                 {% endif %}
             </p>
-            <p class="abdeen-product-availability">{{ purchase.availability|storefront_availability }}</p>
+
             {% if product.is_parent or product.has_options %}<p class="abdeen-product-options">{% trans 'Choose options' %}</p>{% endif %}
         </div>
     </a>

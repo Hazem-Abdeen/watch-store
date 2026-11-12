@@ -1,0 +1,14 @@
+{% load i18n storefront_tags sale_price_tags %}
+{% product_sale request product purchase as sale %}
+{% if sale %}
+    <span class="abdeen-sale-prices">
+        <span class="sr-only">{% trans 'Regular price' %}</span><s class="abdeen-price-regular">{{ sale.regular|card_currency:sale.currency }}</s>
+        <span class="sr-only">{% trans 'Current price' %}</span><strong class="abdeen-price-current">{{ sale.current|card_currency:sale.currency }}</strong>
+    </span>
+    {% if not sale.is_tax_known %}<span class="abdeen-price-tax">{% trans 'excl. tax' %}</span>{% endif %}
+    {% if sale.percentage %}<span class="abdeen-price-discount"><span aria-hidden="true">{% blocktrans with percent=sale.percentage %}{{ percent }}% OFF{% endblocktrans %}</span><span class="sr-only">{% blocktrans with percent=sale.percentage %}{{ percent }} percent off the regular price{% endblocktrans %}</span></span>{% endif %}
+{% elif purchase.price.is_tax_known %}
+    {{ purchase.price.incl_tax|card_currency:purchase.price.currency }}
+{% else %}
+    {{ purchase.price.excl_tax|card_currency:purchase.price.currency }} <span>{% trans 'excl. tax' %}</span>
+{% endif %}

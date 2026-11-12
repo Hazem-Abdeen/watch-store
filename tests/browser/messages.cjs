@@ -68,11 +68,9 @@ fs.mkdirSync(screenshots, {recursive:true});
   assert.equal(await page.locator('#login_form .alert-danger').getAttribute('role'),'alert');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth),320);
   await page.screenshot({path:`${screenshots}/login-320.png`,fullPage:true});
-  // Preserve the existing authentication gate on the real checkout route.
+  // The native empty-basket precondition still guards guest checkout.
   await page.goto('http://127.0.0.1:8020/checkout/');
-  assert.equal(new URL(page.url()).pathname,'/accounts/login/');
-  assert.equal(new URL(page.url()).searchParams.get('next'),'/checkout/');
-  assert.equal(await page.locator('#login_form').count(),1);
+  assert.equal(new URL(page.url()).pathname,'/basket/');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth),320);
   await page.emulateMedia({reducedMotion:'reduce'});
   await page.goto('http://127.0.0.1:8020/__messages__/');

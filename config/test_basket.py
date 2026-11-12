@@ -88,7 +88,8 @@ class BasketPresentationTests(TestCase):
                      'action="' + reverse('basket:vouchers-add') + '"']:
             self.assertContains(response, text)
         self.assertEqual(response.context['basket'].total_excl_tax, Decimal('251.00'))
-        self.assertEqual(response.context['order_total'].excl_tax, Decimal('251.00'))
+        self.assertEqual(response.context['shipping_charge'].excl_tax, Decimal('2.00'))
+        self.assertEqual(response.context['order_total'].excl_tax, Decimal('253.00'))
         self.assertEqual(line.stockrecord, self.stock)
 
     def test_quantity_updates_database_totals_and_ajax_partial(self):
@@ -235,7 +236,8 @@ class BasketPresentationTests(TestCase):
         self.assertContains(response, str(currency(Decimal('130.50'), 'JOD')))
         checkout = self.client.get(reverse('checkout:index'), follow=True)
         self.assertEqual(checkout.status_code, 200)
-        self.assertTemplateUsed(checkout, 'oscar/customer/login_registration.html')
+        self.assertTemplateUsed(checkout, 'oscar/checkout/cod.html')
+        self.assertContains(checkout, 'PLACE ORDER')
         self.assertNotContains(checkout, 'abdeen/css/basket.css')
         for url in ['/', reverse('catalogue:index'), self.product.get_absolute_url()]:
             self.assertNotContains(self.client.get(url), 'abdeen/css/basket.css')

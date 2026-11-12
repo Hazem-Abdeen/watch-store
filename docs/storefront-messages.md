@@ -66,8 +66,10 @@ Headless Chrome verification passes at 1440, 768, 390, and 320px. Document and
 body widths equal each viewport width, with no horizontal overflow. Checks
 cover state icons/roles, checkout layout, inline error associations, links,
 keyboard focus and Enter/Space dismissal, Oscar AJAX creation/clearing,
-reduced motion, real invalid login, and the unchanged checkout authentication
-redirect. No browser JavaScript errors were recorded. Screenshots include all
+reduced motion, real invalid login, and the checkout authentication redirect in
+place at that time. [Customer accounts Phase 1](customer-accounts-phase1.md) enabled
+guest checkout; the script now checks the native empty-basket redirect instead.
+No browser JavaScript errors were recorded. Screenshots include all
 four message layouts, mobile login, and mobile checkout layout.
 
 ## Files changed for this work

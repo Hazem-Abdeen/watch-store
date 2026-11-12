@@ -39,3 +39,9 @@ media.backup*/
 # Local review/report artifacts
 variant-review.csv
 docs/screenshots/
+
+# Independent catalogue review images and local database/media backups
+var/catalogue-replacement/
+
+# Generated local reports and Excel files
+outputs/

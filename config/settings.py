@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from oscar.defaults import *  # noqa: F403
@@ -46,17 +47,17 @@ INSTALLED_APPS = [
 
     'oscar.config.Shop',
     'oscar.apps.analytics.apps.AnalyticsConfig',
-    'oscar.apps.checkout.apps.CheckoutConfig',
+    'config.checkout.apps.CheckoutConfig',
     'oscar.apps.address.apps.AddressConfig',
-    'oscar.apps.shipping.apps.ShippingConfig',
+    'config.shipping.apps.ShippingConfig',
     'oscar.apps.catalogue.apps.CatalogueConfig',
     'oscar.apps.catalogue.reviews.apps.CatalogueReviewsConfig',
     'oscar.apps.communication.apps.CommunicationConfig',
-    'oscar.apps.partner.apps.PartnerConfig',
+    'config.partner.apps.PartnerConfig',
     'oscar.apps.basket.apps.BasketConfig',
     'oscar.apps.payment.apps.PaymentConfig',
     'oscar.apps.offer.apps.OfferConfig',
-    'oscar.apps.order.apps.OrderConfig',
+    'config.order.apps.OrderConfig',
     'oscar.apps.customer.apps.CustomerConfig',
     'oscar.apps.search.apps.SearchConfig',
     'oscar.apps.voucher.apps.VoucherConfig',
@@ -65,7 +66,7 @@ INSTALLED_APPS = [
     'oscar.apps.dashboard.reports.apps.ReportsDashboardConfig',
     'oscar.apps.dashboard.users.apps.UsersDashboardConfig',
     'oscar.apps.dashboard.orders.apps.OrdersDashboardConfig',
-    'oscar.apps.dashboard.catalogue.apps.CatalogueDashboardConfig',
+    'config.dashboard.catalogue.apps.CatalogueDashboardConfig',
     'oscar.apps.dashboard.offers.apps.OffersDashboardConfig',
     'oscar.apps.dashboard.partners.apps.PartnersDashboardConfig',
     'oscar.apps.dashboard.pages.apps.PagesDashboardConfig',
@@ -95,8 +96,22 @@ OSCAR_DASHBOARD_NAVIGATION = [*OSCAR_DASHBOARD_NAVIGATION, {
     ],
 }]
 OSCAR_DEFAULT_CURRENCY = 'JOD'
+# The project shipping app changes methods only; retain Oscar's model history.
+MIGRATION_MODULES = {'shipping': 'oscar.apps.shipping.migrations', 'order': 'oscar.apps.order.migrations'}
+# Keep Oscar's guest email capture, checkout session and preconditions intact.
+OSCAR_ALLOW_ANON_CHECKOUT = True
+OSCAR_ALLOW_GUEST_CHECKOUT_WITH_ACCOUNT = True
 # Presentation only: keep Oscar's feature routes/models and purchase policies.
 ABDEEN_STOREFRONT_HIDDEN_FEATURES = ('reviews', 'wishlists')
+ABDEEN_WHATSAPP_URL = (
+    'https://wa.me/962777762828'
+    '?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D9%84%D8%AF%D9%8A%20%D8%B3%D8%A4%D8%A7%D9%84%20%D8%B9%D9%86%20%D8%B3%D8%A7%D8%B9%D8%A9.'
+)
+ABDEEN_SOCIAL_LINKS = (
+    {'icon': 'instagram', 'name': 'Instagram', 'url': 'https://www.instagram.com/abdeenwatches/'},
+    {'icon': 'facebook', 'name': 'Facebook', 'url': 'https://www.facebook.com/Abdeenwatchesa/'},
+    {'icon': 'whatsapp', 'name': 'WhatsApp', 'url': ABDEEN_WHATSAPP_URL},
+)
 OSCAR_CURRENCY_FORMAT = {
     'JOD': {'format': '0.### ¤¤', 'currency_digits': False, 'decimal_quantization': False},
 }
@@ -215,3 +230,25 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 OSCAR_SEND_REGISTRATION_EMAIL = False
+
+# Development prints emails locally; production must explicitly select SMTP.
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'true').lower() == 'true'
+EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'false').lower() == 'true'
+EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', '10'))
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Abdeen Watches <orders@localhost>')
+SERVER_EMAIL = os.environ.get('SERVER_EMAIL', 'server@localhost')
+OSCAR_FROM_EMAIL = DEFAULT_FROM_EMAIL
+ABDEEN_ORDER_NOTIFICATION_EMAILS = [
+    'hazem.abdeen39@gmail.com',
+    'hossam.abdeen199@gmail.com',
+    'emad11abdeen@gmail.com',
+]
+if 'ABDEEN_ORDER_NOTIFICATION_EMAILS' in os.environ:
+    ABDEEN_ORDER_NOTIFICATION_EMAILS = [
+        email.strip() for email in os.environ['ABDEEN_ORDER_NOTIFICATION_EMAILS'].split(',') if email.strip()
+    ]

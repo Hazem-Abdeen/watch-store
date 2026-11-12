@@ -57,9 +57,10 @@ only on the basket page. No compatibility/backend fix was needed.
 
 - Missing product photographs use the existing placeholder; no product assets
   or inventory details were invented.
-- The current shipping repository supplies free shipping, and checkout requires
-  login. The redesign preserves both configurations; a paid shipping method is
-  covered by an isolated regression test.
+- The shipping repository supplies free shipping; a paid shipping method is
+  covered by an isolated regression test. Checkout required login during this
+  redesign. [Customer accounts Phase 1](customer-accounts-phase1.md) subsequently
+  enabled Oscar's native guest checkout.
 - Final order placement/payment was outside this basket-only redesign.
 - The existing Whoosh query-faceting warning remains unrelated to this change.
 

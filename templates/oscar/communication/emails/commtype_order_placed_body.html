@@ -1,0 +1,7 @@
+{% extends 'oscar/communication/emails/abdeen_order_base.html' %}
+{% block message %}
+<h1 style="margin:0 0 16px;font-size:24px;line-height:1.3;">Thank you for your order</h1>
+<p style="margin:0 0 12px;">Hello {{ notification.customer_name }},</p>
+<p style="margin:0 0 24px;">We have received your order and will prepare it for delivery.</p>
+{% include 'oscar/communication/emails/abdeen_order_details.html' %}
+{% endblock %}

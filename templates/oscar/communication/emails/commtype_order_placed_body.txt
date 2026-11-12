@@ -1,0 +1,11 @@
+{% autoescape off %}ABDEEN WATCHES
+
+Hello {{ notification.customer_name }},
+
+Thank you for your order. We have received it and will prepare it for delivery.
+
+{% include 'oscar/communication/emails/abdeen_order_details.txt' %}
+
+Abdeen Watches
+Time, beautifully considered.
+{% endautoescape %}

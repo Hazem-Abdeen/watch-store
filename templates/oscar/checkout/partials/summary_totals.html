@@ -1,11 +1,22 @@
 {% extends "oscar/basket/partials/basket_totals.html" %}
 {% load i18n currency_filters %}
 
-{% block basket_header %}<tr><th colspan="2"><h3>{% trans 'Subtotal' %}</h3></th></tr>{% endblock %}
-{% block shipping_totals %}
-    {% if shipping_method %}{{ block.super }}{% else %}<tr><td colspan="2" class="abdeen-checkout-pending">{% trans 'Shipping and the final total will appear after your delivery method is selected.' %}</td></tr>{% endif %}
+{% block basket_header %}{% endblock %}
+{% block basket_total %}
+<tr>
+    <th>{% trans 'Subtotal' %}{% if offer_discounts or voucher_discounts %} <small>({% trans 'after discounts' %})</small>{% endif %}</th>
+    <td class="text-right">{% if not show_tax_separately and basket.is_tax_known %}{{ basket.total_incl_tax|currency:basket.currency }}{% else %}{{ basket.total_excl_tax|currency:basket.currency }}{% endif %}</td>
+</tr>
 {% endblock %}
-{% block order_total %}{% if order_total %}{{ block.super }}{% endif %}{% endblock %}
+{% block shipping_totals %}
+    {% if shipping_method.is_discounted %}{{ block.super }}{% elif shipping_method %}
+    <tr><th>{% trans 'Shipping' %}</th><td class="text-right">{% if not show_tax_separately and shipping_charge.is_tax_known %}{{ shipping_charge.incl_tax|floatformat:"2u" }}{% else %}{{ shipping_charge.excl_tax|floatformat:"2u" }}{% endif %} {{ basket.currency }}</td></tr>
+    {% else %}<tr><td colspan="2" class="abdeen-checkout-pending">{% trans 'Shipping and the final total will appear after your delivery method is selected.' %}</td></tr>{% endif %}
+{% endblock %}
+{% block order_total %}{% if order_total %}
+<tr class="cod-total"><th><h3>{% trans 'Total' %}</h3></th><td class="text-right"><strong class="price_color">{% if order_total.is_tax_known %}{{ order_total.incl_tax|currency:basket.currency }}{% else %}{{ order_total.excl_tax|currency:basket.currency }}{% endif %}</strong></td></tr>
+{% if not order_total.is_tax_known %}<tr><td colspan="2"><small>{% trans 'Taxes will be added during checkout.' %}</small></td></tr>{% endif %}
+{% endif %}{% endblock %}
 {% block tax_totals %}
     {% if shipping_method %}{{ block.super }}{% elif show_tax_separately and basket.is_tax_known %}<tr><th>{% trans 'Basket tax' %}</th><td class="text-right">{{ basket.total_tax|currency:basket.currency }}</td></tr>{% endif %}
 {% endblock %}

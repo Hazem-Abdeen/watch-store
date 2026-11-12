@@ -54,13 +54,12 @@
     <footer class="abdeen-cart-footer">
         {% for discount in basket.offer_discounts %}<p class="abdeen-cart-discount">{{ discount.name }} <span>−{{ discount.discount|currency:basket.currency }}</span></p>{% endfor %}
         {% for discount in basket.grouped_voucher_discounts %}<p class="abdeen-cart-discount">{{ discount.voucher.name }} <span>−{{ discount.discount|currency:basket.currency }}</span></p>{% endfor %}
-        <a class="abdeen-cart-view" href="{% url 'basket:summary' %}">{% trans 'View shopping bag' %}</a>
         <p class="abdeen-cart-shipping">{% trans 'Shipping and any applicable taxes are confirmed at checkout.' %}</p>
         <a class="abdeen-cart-checkout" href="{% url 'checkout:index' %}">
-            <svg width="16" height="18" viewBox="0 0 16 18" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 7h12v9H2zM5 7V4a3 3 0 0 1 6 0v3M8 10v3"/></svg>
             <span>{% trans 'Checkout' %}</span><span aria-hidden="true">·</span>
             <span>{% if basket.is_tax_known %}{{ basket.total_incl_tax|currency:basket.currency }}{% else %}{{ basket.total_excl_tax|currency:basket.currency }}{% endif %}</span>
         </a>
+        <a class="abdeen-cart-view" href="{% url 'basket:summary' %}">{% trans 'View cart' %}</a>
     </footer>
     {% endif %}
 </div>

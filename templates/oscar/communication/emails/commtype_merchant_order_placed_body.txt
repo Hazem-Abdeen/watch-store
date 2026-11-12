@@ -1,0 +1,10 @@
+ABDEEN WATCHES
+
+NEW ORDER
+A new Cash on Delivery order is ready for fulfilment.
+
+{% include 'oscar/communication/emails/abdeen_order_details.txt' %}
+{% if notification.dashboard_url %}
+View order in dashboard:
+{{ notification.dashboard_url }}
+{% endif %}

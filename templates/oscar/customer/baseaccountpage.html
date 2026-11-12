@@ -1,0 +1,21 @@
+{% extends 'oscar/customer/auth_base.html' %}
+{% block title %}{{ page_title }} | My account | {{ block.super }}{% endblock %}
+{% block content_wrapper %}
+<div class="abdeen-account" id="catalogue-top">
+    <div class="abdeen-shell">
+        <header class="abdeen-account-heading">
+            <p class="abdeen-account-eyebrow"><span class="abdeen-dot"></span> Your Abdeen</p>
+            <h1>My account</h1>
+        </header>
+        {% include 'oscar/partials/alert_messages.html' %}
+        <div class="abdeen-account-grid">
+            <nav class="abdeen-account-nav" aria-label="Account navigation">
+                <ul>{% include 'oscar/customer/partials/standard_tabs.html' %}</ul>
+            </nav>
+            <div class="abdeen-account-content" id="content_inner">
+                {% block tabcontent %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

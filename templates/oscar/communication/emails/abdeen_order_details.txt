@@ -1,0 +1,28 @@
+{% load currency_filters %}{% autoescape off %}Order #{{ notification.number }}
+Order date: {{ notification.date|date:"j F Y, H:i T" }}
+
+ORDER SUMMARY
+{% for line in notification.lines %}
+{{ line.title }}
+Quantity: {{ line.quantity }} | Unit price: {{ line.unit_price|currency:notification.currency }} | Line total: {{ line.total|currency:notification.currency }}
+{% endfor %}
+Subtotal: {{ notification.subtotal|currency:notification.currency }}
+{% for discount in notification.discounts %}Discount: {{ discount.label }}{% if discount.voucher %} ({{ discount.voucher }}){% endif %}: -{{ discount.amount|currency:notification.currency }}
+{% endfor %}Shipping{% if notification.shipping_discounts %} (before discount){% endif %}: {{ notification.shipping|currency:notification.currency }}
+{% for discount in notification.shipping_discounts %}Shipping discount: {{ discount.label }}{% if discount.voucher %} ({{ discount.voucher }}){% endif %}: -{{ discount.amount|currency:notification.currency }}
+{% endfor %}{% for charge in notification.surcharges %}{{ charge.name }}: {{ charge.amount|currency:notification.currency }}
+{% endfor %}Final total: {{ notification.total|currency:notification.currency }}
+
+DELIVERY & CONTACT
+Customer: {{ notification.customer_name }}
+Email: {{ notification.customer_email }}
+Phone: {{ notification.phone }}
+
+Shipping address:
+{% for field in notification.address %}{{ field }}
+{% endfor %}
+Shipping method: {{ notification.shipping_method }}
+Delivery within 1–2 business days
+Payment method: Cash on Delivery
+Payment is due when the order arrives.
+{% endautoescape %}

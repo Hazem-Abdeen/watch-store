@@ -4,6 +4,8 @@ from oscar.apps.dashboard.apps import DashboardConfig as OscarDashboardConfig
 
 
 class DashboardConfig(OscarDashboardConfig):
+    name = 'config.dashboard'
+
     def configure_permissions(self):
         super().configure_permissions()
         # Same staff-only policy as Oscar's dashboard management areas. Partners

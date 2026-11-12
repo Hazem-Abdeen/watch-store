@@ -1,0 +1,22 @@
+{% extends 'oscar/layout.html' %}
+{% load static i18n %}
+{% block extrastyles %}{{ block.super }}<link rel="stylesheet" href="{% static 'abdeen/css/account.css' %}">{% endblock %}
+{% block scripts %}{{ block.super }}<script src="{% static 'abdeen/js/homepage.js' %}" defer></script>{% endblock %}
+{% block announcement_bar %}{% endblock %}
+{% block storefront_header %}{% include 'oscar/partials/home/header.html' %}{% endblock %}
+{% block storefront_footer %}{% include 'oscar/partials/home/footer.html' with catalogue_browse=True %}{% endblock %}
+{% block content_wrapper %}
+<div class="abdeen-account" id="catalogue-top">
+    <div class="abdeen-shell">
+        <div class="abdeen-auth">
+            {% include 'oscar/partials/alert_messages.html' %}
+            <header class="abdeen-account-heading">
+                <p class="abdeen-account-eyebrow"><span class="abdeen-dot"></span> Your Abdeen</p>
+                <h1>{% block account_heading %}{% endblock %}</h1>
+                {% block account_intro %}{% endblock %}
+            </header>
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

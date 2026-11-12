@@ -13,6 +13,7 @@ from django.db import connection, transaction
 from django.db.models import Max
 from django.utils.text import slugify
 from oscar.core.loading import get_model
+from config.partner.pricing import valid_regular_price
 
 from .images import download_image, uploads_url
 from .models import CatalogueSource
@@ -385,6 +386,10 @@ class OscarImporter:
             stock.partner_sku = plan.sku
             stock.price_currency = 'JOD'
             stock.price = plan.price
+            # Source remains authoritative for current price (existing policy).
+            # Reference prices are fill-only: never replace a maintained value.
+            if stock.regular_price is None:
+                stock.regular_price = valid_regular_price(plan.regular)
             stock.num_in_stock = 1 if plan.status == 'instock' else 0
             stock.full_clean()
             stock.save()

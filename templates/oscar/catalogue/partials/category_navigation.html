@@ -22,10 +22,11 @@
     </ul>
 </nav>
 {% if has_facets %}
-    <div class="abdeen-existing-facets">
-        <h3>{% trans 'Refine by' %}</h3>
-        {% for field, data in facet_data.items %}
-            {% if data.results %}{% include 'oscar/search/partials/facet.html' with name=data.name items=data.results %}{% endif %}
-        {% endfor %}
-    </div>
+    {% for field, data in facet_data.items %}
+        {% if field != 'product_class' and field != 'rating' and data.results %}
+            <div class="abdeen-existing-facets">
+                {% include 'oscar/search/partials/facet.html' with name=data.name items=data.results %}
+            </div>
+        {% endif %}
+    {% endfor %}
 {% endif %}

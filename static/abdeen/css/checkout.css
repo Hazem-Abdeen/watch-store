@@ -149,3 +149,111 @@
     .abdeen-checkout-grid { display: block; }
     .abdeen-checkout-summary { margin-top: 24px; }
 }
+
+/* COD: a single form, with the final action after the actual Oscar summary. */
+.abdeen-checkout-progress ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cod-section { padding-bottom: 28px; margin-bottom: 28px; border-bottom: 1px solid #e5e5e5; }
+.cod-section > h2, .cod-section-heading { margin-bottom: 20px; }
+.cod-section-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.cod-section-heading a, .cod-addresses a { font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+.abdeen-checkout .cod-note { color: #737373; font-size: 12px; margin-bottom: 20px; }
+.cod-fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 20px; }
+.cod-addresses { margin-bottom: 24px; padding: 14px 0; }
+.cod-addresses summary { cursor: pointer; min-height: 44px; }
+.cod-addresses ul { padding: 0 0 12px 20px; }
+.cod-addresses li a { display: inline-block; padding: 10px 0; }
+.cod-option { display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 16px; border: 1px solid #d4d4d4; border-radius: 4px; cursor: pointer; font-size: 12px; }
+.cod-option input { accent-color: #171717; flex: 0 0 auto; width: 16px; height: 16px; }
+.cod-option span { flex: 1; }
+.cod-option strong { font-variant-numeric: tabular-nums; }
+.cod-update { padding: 12px 0; min-height: 44px; background: transparent; border: 0; text-decoration: underline; text-underline-offset: 3px; font-size: 11px !important; cursor: pointer; }
+.cod-submit { margin-top: 24px; }
+.cod-submit p { margin-bottom: 12px; color: #525252; font-size: 12px; }
+.abdeen-checkout .cod-section address { margin-top: 16px; }
+@media (min-width: 600px) {
+    .cod-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cod-fields > .form-group:has(:is(#id_country, #id_line1, #id_line2, #id_notes)) { grid-column: 1 / -1; }
+}
+@media (min-width: 1024px) { .abdeen-checkout-side { position: sticky; top: 24px; } }
+
+/* Single-page COD checkout: scoped to avoid changing confirmation/account pages. */
+.cod-header { border-bottom: 1px solid #e4e4e4; background: #fff; }
+.cod-header-inner { max-width: 1120px; min-height: 92px; margin: 0 auto; padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.cod-logo { display: block; flex: 0 0 auto; width: 126px; }
+.cod-logo img { display: block; width: 100%; height: auto; }
+.cod-back { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; color: #525252; font: 12px/1.5 "Plus Jakarta Sans", sans-serif; text-decoration: none; }
+.cod-back svg { width: 20px; height: 20px; }
+.cod-footer { border-top: 1px solid #e4e4e4; padding: 24px; text-align: center; color: #737373; background: #fff; font: 11px/1.5 "Plus Jakarta Sans", sans-serif; }
+.cod-footer span { margin-inline: 10px; }
+.abdeen-checkout--cod { padding-bottom: 56px; }
+.abdeen-checkout--cod > .abdeen-shell { width: 100%; max-width: 1120px; margin-inline: auto; padding-inline: 32px; }
+.abdeen-checkout--cod .abdeen-checkout-heading { padding-block: 30px 28px; }
+.abdeen-checkout--cod h1 { font-size: 24px; font-weight: 700; letter-spacing: -.03em; }
+.abdeen-checkout--cod h2 { font-size: 17px; letter-spacing: -.02em; }
+.abdeen-checkout--cod .abdeen-checkout-grid { gap: 32px; }
+.abdeen-checkout--cod .cod-section { padding: 0; margin: 0 0 28px; border: 0; }
+.abdeen-checkout--cod .cod-section:last-child { margin-bottom: 0; }
+.abdeen-checkout--cod .cod-section > h2,
+.abdeen-checkout--cod .cod-section-heading { margin-bottom: 14px; }
+.abdeen-checkout--cod .cod-section-heading a { font-size: 11px; }
+.abdeen-checkout--cod .form-group { position: relative; margin-bottom: 12px; }
+.abdeen-checkout--cod .col-form-label { position: absolute; top: 7px; left: 13px; right: 13px; margin: 0; padding: 0; font-size: 10px; line-height: 1.5; font-weight: 500; z-index: 1; }
+.abdeen-checkout--cod .form-control { min-height: 56px; padding: 25px 12px 7px; border-color: #d8d8d8; border-radius: 7px; font-size: 14px; line-height: 1.5; transition: border-color .15s; }
+.abdeen-checkout--cod .form-control:focus { border-color: #10283e; outline: 2px solid #10283e; outline-offset: 1px; }
+.abdeen-checkout--cod .form-control:disabled { color: #525252; background: #f5f5f4; opacity: 1; cursor: default; }
+.abdeen-checkout--cod textarea.form-control { min-height: 76px; }
+.abdeen-checkout--cod .form-text { font-size: 11px; }
+.abdeen-checkout--cod .cod-fields { gap: 0 12px; }
+.abdeen-checkout--cod .cod-addresses { padding: 0; margin-bottom: 12px; font-size: 12px; }
+.abdeen-checkout--cod .cod-addresses summary { min-height: 32px; }
+.cod-selected { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border: 1px solid #c9cdd0; border-radius: 7px; background: #fafafa; font-size: 12px; }
+.cod-selected > div { min-width: 0; }
+.cod-selected strong { font-weight: 600; }
+.abdeen-checkout .cod-selected p { color: #686868; margin-top: 3px; font-size: 12px; line-height: 1.6; }
+.cod-selected-price { flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.abdeen-checkout--cod .cod-option { border-radius: 7px; margin-bottom: 8px; }
+.abdeen-checkout--cod .abdeen-checkout-side { padding: 24px; border: 1px solid #e7e7e5; border-radius: 8px; background: #f7f7f5; }
+.abdeen-checkout--cod .abdeen-checkout-summary { padding: 0; border: 0; border-radius: 0; background: transparent; }
+.abdeen-checkout--cod .abdeen-checkout-summary-heading { align-items: center; margin-bottom: 20px; }
+.abdeen-checkout--cod .abdeen-checkout-summary-heading .abdeen-checkout-eyebrow { display: none; }
+.abdeen-checkout--cod .abdeen-checkout-summary-heading > a { min-height: 32px; font-size: 11px; }
+.abdeen-checkout--cod .abdeen-checkout-line { grid-template-columns: 56px minmax(0, 1fr); gap: 12px; padding-block: 16px; }
+.abdeen-checkout--cod .abdeen-checkout-line:first-child { padding-top: 0; }
+.abdeen-checkout--cod .abdeen-checkout-line-image { width: 56px; height: 66px; border-radius: 6px; }
+.abdeen-checkout--cod .abdeen-checkout-line h3 { font-size: 12px; line-height: 1.5; }
+.abdeen-checkout--cod .abdeen-checkout-line-price { margin-top: 6px; }
+.abdeen-checkout--cod #basket_totals { margin-top: 18px; }
+.abdeen-checkout--cod #basket_totals table { font-size: 12px; }
+.abdeen-checkout--cod #basket_totals :is(td, th) { padding-block: 7px; }
+.abdeen-checkout--cod #basket_totals .text-right { text-align: right; }
+.abdeen-checkout--cod #basket_totals .cod-total > * { padding-top: 18px; }
+.abdeen-checkout--cod #basket_totals .cod-total h3 { font-size: 16px; }
+.abdeen-checkout--cod #basket_totals .price_color { font-size: 22px; white-space: nowrap; }
+.abdeen-checkout--cod .cod-submit { margin-top: 22px; }
+.abdeen-checkout--cod #place-order { min-height: 52px; border-radius: 6px; background: #10283e; border-color: #10283e; font-size: 12px; letter-spacing: .09em; cursor: pointer; }
+.abdeen-checkout--cod #place-order:hover { background: #1d3a52; }
+.abdeen-checkout--cod .cod-submit p { margin: 12px 0 0; font-size: 10px; text-align: center; color: #737373; }
+@media (min-width: 900px) {
+    .abdeen-checkout--cod .abdeen-checkout-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 56px; }
+    .abdeen-checkout--cod .abdeen-checkout-side { position: sticky; top: 24px; }
+}
+@media (max-width: 899px) {
+    .cod-header-inner, .abdeen-checkout--cod > .abdeen-shell { max-width: 640px; }
+    .abdeen-checkout--cod .abdeen-checkout-side { position: static; }
+    .abdeen-checkout--cod .form-control { font-size: 16px; }
+}
+@media (max-width: 599px) {
+    .cod-header-inner { min-height: 76px; padding: 10px 20px; }
+    .cod-logo { width: 108px; }
+    .abdeen-checkout--cod > .abdeen-shell { padding-inline: 20px; }
+    .abdeen-checkout--cod .abdeen-checkout-heading { padding-block: 24px; }
+    .abdeen-checkout--cod .abdeen-checkout-side { padding: 20px; }
+    .abdeen-checkout--cod .cod-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .abdeen-checkout--cod .cod-fields > .form-group:has(:is(#id_country, #id_line1, #id_line2, #id_notes)) { grid-column: 1 / -1; }
+}
+@media (max-width: 359px) {
+    .cod-header-inner, .abdeen-checkout--cod > .abdeen-shell { padding-inline: 16px; }
+    .abdeen-checkout--cod .cod-fields { grid-template-columns: minmax(0, 1fr); }
+    .abdeen-checkout--cod .abdeen-checkout-side { padding: 16px; }
+    .abdeen-checkout--cod #basket_totals .price_color { font-size: 20px; }
+}

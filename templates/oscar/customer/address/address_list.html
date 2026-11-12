@@ -1,0 +1,46 @@
+{% extends "oscar/customer/baseaccountpage.html" %}
+{% load i18n %}
+
+{% block tabcontent %}
+<section class="abdeen-addresses" aria-labelledby="addresses-heading">
+    <header class="abdeen-account-section-heading">
+        <div><h2 id="addresses-heading">{% trans 'My addresses' %}</h2><p>{% trans 'Manage the addresses you use for delivery.' %}</p></div>
+        <a href="{% url 'customer:address-create' %}" class="btn btn-primary">{% trans 'Add a new address' %} <span aria-hidden="true">+</span></a>
+    </header>
+    {% if addresses %}
+        <div class="abdeen-address-grid">
+        {% for address in addresses %}
+            <article class="abdeen-account-panel abdeen-address-panel" aria-labelledby="address-heading-{{ address.id }}">
+                <div class="abdeen-address-heading">
+                    <h3 id="address-heading-{{ address.id }}">{% blocktrans with number=forloop.counter %}Address {{ number }}{% endblocktrans %}</h3>
+                    {% if address.is_default_for_shipping %}<span class="abdeen-address-default">{% trans 'Default delivery' %}</span>{% endif %}
+                    {% if address.is_default_for_billing %}<span class="abdeen-address-default">{% trans 'Default billing' %}</span>{% endif %}
+                </div>
+                <address>{% for field in address.active_address_fields %}{{ field }}{% if not forloop.last %}<br>{% endif %}{% endfor %}</address>
+                {% if address.phone_number %}<p class="abdeen-address-phone">{{ address.phone_number }}</p>{% endif %}
+                <div class="abdeen-address-actions">
+                    <a class="btn" href="{% url 'customer:address-detail' pk=address.id %}" aria-label="{% blocktrans with number=forloop.counter %}Edit address {{ number }}{% endblocktrans %}">{% trans 'Edit address' %}</a>
+                    <a class="abdeen-address-delete" href="{% url 'customer:address-delete' pk=address.id %}" aria-label="{% blocktrans with number=forloop.counter %}Delete address {{ number }}{% endblocktrans %}">{% trans 'Delete address' %}</a>
+                </div>
+                {% if address.country.is_shipping_country and not address.is_default_for_shipping or not address.is_default_for_billing %}
+                <div class="abdeen-address-default-actions">
+                    {% if address.country.is_shipping_country and not address.is_default_for_shipping %}
+                    <a href="{% url 'customer:address-change-status' pk=address.id action='default_for_shipping' %}">{% trans 'Set as default delivery address' %}</a>
+                    {% endif %}
+                    {% if not address.is_default_for_billing %}
+                    <a href="{% url 'customer:address-change-status' pk=address.id action='default_for_billing' %}">{% trans 'Set as default billing address' %}</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </article>
+        {% endfor %}
+        </div>
+        {% include 'oscar/partials/pagination.html' %}
+    {% else %}
+        <div class="abdeen-account-panel abdeen-addresses-empty">
+            <h3>{% trans 'No saved addresses yet' %}</h3>
+            <p>{% trans 'Add an address to use the next time you check out.' %}</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock tabcontent %}

@@ -138,6 +138,11 @@
 .abdeen-footer .abdeen-logo { width: 200px; margin: -12px 0 18px -14px; }
 .abdeen-footer-about p { font-size: 13px; line-height: 1.9; }
 .abdeen-footer-signature { display: flex; align-items: center; gap: 10px; margin-top: 24px; font-size: 10px; letter-spacing: .04em; }
+.abdeen-footer-social { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.abdeen-footer-social a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid #444; border-radius: 50%; color: #d4d4d4; text-decoration: none; transition: color .2s, border-color .2s, background .2s; }
+.abdeen-footer-social a:hover { border-color: #888; background: #252525; }
+.abdeen-footer-social a:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+.abdeen-footer-social .abdeen-icon { width: 20px; height: 20px; }
 .abdeen-footer nav { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
 .abdeen-footer h2 { color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; margin-bottom: 16px; }
 .abdeen-footer nav a { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: 12px; overflow-wrap: anywhere; }
@@ -252,4 +257,48 @@
 @media (min-width: 768px) {
     .abdeen-home .abdeen-trust { padding-block: 40px; }
     .abdeen-trust-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 4vw, 56px); }
+}
+
+/* Floating WhatsApp contact button */
+.abdeen-whatsapp-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: #25d366;
+    color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0,0,0,.2);
+    text-decoration: none;
+    transition: background .2s, box-shadow .2s, transform .2s;
+}
+.abdeen-whatsapp-fab:hover {
+    background: #20ba5a;
+    box-shadow: 0 6px 20px rgba(0,0,0,.25);
+    transform: scale(1.05);
+    color: #fff;
+}
+.abdeen-whatsapp-fab:focus-visible {
+    outline: 2px solid #25d366;
+    outline-offset: 4px;
+}
+.abdeen-whatsapp-fab svg {
+    display: block;
+}
+@media (max-width: 639px) {
+    .abdeen-whatsapp-fab {
+        width: 48px;
+        height: 48px;
+        bottom: 16px;
+        right: 16px;
+    }
+    .abdeen-whatsapp-fab svg {
+        width: 24px;
+        height: 24px;
+    }
 }

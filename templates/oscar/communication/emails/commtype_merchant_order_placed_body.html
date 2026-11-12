@@ -1,0 +1,7 @@
+{% extends 'oscar/communication/emails/abdeen_order_base.html' %}
+{% block message %}
+<h1 style="margin:0 0 16px;font-size:24px;line-height:1.3;">NEW ORDER</h1>
+<p style="margin:0 0 24px;">A new Cash on Delivery order is ready for fulfilment.</p>
+{% include 'oscar/communication/emails/abdeen_order_details.html' %}
+{% if notification.dashboard_url %}<p style="margin:24px 0 0;"><a href="{{ notification.dashboard_url }}" style="display:inline-block;padding:14px 18px;background:#171717;color:#ffffff;text-decoration:none;font-weight:bold;">View order in dashboard</a></p>{% endif %}
+{% endblock %}

@@ -8,6 +8,16 @@ register.tags.update(display_tags.register.tags)
 register.filters.update(display_tags.register.filters)
 
 
+@register.simple_tag
+def storefront_social_links():
+    return getattr(settings, 'ABDEEN_SOCIAL_LINKS', ())
+
+
+@register.simple_tag
+def storefront_whatsapp_url():
+    return getattr(settings, 'ABDEEN_WHATSAPP_URL', '')
+
+
 def feature_visible(context, feature):
     request = context.get('request')
     match = getattr(request, 'resolver_match', None)

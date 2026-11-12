@@ -1,26 +1,4 @@
-{% load i18n %}
-{% load storefront_display_tags %}
-
-<li class="nav-item">
-    <a href="{% url 'customer:profile-view' %}" class="nav-link{% if active_tab == 'profile' %} active{% endif %}">{% trans "Profile" %}</a>
-</li>
-<li class="nav-item">
-    <a href="{% url 'customer:order-list' %}" class="nav-link{% if active_tab == 'orders' %} active{% endif %}">{% trans "Order History" %}</a>
-</li>
-<li class="nav-item">
-    <a href="{% url 'customer:address-list' %}" class="nav-link{% if active_tab == 'addresses' %} active{% endif %}">{% trans "Address Book" %}</a>
-</li>
-<li class="nav-item">
-    <a href="{% url 'customer:email-list' %}" class="nav-link{% if active_tab == 'emails' %} active{% endif %}">{% trans "Email History" %}</a>
-</li>
-<li class="nav-item">
-    <a href="{% url 'customer:alerts-list' %}" class="nav-link{% if active_tab == 'alerts' %} active{% endif %}">{% trans "Product Alerts" %}</a>
-</li>
-<li class="nav-item">
-    <a href="{% url 'customer:notifications-inbox' %}" class="nav-link{% if active_tab == 'notifications' %} active{% endif %}">{% trans "Notifications" %}</a>
-</li>
-{% iffeature 'wishlists' %}
-    <li class="nav-item">
-        <a href="{% url 'customer:wishlists-list' %}" class="nav-link{% if active_tab == 'wishlists' %} active{% endif %}">{% trans "Wish Lists" %}</a>
-    </li>
-{% endiffeature %}
+<li><a href="{% url 'customer:order-list' %}"{% if active_tab == 'orders' %} aria-current="page"{% endif %}>My orders</a></li>
+<li><a href="{% url 'customer:address-list' %}"{% if active_tab == 'addresses' %} aria-current="page"{% endif %}>My addresses</a></li>
+<li><a href="{% url 'customer:profile-view' %}"{% if active_tab == 'profile' %} aria-current="page"{% endif %}>Account details</a></li>
+<li><form action="{% url 'customer:logout' %}" method="post">{% csrf_token %}<button type="submit">Sign out</button></form></li>

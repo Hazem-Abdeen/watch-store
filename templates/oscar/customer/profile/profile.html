@@ -1,0 +1,21 @@
+{% extends 'oscar/customer/baseaccountpage.html' %}
+{% block tabcontent %}
+<section class="abdeen-profile" aria-labelledby="profile-heading">
+    <header class="abdeen-account-section-heading">
+        <div><h2 id="profile-heading">Account details</h2><p>Manage your personal information and password.</p></div>
+    </header>
+    <section class="abdeen-account-panel" aria-labelledby="personal-heading">
+        <h3 id="personal-heading">Personal information</h3>
+        <dl class="abdeen-profile-details">
+            {% if user.get_full_name %}<div><dt>Name</dt><dd>{{ user.get_full_name }}</dd></div>{% endif %}
+            <div><dt>Email</dt><dd>{{ user.email }}</dd></div>
+            <div><dt>Member since</dt><dd>{{ user.date_joined|date:'F Y' }}</dd></div>
+        </dl>
+        <a class="btn btn-primary" href="{% url 'customer:profile-update' %}">Edit details <span aria-hidden="true">→</span></a>
+    </section>
+    <section class="abdeen-account-panel abdeen-password-panel" aria-labelledby="password-heading">
+        <div><h3 id="password-heading">Password</h3><p>Update the password you use to sign in.</p></div>
+        <a class="btn" href="{% url 'customer:change-password' %}">Change password</a>
+    </section>
+</section>
+{% endblock %}

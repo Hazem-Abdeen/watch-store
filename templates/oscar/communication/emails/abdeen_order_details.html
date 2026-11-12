@@ -1,0 +1,19 @@
+{% load currency_filters %}
+<p style="margin:0 0 20px;"><strong>Order #{{ notification.number }}</strong><br>Order date: {{ notification.date|date:"j F Y, H:i T" }}</p>
+<h2 style="font-size:17px;margin:24px 0 12px;">Order summary</h2>
+<table width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;">
+<thead><tr><th scope="col" align="left" style="width:65%;padding:10px 0;border-bottom:1px solid #dddddd;">Product</th><th scope="col" align="right" style="padding:10px 0;border-bottom:1px solid #dddddd;">Line total</th></tr></thead>
+<tbody>
+{% for line in notification.lines %}<tr><td style="padding:14px 10px 14px 0;border-bottom:1px solid #eeeeee;vertical-align:top;word-wrap:break-word;">{{ line.title }}<br><span style="color:#666666;">Quantity: {{ line.quantity }} · {{ line.unit_price|currency:notification.currency }} each</span></td><td align="right" style="padding:14px 0;border-bottom:1px solid #eeeeee;vertical-align:top;">{{ line.total|currency:notification.currency }}</td></tr>{% endfor %}
+<tr><td style="padding:16px 0 8px;">Subtotal</td><td align="right" style="padding:16px 0 8px;">{{ notification.subtotal|currency:notification.currency }}</td></tr>
+{% for discount in notification.discounts %}<tr><td style="padding:8px 8px 8px 0;">Discount: {{ discount.label }}{% if discount.voucher %} ({{ discount.voucher }}){% endif %}</td><td align="right" style="padding:8px 0;">−{{ discount.amount|currency:notification.currency }}</td></tr>{% endfor %}
+<tr><td style="padding:8px 0;">Shipping{% if notification.shipping_discounts %} (before discount){% endif %}</td><td align="right" style="padding:8px 0;">{{ notification.shipping|currency:notification.currency }}</td></tr>
+{% for discount in notification.shipping_discounts %}<tr><td style="padding:8px 8px 8px 0;">Shipping discount: {{ discount.label }}{% if discount.voucher %} ({{ discount.voucher }}){% endif %}</td><td align="right" style="padding:8px 0;">−{{ discount.amount|currency:notification.currency }}</td></tr>{% endfor %}
+{% for charge in notification.surcharges %}<tr><td style="padding:8px 0;">{{ charge.name }}</td><td align="right" style="padding:8px 0;">{{ charge.amount|currency:notification.currency }}</td></tr>{% endfor %}
+<tr><th scope="row" align="left" style="padding:16px 0;border-top:1px solid #dddddd;font-size:16px;">Final total</th><td align="right" style="padding:16px 0;border-top:1px solid #dddddd;font-weight:bold;font-size:16px;">{{ notification.total|currency:notification.currency }}</td></tr>
+</tbody></table>
+<h2 style="font-size:17px;margin:24px 0 12px;">Delivery &amp; contact</h2>
+<p style="margin:0 0 12px;">Customer: {{ notification.customer_name }}<br>Email: {{ notification.customer_email }}<br>Phone: {{ notification.phone }}</p>
+<p style="margin:0 0 12px;"><strong>Shipping address</strong><br>{% for field in notification.address %}{{ field }}<br>{% endfor %}</p>
+<p style="margin:0 0 12px;">Shipping method: {{ notification.shipping_method }}<br>Delivery within 1–2 business days</p>
+<p style="margin:0;">Payment method: <strong>Cash on Delivery</strong><br>Payment is due when the order arrives.</p>

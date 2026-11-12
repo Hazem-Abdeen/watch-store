@@ -1,4 +1,9 @@
 {% extends "oscar/base.html" %}
+{% load static %}
 
 {# Extend the installed template, preserving all Oscar head and script blocks. #}
 {% block title %}{{ shop_name }}{% if shop_tagline %} - {{ shop_tagline }}{% endif %}{% endblock %}
+
+{% block favicon %}
+    <link rel="icon" type="image/png" href="{% static 'abdeen/images/favicon.png' %}">
+{% endblock %}

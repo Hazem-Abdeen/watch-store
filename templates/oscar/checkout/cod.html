@@ -1,0 +1,74 @@
+{% extends 'oscar/checkout/layout.html' %}
+{% load i18n currency_filters static %}
+{% block title %}Checkout | {{ block.super }}{% endblock %}
+{% block checkout_class %}abdeen-checkout--cod{% endblock %}
+{% block checkout_header %}
+<header class="cod-header">
+    <div class="cod-header-inner">
+        <a class="cod-logo" href="{% url 'home' %}" aria-label="Abdeen Watches home"><img src="{% static 'abdeen/images/white.png' %}" alt="Abdeen Watches" width="1773" height="885"></a>
+        <a class="cod-back" href="{% url 'basket:summary' %}">{% include 'oscar/partials/home/icon.html' with name='bag' %}<span>Shopping bag</span></a>
+    </div>
+</header>
+{% endblock %}
+{% block checkout_topline %}{% endblock %}
+{% block checkout_eyebrow %}{% endblock %}
+{% block checkout_title %}Checkout{% endblock %}
+{% block checkout_nav %}{% endblock %}
+{% block checkout_footer %}<footer class="cod-footer">Abdeen Watches <span aria-hidden="true">·</span> Jordan</footer>{% endblock %}
+{% block content %}
+<form id="cod-checkout" method="post" action="{% url 'checkout:index' %}" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="quote" value="{{ quote }}">
+    {% if error %}<div class="abdeen-message abdeen-message--error" role="alert">{{ error }}</div>{% endif %}
+    {% if form.non_field_errors %}<div class="abdeen-message abdeen-message--error" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    <section class="cod-section" aria-labelledby="contact-heading">
+        <div class="cod-section-heading"><h2 id="contact-heading">Contact</h2>{% if not user.is_authenticated %}<a href="{% url 'customer:login' %}?next={% url 'checkout:index' %}">Sign in</a>{% endif %}</div>
+        {% if not user.is_authenticated %}<p class="cod-note">No account needed.</p>{% endif %}
+        {% include 'oscar/partials/form_field.html' with field=form.email style='stacked' %}
+        {% include 'oscar/partials/form_field.html' with field=form.phone_number style='stacked' %}
+    </section>
+    <section class="cod-section" aria-labelledby="delivery-heading">
+        <h2 id="delivery-heading">Delivery</h2>
+        {% if addresses %}<details class="cod-addresses"><summary>Use a saved address</summary><ul>{% for address in addresses %}<li><a href="{% url 'checkout:index' %}?address_id={{ address.pk }}">{{ address.summary }}{% if address.is_default_for_shipping %} · Default{% endif %}</a></li>{% endfor %}</ul><a href="{% url 'customer:address-list' %}">Manage addresses</a></details>{% endif %}
+        <div class="cod-fields">
+            {% include 'oscar/partials/form_field.html' with field=form.country style='stacked' %}
+            {% include 'oscar/partials/form_field.html' with field=form.first_name style='stacked' %}
+            {% include 'oscar/partials/form_field.html' with field=form.last_name style='stacked' %}
+            {% include 'oscar/partials/form_field.html' with field=form.line1 style='stacked' %}
+            {% include 'oscar/partials/form_field.html' with field=form.line2 style='stacked' %}
+            {% include 'oscar/partials/form_field.html' with field=form.line4 style='stacked' %}
+            {% include 'oscar/partials/form_field.html' with field=form.postcode style='stacked' %}
+            {% include 'oscar/partials/form_field.html' with field=form.notes style='stacked' %}
+        </div>
+    </section>
+    <section class="cod-section" aria-labelledby="shipping-heading">
+        <h2 id="shipping-heading">Shipping method</h2>
+        {% for method, charge in shipping_options %}
+        {% if shipping_options|length == 1 %}
+        <input type="hidden" name="method_code" value="{{ method.code }}">
+        <div class="cod-selected">
+            <div><strong>{{ method.name }}</strong><p>{{ method.description }}</p></div>
+            <strong class="cod-selected-price">{{ charge.incl_tax|floatformat:"2u" }} {{ basket.currency }}</strong>
+        </div>
+        {% else %}
+        <label class="cod-option" for="shipping-{{ forloop.counter }}">
+            <input id="shipping-{{ forloop.counter }}" type="radio" name="method_code" value="{{ method.code }}"{% if form.method_code.value == method.code %} checked{% endif %} required>
+            <span>{{ method.name }}</span><strong>{{ charge.incl_tax|currency:basket.currency }}</strong>
+        </label>
+        {% endif %}
+        {% empty %}<p class="error-block" role="alert">Delivery is currently unavailable for this address. Please check your delivery details.</p>{% endfor %}
+        {% if form.method_code.errors %}<div class="error-block" role="alert">{{ form.method_code.errors }}</div>{% endif %}
+    </section>
+    <section class="cod-section" aria-labelledby="payment-heading">
+        <h2 id="payment-heading">Payment</h2>
+        <div class="cod-selected"><div><strong>Cash on Delivery (COD)</strong><p>Pay in cash when your order arrives.</p></div></div>
+    </section>
+</form>
+{% endblock %}
+{% block checkout_action %}
+<div class="cod-submit">
+    <button id="place-order" class="btn btn-primary" form="cod-checkout" type="submit" name="action" value="place_order"{% if not shipping_method %} disabled{% endif %}>PLACE ORDER</button>
+    <p>Pay in cash on delivery. No payment required now.</p>
+</div>
+{% endblock %}
+{% block scripts %}{{ block.super }}<script src="{% static 'abdeen/js/checkout.js' %}" defer></script>{% endblock %}

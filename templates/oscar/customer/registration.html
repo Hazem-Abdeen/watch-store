@@ -1,0 +1,12 @@
+{% extends 'oscar/customer/auth_base.html' %}
+{% block title %}Create an account | {{ block.super }}{% endblock %}
+{% block account_heading %}Create an account{% endblock %}
+{% block account_intro %}<p>Keep your orders and addresses in one place. You can always shop as a guest.</p>{% endblock %}
+{% block content %}
+<form id="register_form" method="post">
+    {% csrf_token %}
+    {% include 'oscar/partials/form_fields.html' %}
+    <button class="btn btn-primary abdeen-auth-submit" name="registration_submit" type="submit">Create account</button>
+</form>
+<p class="abdeen-auth-link">Already have an account? <a href="{% url 'customer:login' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">Sign in</a></p>
+{% endblock %}

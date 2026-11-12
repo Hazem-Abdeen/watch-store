@@ -38,12 +38,12 @@ html.abdeen-cart-open { overflow: hidden; }
 .abdeen-cart-quantity input::-webkit-inner-spin-button, .abdeen-cart-quantity input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .abdeen-cart-remove { min-height: 36px; padding: 0; border: 0; background: none; color: #737373 !important; font-size: 11px !important; text-decoration: underline; text-underline-offset: 3px; }
 .abdeen-cart-footer { flex: 0 0 auto; padding: 22px 40px max(28px, env(safe-area-inset-bottom)); border-top: 1px solid #dedede; background: #fff; }
-.abdeen-cart-view { font-size: 11px; text-decoration: underline; text-underline-offset: 3px; }
+.abdeen-cart-view { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: 10px; padding: 12px 16px; border: 1px solid #10283e; background: #fff; color: #10283e; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; text-decoration: none !important; }
+.abdeen-cart-view:hover { background: #f3f5f6; }
 .abdeen-cart-shipping { margin: 4px 0 24px; color: #737373; font-size: 11px; }
 .abdeen-cart-checkout, .abdeen-cart-shop { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 13px 16px; background: #10283e; color: #fff !important; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; text-decoration: none !important; }
 .abdeen-cart-checkout:hover, .abdeen-cart-shop:hover { background: #1d3a52; }
-.abdeen-cart-checkout svg { margin-right: auto; flex-shrink: 0; }
-.abdeen-cart-checkout > :last-child { margin-right: auto; white-space: nowrap; }
+.abdeen-cart-checkout > :last-child { white-space: nowrap; }
 .abdeen-cart-discount { display: flex; justify-content: space-between; gap: 16px; margin: 0 0 8px; font-size: 11px; }
 .abdeen-cart-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 55vh; text-align: center; }
 .abdeen-cart-empty > svg { width: 40px; height: 40px; margin-bottom: 24px; }

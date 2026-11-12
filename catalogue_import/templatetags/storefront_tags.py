@@ -86,6 +86,8 @@ def customer_partner_sku(stockrecord):
 @register.filter
 def storefront_availability(availability):
     """Use Oscar's decision, never its quantity-bearing display message."""
+    if availability.code == 'available_to_order':
+        return availability.message
     if availability.is_available_to_buy:
         return _('In stock')
     if availability.code == 'outofstock':
@@ -117,6 +119,7 @@ def product_details(product):
     labels = {code: label.title() for code, label in SPECIFICATIONS.items()}
     # Useful watch facts outside the importer's core specification list.
     labels.update(
+        model_reference='Model Reference', country='Country',
         glass='Glass', thickness='Thickness', weight='Weight', functions='Functions',
         country_of_manufacture='Country of Manufacture', additional_features='Additional Features',
         accuracy='Accuracy', world_time='World Time', smartphone_link_feature='Smartphone Link',

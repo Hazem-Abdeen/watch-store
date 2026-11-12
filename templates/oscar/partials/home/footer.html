@@ -11,6 +11,16 @@
                 </a>
                 <p>For the everyday moments.<br>For the milestones that matter.<br>Find your timepiece at Abdeen Watches.</p>
                 <span class="abdeen-footer-signature"><span class="abdeen-dot"></span>Time, beautifully considered.</span>
+                {% storefront_social_links as social_links %}
+                {% if social_links %}
+                <div class="abdeen-footer-social" role="group" aria-label="Follow Abdeen Watches">
+                    {% for social in social_links %}
+                    <a href="{{ social.url }}" target="_blank" rel="noopener noreferrer" aria-label="Abdeen Watches on {{ social.name }}">
+                        {% include 'oscar/partials/home/icon.html' with name=social.icon %}
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
             <nav aria-label="Shop departments">
                 <h2>Explore</h2>

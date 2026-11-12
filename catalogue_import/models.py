@@ -15,3 +15,12 @@ class CatalogueSource(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=('source', 'source_id'), name='unique_catalogue_source')]
+
+
+class ExcelCatalogueEntry(models.Model):
+    """Stable SKU identity plus original import values; staff edits survive reruns."""
+    sku = models.CharField(max_length=64, unique=True, editable=False)
+    product = models.OneToOneField('catalogue.Product', on_delete=models.PROTECT, related_name='+')
+    stockrecord = models.OneToOneField('partner.StockRecord', on_delete=models.PROTECT, related_name='+')
+    imported_values = models.JSONField(default=dict, editable=False)
+    workbook_sha256 = models.CharField(max_length=64, editable=False)

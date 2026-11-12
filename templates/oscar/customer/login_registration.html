@@ -1,0 +1,17 @@
+{% extends 'oscar/customer/auth_base.html' %}
+{% block title %}Sign in | {{ block.super }}{% endblock %}
+{% block account_heading %}Welcome back{% endblock %}
+{% block account_intro %}<p>Sign in to view your orders and account details.</p>{% endblock %}
+{% block content %}
+<form id="login_form" method="post">
+    {% csrf_token %}
+    {% include 'oscar/customer/partials/auth_errors.html' with form=login_form %}
+    {% for field in login_form %}{% include 'oscar/partials/form_field.html' %}{% endfor %}
+    <button class="btn btn-primary abdeen-auth-submit" name="login_submit" type="submit">Sign in</button>
+</form>
+<p class="abdeen-auth-link"><a href="{% url 'password-reset' %}">Forgot your password?</a></p>
+<div class="abdeen-auth-secondary">
+    <p>New to Abdeen Watches?</p>
+    <a href="{% url 'customer:register' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">Create an account</a>
+</div>
+{% endblock %}

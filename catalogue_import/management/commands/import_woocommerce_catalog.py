@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from catalogue_import.catalogue import OscarImporter, build_plans
 from catalogue_import.sql_dump import ImportDataError, load_catalogue
+from config.partner.pricing import valid_regular_price
 
 
 class Command(BaseCommand):
@@ -42,6 +43,8 @@ class Command(BaseCommand):
             summary()
             raise CommandError(f'Preflight failed; no writes or downloads performed: {exc}') from exc
         self.stdout.write(f'Published source products={len(data.products)} selected={len(plans)}')
+        self.stdout.write('Pricing policy: source _price replaces the current selling price; '
+                          '_regular_price only fills a missing regular price (existing values are preserved).')
         for plan in plans:
             if plan.skip_reason:
                 counts['skipped'] += 1
@@ -50,11 +53,15 @@ class Command(BaseCommand):
             for warning in plan.warnings:
                 self.stderr.write(f'WARNING product={plan.source_id}: {warning}')
             if dry_run:
-                created = importer.existing(plan) is None
+                existing = importer.existing(plan)
+                created = existing is None
+                existing_regular = existing.stockrecords.get().regular_price if existing else None
+                regular = existing_regular if existing_regular is not None else valid_regular_price(plan.regular)
                 counts['created' if created else 'updated'] += 1
                 paths = '; '.join(' / '.join(path) for path in plan.categories)
                 self.stdout.write(f'WOULD {"CREATE" if created else "UPDATE"} product={plan.source_id} '
                                   f'sku={plan.sku!r} title={plan.title!r} price={plan.price} JOD '
+                                  f'regular_price={regular} JOD '
                                   f'stock={plan.status} categories=[{paths}] '
                                   f'image={plan.image_url or "none"}')
                 continue

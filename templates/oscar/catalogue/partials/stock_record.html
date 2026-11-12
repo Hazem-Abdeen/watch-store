@@ -1,7 +1,7 @@
 {% load i18n currency_filters purchase_info_tags storefront_tags %}
 {% purchase_info_for_product request product as session %}
 {% if session.price.exists %}
-    <p class="price_color">{% if session.price.is_tax_known %}{{ session.price.incl_tax|currency:session.price.currency }}{% else %}{{ session.price.excl_tax|currency:session.price.currency }}{% endif %}</p>
+    <p class="price_color abdeen-detail-price">{% include 'oscar/partials/products/price.html' with purchase=session %}</p>
     {% if detail_summary %}<p class="abdeen-detail-shipping">{% trans 'Shipping calculated at checkout.' %}</p>{% endif %}
 {% endif %}
-<p class="{{ session.availability.code }} availability">{% if detail_summary and session.availability.is_available_to_buy %}{% trans 'In stock, ready to ship' %}{% else %}{{ session.availability|storefront_availability }}{% endif %}</p>
+<p class="{{ session.availability.code }} availability">{% if detail_summary and session.availability.is_available_to_buy and not session.stockrecord.availability_only %}{% trans 'In stock, ready to ship' %}{% else %}{{ session.availability|storefront_availability }}{% endif %}</p>
