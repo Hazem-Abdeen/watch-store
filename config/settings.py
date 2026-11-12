@@ -50,16 +50,16 @@ INSTALLED_APPS = [
     'config.checkout.apps.CheckoutConfig',
     'oscar.apps.address.apps.AddressConfig',
     'config.shipping.apps.ShippingConfig',
-    'oscar.apps.catalogue.apps.CatalogueConfig',
+    'config.catalogue.apps.CatalogueConfig',
     'oscar.apps.catalogue.reviews.apps.CatalogueReviewsConfig',
     'oscar.apps.communication.apps.CommunicationConfig',
     'config.partner.apps.PartnerConfig',
     'oscar.apps.basket.apps.BasketConfig',
     'oscar.apps.payment.apps.PaymentConfig',
-    'oscar.apps.offer.apps.OfferConfig',
+    'config.offer.apps.OfferConfig',
     'config.order.apps.OrderConfig',
     'oscar.apps.customer.apps.CustomerConfig',
-    'oscar.apps.search.apps.SearchConfig',
+    'config.search.apps.SearchConfig',
     'oscar.apps.voucher.apps.VoucherConfig',
     'oscar.apps.wishlists.apps.WishlistsConfig',
     'config.dashboard.DashboardConfig',
@@ -97,7 +97,8 @@ OSCAR_DASHBOARD_NAVIGATION = [*OSCAR_DASHBOARD_NAVIGATION, {
 }]
 OSCAR_DEFAULT_CURRENCY = 'JOD'
 # The project shipping app changes methods only; retain Oscar's model history.
-MIGRATION_MODULES = {'shipping': 'oscar.apps.shipping.migrations', 'order': 'oscar.apps.order.migrations'}
+MIGRATION_MODULES = {'shipping': 'oscar.apps.shipping.migrations', 'order': 'oscar.apps.order.migrations',
+                     'catalogue': 'oscar.apps.catalogue.migrations', 'offer': 'oscar.apps.offer.migrations'}
 # Keep Oscar's guest email capture, checkout session and preconditions intact.
 OSCAR_ALLOW_ANON_CHECKOUT = True
 OSCAR_ALLOW_GUEST_CHECKOUT_WITH_ACCOUNT = True

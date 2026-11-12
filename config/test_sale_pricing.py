@@ -17,16 +17,18 @@ from oscar.apps.partner.strategy import Default, FixedRateTax, UseFirstStockReco
 from catalogue_import.catalogue import SOURCE
 from catalogue_import.models import CatalogueSource
 from config.partner.pricing import sale_presentation, valid_regular_price
+from .image_test_fixtures import ImageFixtureMedia, add_real_image
 
 StockRecord = get_model('partner', 'StockRecord')
 
 
 @override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
-class SalePricingTests(TestCase):
+class SalePricingTests(ImageFixtureMedia, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.product_class = get_model('catalogue', 'ProductClass').objects.create(name='Watches', track_stock=True)
         cls.product = get_model('catalogue', 'Product').objects.create(title='Sale watch', product_class=cls.product_class)
+        add_real_image(cls.product)
         cls.product.categories.add(get_model('catalogue', 'Category').add_root(name='Sale watches'))
         cls.partner = get_model('partner', 'Partner').objects.create(name='Supplier')
         cls.stock = StockRecord.objects.create(product=cls.product, partner=cls.partner,

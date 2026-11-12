@@ -148,10 +148,12 @@ class BasketPresentationTests(TestCase):
         self.update(1, **{'form-0-DELETE': 'on'})
         self.assertFalse(Line.objects.filter(pk=line.pk).exists())
 
-    def test_child_attributes_options_and_inherited_image(self):
+    def test_child_attributes_options_and_real_image(self):
         self.product.structure = Product.PARENT
         self.product.save()
         child = Product.objects.create(title='Silver variant', structure=Product.CHILD, parent=self.product)
+        # Customer product URLs require an image owned by the variant itself.
+        get_model('catalogue', 'ProductImage').objects.create(product=child, original=self.image.original.name)
         StockRecord.objects.create(product=child, partner=self.partner, partner_sku='SILVER-002',
                                    price_currency='JOD', price=Decimal('99'), num_in_stock=3)
         attribute = get_model('catalogue', 'ProductAttribute').objects.create(
@@ -168,8 +170,11 @@ class BasketPresentationTests(TestCase):
         self.assertEqual(line.attributes.get(option=option).value, 'For Amman')
 
     def test_missing_image_uses_existing_placeholder(self):
-        self.product.images.all().delete()
         self.add()
+        # A previously selected basket line remains a historical selection;
+        # its public product URL is hidden after the last image is removed.
+        self.product.images.all().delete()
+        self.assertEqual(self.client.get(self.product.get_absolute_url()).status_code, 404)
         self.assertContains(self.client.get(self.url), '/static/abdeen/images/watch-placeholder.svg')
 
     def test_voucher_discount_invalid_code_and_removal(self):

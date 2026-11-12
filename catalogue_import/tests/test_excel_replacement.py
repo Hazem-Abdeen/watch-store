@@ -337,16 +337,21 @@ class ExcelReplacementTests(TestCase):
     def test_imported_storefront_routes_search_placeholder_and_discount(self):
         self.imported()
         call_command('rebuild_index', interactive=False, verbosity=0, stdout=StringIO())
-        urls = ['/', reverse('catalogue:index'), reverse('search:search') + '?q=Bigotti', self.product.get_absolute_url()]
+        urls = ['/', reverse('catalogue:index'), reverse('search:search') + '?q=Bigotti']
         urls.extend(c.get_absolute_url() for c in self.product.categories.all())
         for url in urls:
             self.assertEqual(self.client.get(url).status_code, 200, url)
+        self.assertEqual(self.client.get(self.product.get_absolute_url()).status_code, 404)
+        self.assertFalse(self.product.images.exists())
+        photo = self.directory / 'media' / 'confirmed.png'
+        Image.new('RGB', (10, 10), 'blue').save(photo)
+        get_model('catalogue', 'ProductImage').objects.create(product=self.product, original='confirmed.png')
         detail = self.client.get(self.product.get_absolute_url())
         self.assertContains(detail, 'Available to order')
         self.assertNotContains(detail, 'In stock, ready to ship')
         self.assertContains(detail, '30%')
         self.assertContains(detail, 'BG.1.10450-4')
-        self.assertFalse(self.product.images.exists())
+        self.assertEqual(self.product.images.count(), 1)
 
     def test_cleanup_preserves_orders_settings_and_original_image_file(self):
         self.imported(); self.checkout(1)

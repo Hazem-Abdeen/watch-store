@@ -9,6 +9,7 @@ from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 from oscar.core.loading import get_class, get_model
+from .image_test_fixtures import ImageFixtureMedia, add_real_image
 
 Basket = get_model('basket', 'Basket')
 Order = get_model('order', 'Order')
@@ -19,7 +20,7 @@ FixedPrice = get_class('shipping.methods', 'FixedPrice')
 
 
 @override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
-class CODCheckoutTests(TestCase):
+class CODCheckoutTests(ImageFixtureMedia, TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = get_user_model().objects.create_user('cod-customer', email='customer@example.test', password='Example-password-493!')
@@ -28,6 +29,7 @@ class CODCheckoutTests(TestCase):
         Country.objects.create(iso_3166_1_a2='GB', iso_3166_1_a3='GBR', printable_name='United Kingdom', name='United Kingdom', is_shipping_country=True)
         cls.product_class = get_model('catalogue', 'ProductClass').objects.create(name='Watches', track_stock=True)
         cls.product = get_model('catalogue', 'Product').objects.create(title='COD test watch', product_class=cls.product_class)
+        add_real_image(cls.product)
         partner = get_model('partner', 'Partner').objects.create(name='COD supplier')
         cls.stock = get_model('partner', 'StockRecord').objects.create(product=cls.product, partner=partner,
             partner_sku='COD-001', price_currency='JOD', price=Decimal('125.50'), num_in_stock=10)

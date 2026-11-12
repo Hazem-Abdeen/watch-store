@@ -5,6 +5,7 @@ from django.db.models.functions import Coalesce
 from oscar.core.loading import get_model
 
 from homepage.brands import BRANDS_ROOT_SLUG
+from .visibility import with_storefront_image
 
 
 RECOMMENDATION_LIMIT = 4
@@ -19,11 +20,11 @@ def card_products(queryset):
     brand = AttributeValue.objects.filter(
         product_id=OuterRef('pk'), attribute__code='brand',
     ).annotate(label=Coalesce('value_option__option', 'value_text', output_field=TextField())).order_by('pk')
-    children = Product.objects.public().select_related(
+    children = with_storefront_image(Product.objects.public()).select_related(
         'product_class', 'parent__product_class',
     ).prefetch_related('stockrecords')
     return (
-        queryset.select_related('product_class', 'parent__product_class')
+        with_storefront_image(queryset).select_related('product_class', 'parent__product_class')
         .annotate(
             storefront_card_brand=Subquery(brand.values('label')[:1]),
             has_product_options=Exists(Option.objects.filter(product=OuterRef('pk'))),
@@ -91,7 +92,7 @@ def recommended_products(product, strategy):
         product_id=OuterRef('pk'), category_id__in=category_ids,
     )))
     candidates = (
-        Product.objects.browsable().exclude(pk=product.pk)
+        with_storefront_image(Product.objects.browsable()).exclude(pk=product.pk)
         .filter(brand_match | gender_match | category_match)
         .annotate(recommendation_tier=Case(
             When(brand_match & gender_match, then=Value(0)),

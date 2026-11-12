@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from oscar.core.loading import get_model
 from homepage.models import HomeHeroSlide
 from homepage.brands import BRANDS_ROOT_SLUG
+from catalogue_import.visibility import with_storefront_image
 
 
 PRODUCT_LIMIT = 8
@@ -29,11 +30,11 @@ def range_products(name):
 
     members = RangeProduct.objects.filter(range=product_range)
     order = members.filter(product_id=OuterRef('pk')).values('display_order')[:1]
-    children = Product.objects.public().select_related(
+    children = with_storefront_image(Product.objects.public()).select_related(
         'parent__product_class', 'product_class',
     ).prefetch_related('stockrecords')
     products = (
-        product_range.all_products().browsable()
+        with_storefront_image(product_range.all_products().browsable())
         .filter(pk__in=members.values('product_id'))
         .annotate(homepage_display_order=Subquery(order))
         .order_by('homepage_display_order', 'pk')

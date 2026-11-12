@@ -47,3 +47,4 @@ var/catalogue-replacement/
 
 # Generated local reports and Excel files
 outputs/
+var/storefront-transfer/
