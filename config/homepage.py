@@ -10,7 +10,6 @@ from catalogue_import.visibility import with_storefront_image
 
 PRODUCT_LIMIT = 8
 CATEGORY_LIMIT = 4
-BRAND_LIMIT = 8
 
 
 def range_products(name):
@@ -84,7 +83,7 @@ class HomepageView(TemplateView):
         context.update(
             hero_slides=list(HomeHeroSlide.objects.filter(is_active=True).exclude(desktop_image='')),
             homepage_categories=list(categories[:CATEGORY_LIMIT]),
-            homepage_brands=brands[:BRAND_LIMIT],
+            homepage_brands=brands,
             best_sellers=best_sellers,
             new_arrivals=new_arrivals,
             product_filters=[('all', 'All Picks'), *sorted(filters.items(), key=lambda item: item[1])],
