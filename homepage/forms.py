@@ -9,6 +9,8 @@ class HeroSlideForm(forms.ModelForm):
         model = HomeHeroSlide
         fields = ['desktop_image', 'mobile_image', 'image_alt', 'title', 'subtitle',
                   'button_label', 'button_url', 'display_order', 'is_active']
+        labels = {'button_url': 'Destination URL (optional)'}
+        help_texts = {'button_url': 'When customers click the banner, they will be taken to this page. Leave blank to disable navigation. Prefer a store path such as /catalogue/.'}
         widgets = {'subtitle': forms.Textarea(attrs={'rows': 3})}
 
 

@@ -2,15 +2,35 @@
 
 document.querySelectorAll('[data-hero-carousel]').forEach(async (carousel) => {
     const slides = [...carousel.querySelectorAll('[data-hero-slide]')];
+    const surface = carousel.querySelector('[data-hero-slides]');
+    // Also guard single-slide banners. Keep suppression until the next pointer
+    // gesture so delayed touch clicks cannot follow a swipe or scroll.
+    let drag;
+    let blockClick = false;
+    surface.addEventListener('pointerdown', event => {
+        if (!event.isPrimary) return;
+        blockClick = false;
+        drag = {id: event.pointerId, x: event.clientX, y: event.clientY};
+    });
+    const trackDrag = event => {
+        if (drag && drag.id === event.pointerId &&
+            Math.hypot(event.clientX - drag.x, event.clientY - drag.y) > 10) blockClick = true;
+    };
+    window.addEventListener('pointermove', trackDrag);
+    window.addEventListener('pointerup', event => { trackDrag(event); drag = null; });
+    window.addEventListener('pointercancel', () => { if (drag) blockClick = true; drag = null; });
+    surface.addEventListener('click', event => {
+        if (blockClick && event.detail !== 0) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    }, true);
     if (slides.length < 2) return;
     const dots = [...carousel.querySelectorAll('[data-hero-dot]')];
-    const rotation = carousel.querySelector('[data-hero-rotation]');
     const status = carousel.querySelector('[data-hero-status]');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const surface = carousel.querySelector('[data-hero-slides]');
-    // Load responsive artwork before enabling navigation. All slides share grid
-    // tracks, so changing to a different aspect ratio/copy length cannot reflow
-    // the page. A failed image must not prevent the controls from becoming usable.
+    // Load responsive artwork before enabling navigation. The visible slide
+    // determines the track heights. A failed image must not block the controls.
     carousel.classList.add('is-enhanced');
     slides.forEach((slide, number) => {
         slide.inert = number !== 0;
@@ -27,13 +47,9 @@ document.querySelectorAll('[data-hero-carousel]').forEach(async (carousel) => {
     let hovering = window.matchMedia('(hover: hover)').matches && carousel.matches(':hover');
     let touching = false;
     let gesture;
-    let suppressClick = false;
-    let rotationIntent = null;
 
     const schedule = () => {
         clearTimeout(timer);
-        rotation.setAttribute('aria-label', paused ? 'Start rotation' : 'Pause rotation');
-        rotation.dataset.paused = String(paused);
         if (!paused && !hovering && !touching && !document.hidden && !reducedMotion.matches) {
             timer = setTimeout(() => show(index + 1), 6000);
         }
@@ -57,16 +73,7 @@ document.querySelectorAll('[data-hero-carousel]').forEach(async (carousel) => {
     carousel.querySelector('[data-hero-previous]').addEventListener('click', () => show(index - 1, true));
     carousel.querySelector('[data-hero-next]').addEventListener('click', () => show(index + 1, true));
     dots.forEach((dot, number) => dot.addEventListener('click', () => show(number, true)));
-    // Remember the intended mouse/touch action before focusin pauses rotation.
-    rotation.addEventListener('pointerdown', () => { rotationIntent = !paused; });
-    rotation.addEventListener('pointercancel', () => { rotationIntent = null; });
-    rotation.addEventListener('blur', () => { rotationIntent = null; });
-    rotation.addEventListener('click', () => {
-        paused = rotationIntent === null ? !paused : rotationIntent;
-        rotationIntent = null;
-        schedule();
-    });
-    // Keyboard focus stops rotation until explicitly restarted, so a focused
+    // Keyboard focus stops rotation for this visit, so a focused
     // link is never hidden by a timer while someone is reading the campaign.
     carousel.addEventListener('focusin', () => { paused = true; schedule(); });
     carousel.addEventListener('keydown', (event) => {
@@ -89,7 +96,6 @@ document.querySelectorAll('[data-hero-carousel]').forEach(async (carousel) => {
         if (!event.isPrimary || event.pointerType === 'mouse') return;
         gesture = {id: event.pointerId, x: event.clientX, y: event.clientY};
         touching = true;
-        suppressClick = false;
         paused = true;
         schedule();
     });
@@ -100,21 +106,14 @@ document.querySelectorAll('[data-hero-carousel]').forEach(async (carousel) => {
         gesture = null;
         touching = false;
         if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-            suppressClick = true;
             show(index + (dx < 0 ? 1 : -1), true);
-            setTimeout(() => { suppressClick = false; }, 0);
         } else schedule();
     });
     window.addEventListener('pointercancel', () => { gesture = null; touching = false; schedule(); });
-    surface.addEventListener('click', (event) => {
-        if (suppressClick) { event.preventDefault(); event.stopPropagation(); }
-    }, true);
     document.addEventListener('visibilitychange', schedule);
     reducedMotion.addEventListener('change', () => {
         paused = true;
-        rotation.hidden = reducedMotion.matches;
         schedule();
     });
-    rotation.hidden = reducedMotion.matches;
     schedule();
 });

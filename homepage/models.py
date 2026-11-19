@@ -46,18 +46,22 @@ class HomeHeroSlide(models.Model):
 
     @property
     def has_button(self):
-        if not self.button_label or not self.button_url:
-            return False
+        return bool(self.button_label and self.destination_url)
+
+    @property
+    def destination_url(self):
+        if not self.button_url:
+            return ''
         try:
             validate_button_url(self.button_url)
         except ValidationError:
-            return False
-        return True
+            return ''
+        return self.button_url
 
     def clean(self):
         super().clean()
-        if bool(self.button_label) != bool(self.button_url):
-            raise ValidationError('Provide both a button label and URL, or leave both empty.')
+        if self.button_label and not self.button_url:
+            raise ValidationError('Provide a destination URL when using a button label.')
 
 
 class BrandPresentation(models.Model):

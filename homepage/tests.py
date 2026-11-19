@@ -92,7 +92,7 @@ class HeroTests(HeroTestCase):
         self.assertContains(response, 'loading="lazy"')
         self.assertContains(response, 'aria-label="Previous campaign"')
         self.assertContains(response, 'aria-label="Next campaign"')
-        self.assertContains(response, 'aria-label="Pause rotation"')
+        self.assertNotContains(response, 'data-hero-rotation')
         self.assertNotContains(response, '>Pause rotation<')
 
     def test_compact_header_is_scoped_to_homepage(self):
@@ -121,12 +121,52 @@ class HeroTests(HeroTestCase):
                 self.assertNotContains(self.client.get('/'), 'Unsafe CTA')
                 slide.delete()
 
-    def test_button_requires_both_fields(self):
-        for fields in [{'button_label': 'Shop'}, {'button_url': '/catalogue/'}]:
-            slide = self.slide(**fields)
-            with self.assertRaises(ValidationError):
-                slide.full_clean()
-            self.assertFalse(slide.has_button)
+    def test_button_label_requires_destination(self):
+        slide = self.slide(button_label='Shop')
+        with self.assertRaises(ValidationError):
+            slide.full_clean()
+        self.assertFalse(slide.has_button)
+
+    def test_destination_without_button(self):
+        slide = self.slide(button_url='/catalogue/', image_alt='Jaguar campaign')
+        slide.full_clean()
+        response = self.client.get('/')
+        self.assertContains(response, 'class="campaign-hero-link" href="/catalogue/" aria-label="Jaguar campaign"')
+        self.assertNotContains(response, 'campaign-hero-copy')
+        slide.button_url = ''
+        slide.save()
+        self.assertNotContains(self.client.get('/'), 'class="campaign-hero-link"')
+
+    def test_destinations_are_independent_and_have_accessible_names(self):
+        self.slide(button_url='/catalogue/jaguar_123/', image_alt='Jaguar Special Edition')
+        self.slide(button_url='/catalogue/category/watches_4/', title='Watch collection')
+        self.slide(title='Unlinked campaign')
+        response = self.client.get('/')
+        self.assertContains(response, 'class="campaign-hero-link"', count=2)
+        self.assertContains(response, 'href="/catalogue/jaguar_123/" aria-label="Jaguar Special Edition"')
+        self.assertContains(response, 'href="/catalogue/category/watches_4/" aria-label="Watch collection"')
+
+    def test_banner_and_optional_button_are_sibling_links(self):
+        from html.parser import HTMLParser
+
+        class LinkParser(HTMLParser):
+            open_links = 0
+            nested = False
+
+            def handle_starttag(self, tag, attrs):
+                if tag == 'a':
+                    self.nested |= self.open_links > 0
+                    self.open_links += 1
+
+            def handle_endtag(self, tag):
+                if tag == 'a':
+                    self.open_links -= 1
+
+        self.slide(title='Campaign', button_label='Explore', button_url='/catalogue/')
+        parser = LinkParser()
+        parser.feed(self.client.get('/').content.decode())
+        self.assertFalse(parser.nested)
+        self.assertEqual(parser.open_links, 0)
 
     def test_bad_upload_and_negative_order_are_rejected(self):
         form = HeroSlideForm(data={'display_order': -1, 'is_active': True}, files={
@@ -141,6 +181,31 @@ class HeroDashboardTests(HeroTestCase):
     def staff_login(self):
         staff = get_user_model().objects.create_user(username='hero-editor', is_staff=True)
         self.client.force_login(staff)
+
+    def test_dashboard_destination_without_label(self):
+        self.staff_login()
+        slide = self.slide()
+        url = reverse('dashboard:hero-slide-update', args=[slide.pk])
+        self.assertContains(self.client.get(url), 'Destination URL (optional)')
+        response = self.client.post(url, {'button_url': '/catalogue/', 'display_order': 0, 'is_active': True})
+        self.assertRedirects(response, reverse('dashboard:hero-slide-list'))
+        slide.refresh_from_db()
+        self.assertEqual(slide.destination_url, '/catalogue/')
+        self.assertFalse(slide.has_button)
+
+    def test_dashboard_rejects_unsafe_destination_and_can_clear_link(self):
+        self.staff_login()
+        slide = self.slide(button_url='/catalogue/')
+        url = reverse('dashboard:hero-slide-update', args=[slide.pk])
+        response = self.client.post(url, {'button_url': 'javascript:alert(1)', 'display_order': 0})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('button_url', response.context['form'].errors)
+        slide.refresh_from_db()
+        self.assertEqual(slide.button_url, '/catalogue/')
+        response = self.client.post(url, {'button_url': '', 'display_order': 0})
+        self.assertRedirects(response, reverse('dashboard:hero-slide-list'))
+        slide.refresh_from_db()
+        self.assertEqual(slide.destination_url, '')
 
     def test_dashboard_navigation_and_forms(self):
         self.staff_login()

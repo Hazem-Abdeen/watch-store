@@ -32,6 +32,6 @@ with TemporaryDirectory(prefix='hero-preview-') as preview:
         image.save(stream, 'PNG')
         return ContentFile(stream.getvalue(), name=name + '.png')
     HomeHeroSlide.objects.all().delete()
-    HomeHeroSlide.objects.create(desktop_image=artwork('Desktop campaign', (2400,1000), '#163747'), mobile_image=artwork('Mobile campaign', (750,1000), '#163747'), image_alt='First test campaign', display_order=1)
-    HomeHeroSlide.objects.create(desktop_image=artwork('Second campaign', (2400,1000), '#673c31'), title='Optional campaign title', subtitle='A configurable campaign description.', button_label='Explore watches', button_url='/catalogue/', display_order=2)
+    HomeHeroSlide.objects.create(desktop_image=artwork('Desktop campaign', (2400,1000), '#163747'), mobile_image=artwork('Mobile campaign', (750,1000), '#163747'), image_alt='First test campaign', button_url='/catalogue/?hero=1', display_order=1)
+    HomeHeroSlide.objects.create(desktop_image=artwork('Second campaign', (2400,1200), '#673c31'), title='Optional campaign title', subtitle='A configurable campaign description.', button_label='Explore watches', button_url='/catalogue/', display_order=2)
     call_command('runserver', '127.0.0.1:8017', use_reloader=False)

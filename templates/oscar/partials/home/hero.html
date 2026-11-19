@@ -3,6 +3,7 @@
     <div class="campaign-hero-slides" id="hero-slides" data-hero-slides aria-live="off">
         {% for slide in hero_slides %}
         <div class="campaign-hero-slide" data-hero-slide role="group" aria-roledescription="slide" aria-label="{{ forloop.counter }} of {{ hero_slides|length }}"{% if not forloop.first %} hidden{% endif %}>
+            {% if slide.destination_url %}<a class="campaign-hero-link" href="{{ slide.destination_url }}" aria-label="{{ slide.title|default:slide.image_alt|default:slide.button_label|default:"View campaign" }}" draggable="false"></a>{% endif %}
             <picture>
                 {% if slide.mobile_image %}<source media="(max-width: 767px)" srcset="{{ slide.mobile_image.url }}">{% endif %}
                 <img src="{{ slide.desktop_image.url }}" alt="{{ slide.image_alt }}"{% if forloop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %} decoding="async" draggable="false">
@@ -29,10 +30,6 @@
         </div>
         <button type="button" class="campaign-hero-arrow campaign-hero-next" data-hero-next aria-label="Next campaign" aria-controls="hero-slides">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m10 5 7 7-7 7"/></svg>
-        </button>
-        <button type="button" class="campaign-hero-rotation" data-hero-rotation aria-label="Pause rotation" aria-controls="hero-slides">
-            <svg class="campaign-hero-pause-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6v12M15 6v12"/></svg>
-            <svg class="campaign-hero-play-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 5 10 7-10 7Z"/></svg>
         </button>
     </div>
     <p class="sr-only" data-hero-status aria-live="polite" aria-atomic="true"></p>
