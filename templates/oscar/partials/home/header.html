@@ -1,4 +1,5 @@
-{% load static %}
+{% load static brand_navigation %}
+{% brand_navigation as brand_menu %}
 <header class="abdeen-chrome abdeen-header{% if compact_home_header %} abdeen-header-compact{% endif %}" data-home-header>
     <div class="abdeen-shell abdeen-nav-row">
         <a class="abdeen-logo" href="{% url 'home' %}" aria-label="Abdeen Watches home">
@@ -13,19 +14,21 @@
             <nav class="abdeen-menu-panel" aria-label="Mobile navigation">
                 <a href="{% url 'home' %}" {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>Home</a>
                 <a href="{% url 'catalogue:index' %}" {% if request.resolver_match.namespace == 'catalogue' %}aria-current="{% if request.resolver_match.url_name == 'index' %}page{% else %}true{% endif %}"{% endif %}>Shop</a>
+                {% include "oscar/partials/home/brand_navigation.html" with placement="mobile" %}
             </nav>
         </details>
         <nav class="abdeen-desktop-nav" aria-label="Main navigation">
             <a href="{% url 'home' %}" {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>Home</a>
             <a href="{% url 'catalogue:index' %}" {% if request.resolver_match.namespace == 'catalogue' %}aria-current="{% if request.resolver_match.url_name == 'index' %}page{% else %}true{% endif %}"{% endif %}>Shop</a>
+            {% include "oscar/partials/home/brand_navigation.html" with placement="desktop" %}
         </nav>
         <div class="abdeen-header-actions">
             <a href="{% if user.is_authenticated %}{% url 'customer:summary' %}{% else %}{% url 'customer:login' %}{% endif %}" class="abdeen-icon-button abdeen-account-link" aria-label="{% if user.is_authenticated %}My account{% else %}Sign in{% endif %}">{% include "oscar/partials/home/icon.html" with name="user" %}</a>
             <a href="{% url 'basket:summary' %}" class="abdeen-icon-button abdeen-bag-link" data-cart-open aria-label="Shopping bag, {{ request.basket.num_items|default:0 }} items">
                 <svg class="abdeen-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                    <path d="M2 3h2l3 12h12l3-9H5"/>
-                    <circle cx="8" cy="20" r="1"/>
-                    <circle cx="18" cy="20" r="1"/>
+                    <path d="M2 3h2l3 12h12l3-9H5"></path>
+                    <circle cx="8" cy="20" r="1"></circle>
+                    <circle cx="18" cy="20" r="1"></circle>
                 </svg>
                 <span class="abdeen-bag-count" aria-hidden="true">{{ request.basket.num_items|default:0 }}</span>
             </a>

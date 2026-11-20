@@ -1,0 +1,25 @@
+<details class="abdeen-brands" data-brands-menu {% if placement == 'desktop' %}data-header-panel{% endif %}>
+    <summary class="abdeen-brands-trigger" aria-controls="brands-{{ placement }}">
+        Brands <svg class="abdeen-brands-chevron" width="12" height="12" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </summary>
+    <div class="abdeen-brands-panel" id="brands-{{ placement }}">
+        {% if brand_menu.url %}<a class="abdeen-brands-all" href="{{ brand_menu.url }}">View All Brands <span aria-hidden="true">→</span></a>{% endif %}
+        <ul class="abdeen-brands-list">
+            {% for brand in brand_menu.brands %}
+                <li class="abdeen-brand-row">
+                    <a class="abdeen-brand-link" href="{{ brand.url }}">{{ brand.name }}</a>
+                    {% if brand.genders %}
+                        <details class="abdeen-brand-children" data-brand-children>
+                            <summary aria-label="{{ brand.name }} gender options" aria-controls="brand-genders-{{ placement }}-{{ brand.pk }}">
+                                <svg class="abdeen-brands-chevron" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                            </summary>
+                            <ul id="brand-genders-{{ placement }}-{{ brand.pk }}">
+                                {% for gender in brand.genders %}<li><a href="{{ gender.url }}">{{ gender.name }}</a></li>{% endfor %}
+                            </ul>
+                        </details>
+                    {% endif %}
+                </li>
+            {% empty %}<li class="abdeen-brands-empty">No brands available yet.</li>{% endfor %}
+        </ul>
+    </div>
+</details>

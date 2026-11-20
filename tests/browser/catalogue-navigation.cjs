@@ -120,7 +120,7 @@ fs.mkdirSync(screenshots, {recursive: true});
             await page.locator('#id_sort_by').selectOption('price-asc');
             await page.waitForURL(url => url.searchParams.get('sort_by') === 'price-asc');
             assert.equal((await page.locator('.abdeen-result-count strong').textContent()).trim(), total);
-            const prices = await page.locator('.abdeen-product-price').allTextContents();
+            const prices = await page.locator('.abdeen-product-price').evaluateAll(nodes => nodes.map(el => (el.querySelector('.abdeen-price-current') || el).textContent));
             const numericPrices = prices.map(text => Number(text.replace(/[^\d.]/g, '')));
             assert.ok(numericPrices.length > 1);
             assert.deepEqual(numericPrices, [...numericPrices].sort((a,b) => a-b));

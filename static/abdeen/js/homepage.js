@@ -24,6 +24,30 @@ document.querySelectorAll('[data-category-image]').forEach((image) => {
 // Enhancement: one panel at a time, Escape/outside-click dismissal, focus return.
 const header = document.querySelector('[data-home-header]');
 if (header) {
+    header.querySelectorAll('details').forEach((details) => {
+        const summary = details.querySelector(':scope > summary');
+        const sync = () => summary.setAttribute('aria-expanded', String(details.open));
+        sync();
+        details.addEventListener('toggle', sync);
+    });
+    header.querySelectorAll('[data-brands-menu]').forEach((menu) => {
+        document.addEventListener('click', (event) => {
+            if (!menu.contains(event.target)) menu.open = false;
+        });
+        menu.addEventListener('keydown', (event) => {
+            if (event.key !== 'Escape') return;
+            const target = event.target.closest('details[open]');
+            if (!target || !menu.contains(target)) return;
+            target.open = false;
+            target.querySelector(':scope > summary').focus();
+            event.stopPropagation();
+        });
+        menu.addEventListener('focusout', () => {
+            requestAnimationFrame(() => {
+                if (!menu.contains(document.activeElement)) menu.open = false;
+            });
+        });
+    });
     const panels = [...header.querySelectorAll('[data-header-panel]')];
     const closePanels = (restoreFocus = false) => {
         panels.forEach((panel) => {

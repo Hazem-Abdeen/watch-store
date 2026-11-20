@@ -1,0 +1,61 @@
+/* Component CSS is served directly, so its layout never depends on a stale
+   generated Tailwind bundle. Native disclosures also work without JavaScript. */
+.abdeen-brands { position: relative; min-width: 0; }
+.abdeen-brands summary { list-style: none; cursor: pointer; }
+.abdeen-brands summary::-webkit-details-marker { display: none; }
+.abdeen-brands:not([open]) > .abdeen-brands-panel,
+.abdeen-brand-children:not([open]) > ul { display: none; }
+.abdeen-brands-trigger {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    min-height: 44px; font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .1em;
+}
+.abdeen-brands-chevron { flex: 0 0 auto; transition: transform .18s ease; }
+.abdeen-brands[open] > summary .abdeen-brands-chevron,
+.abdeen-brand-children[open] > summary .abdeen-brands-chevron { transform: rotate(180deg); }
+.abdeen-brands-panel { padding: 6px; background: #fff; color: #262626; }
+.abdeen-brands ul { list-style: none; margin: 0; padding: 0; }
+.abdeen-brand-row { position: relative; border-bottom: 1px solid #f0f0f0; }
+.abdeen-brand-row:last-child { border-bottom: 0; }
+.abdeen-brands-panel a {
+    display: flex; align-items: center; justify-content: flex-start;
+    min-height: 44px; padding: 12px; font-size: 12px; line-height: 1.5;
+    font-weight: 500; text-transform: none; letter-spacing: .02em; overflow-wrap: anywhere;
+}
+.abdeen-brands-panel .abdeen-brand-link { margin-inline-end: 44px; }
+.abdeen-brand-children > summary {
+    position: absolute; top: 0; inset-inline-end: 0; width: 44px; height: 44px;
+    display: grid; place-items: center; border-radius: 3px;
+}
+.abdeen-brand-children > ul { padding-inline-start: 16px; background: #fafafa; border-radius: 3px; }
+.abdeen-brand-children > ul a { color: #595959; }
+.abdeen-brands-panel a:hover, .abdeen-brands summary:hover { background: #f5f5f5; color: #737373; }
+.abdeen-brands-panel .abdeen-brands-all {
+    justify-content: space-between; color: var(--abdeen-red, #e01a22);
+    border-bottom: 1px solid #e5e5e5; font-weight: 600;
+}
+.abdeen-brands-empty { padding: 12px; font-size: 12px; }
+.abdeen-brands a, .abdeen-brands summary { transition: color .18s ease, background-color .18s ease; }
+.abdeen-brands a:focus-visible, .abdeen-brands summary:focus-visible {
+    outline: 2px solid var(--abdeen-red, #e01a22); outline-offset: -2px;
+}
+.abdeen-menu-panel { overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #ccc #fff; }
+@media (min-width: 1024px) {
+    .abdeen-desktop-nav .abdeen-brands-panel {
+        position: absolute; top: 100%; inset-inline-start: 0; transform: none; z-index: 10;
+        width: 300px; max-height: min(520px, calc(100dvh - 110px)); overflow-y: auto;
+        overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #ccc #fff;
+        border: 1px solid #e5e5e5; border-radius: 0 0 4px 4px; box-shadow: 0 12px 28px #00000014;
+    }
+}
+/* Native details owns layout; animate only its visible contents so the
+   following row can never overlap gender links, including without JavaScript. */
+.abdeen-brand-children[open] > ul { animation: abdeen-genders-in .16s ease-out; }
+@keyframes abdeen-genders-in {
+    from { opacity: 0; transform: translateY(-3px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .abdeen-brands a, .abdeen-brands summary, .abdeen-brands-chevron { transition: none; }
+    .abdeen-brand-children[open] > ul { animation: none; }
+}

@@ -15,7 +15,8 @@
 {% block header %}
 <header class="abdeen-catalogue-heading">
     <p class="abdeen-catalogue-eyebrow"><span class="abdeen-dot"></span>{% trans 'The collection' %}</p>
-    <h1>{{ category.name }}</h1>
+    <h1>{{ category.name }}{% if brand_gender_label %} — {{ brand_gender_label }}{% endif %}</h1>
+    {% if brand_gender_label %}<p><a href="{{ category.get_absolute_url }}">View all {{ category.name }}</a></p>{% endif %}
     {% if user.is_staff %}<a class="abdeen-category-edit" href="{% url 'dashboard:catalogue-category-update' pk=category.id %}">{% trans 'Edit this category' %}</a>{% endif %}
 </header>
 {% endblock %}
