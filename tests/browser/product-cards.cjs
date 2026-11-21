@@ -25,8 +25,13 @@ fs.mkdirSync(screenshots, {recursive: true});
     const cards = grid.locator('.abdeen-product-card');
     assert.ok(await cards.count(), `${label} has real products`);
     if (selector !== '.abdeen-catalogue-grid' && width >= 640) columns = Math.min(columns, await cards.count());
+    const isCarousel = await grid.evaluate(el => el.classList.contains('abdeen-carousel-track'));
     const gridColumns = await grid.evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
-    assert.equal(gridColumns, columns, label);
+    if (isCarousel) {
+     assert.equal(await grid.evaluate(el => getComputedStyle(el).gridAutoFlow), 'column');
+     const rows = await cards.evaluateAll(els => new Set(els.map(el => el.offsetTop)).size);
+     assert.equal(rows, 1, label);
+    } else assert.equal(gridColumns, columns, label);
     const styles = await cards.evaluateAll(els => els.map(el => ({
      border: getComputedStyle(el).borderTopWidth, background: getComputedStyle(el).backgroundColor,
      links: el.querySelectorAll('a').length, buttons: el.querySelectorAll('button, form').length,
@@ -51,7 +56,7 @@ fs.mkdirSync(screenshots, {recursive: true});
    }
    await checkGrid('#best-sellers-grid', width >= 1024 ? 4 : width >= 640 ? 3 : 2, 'best-sellers');
    assert.equal(await page.locator('[data-home-filter], [data-home-filters]').count(), 0);
-   await checkGrid('#new-arrivals .abdeen-product-grid', width >= 1024 ? 4 : width >= 640 ? 3 : 2, 'new-arrivals');
+   await checkGrid('#new-arrivals .abdeen-carousel-track', width >= 1024 ? 4 : width >= 640 ? 3 : 2, 'new-arrivals');
    const productLink = page.locator('#best-sellers .abdeen-product-link').first();
    const productURL = await productLink.getAttribute('href');
    await productLink.focus(); await page.keyboard.press('Enter'); await page.waitForURL(origin + productURL);

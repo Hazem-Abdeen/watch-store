@@ -302,3 +302,67 @@
         height: 24px;
     }
 }
+
+/* Native single-row range carousels; all sizing stays inside the section. */
+.abdeen-carousel { --cards-per-page: 2; --card-gap: 12px; width: 100%; min-width: 0; max-width: 100%; }
+.abdeen-carousel-track {
+    /* Absolute screen-reader sale-price labels must use this scrollport as
+       their containing block, or off-screen cards expand the mobile viewport. */
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - (var(--cards-per-page) - 1) * var(--card-gap)) / var(--cards-per-page));
+    gap: var(--card-gap);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding-block: 6px;
+}
+.abdeen-carousel-track::-webkit-scrollbar, .abdeen-carousel-dots::-webkit-scrollbar { display: none; }
+.abdeen-carousel-track > .abdeen-product-card { scroll-snap-align: start; height: auto; }
+.abdeen-carousel.is-enhanced .abdeen-product-card { scroll-snap-align: none; }
+.abdeen-carousel.is-enhanced [data-page-start] { scroll-snap-align: start; }
+.abdeen-carousel-track .abdeen-product-link:focus-visible { outline-offset: -3px; }
+.abdeen-carousel-track:focus-visible { outline: 2px solid var(--abdeen-red); outline-offset: 3px; }
+/* Reserve matching text rows so later batches cannot change the track height.
+   Full titles remain in the link's accessible name and on the product page. */
+.abdeen-carousel-track .abdeen-product-info { display: grid; grid-template-rows: 36px auto 60px 20px; }
+.abdeen-carousel-track .abdeen-product-brand { grid-row: 1; }
+.abdeen-carousel-track .abdeen-product-title { grid-row: 2; height: 4.8em; }
+.abdeen-carousel-track .abdeen-product-brand, .abdeen-carousel-track .abdeen-product-title { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+.abdeen-carousel-track .abdeen-product-brand { -webkit-line-clamp: 2; }
+.abdeen-carousel-track .abdeen-product-title { -webkit-line-clamp: 3; }
+.abdeen-carousel-track .abdeen-product-price { grid-row: 3; align-content: start; }
+.abdeen-carousel-track .abdeen-product-options { grid-row: 4; }
+.abdeen-carousel-dots { display: flex; align-items: center; width: 100%; min-width: 0; max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; margin-top: 16px; }
+.abdeen-carousel-dots button { display: grid; place-items: center; flex: 0 0 28px; width: 28px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.abdeen-carousel-dots button:first-child { margin-inline-start: auto; }
+.abdeen-carousel-dots button:last-child { margin-inline-end: auto; }
+.abdeen-carousel-dots span { display: block; width: 6px; height: 6px; border-radius: 999px; background: #c6c2bc; transition: width .18s, background .18s; }
+.abdeen-carousel-dots [aria-current="true"] span { width: 18px; background: #595550; }
+.abdeen-carousel-dots button:hover span { background: #817b73; }
+.abdeen-home .abdeen-carousel-dots button:focus-visible { outline: 2px solid #595550; outline-offset: -3px; border-radius: 6px; }
+.abdeen-carousel-status { color: #737373; font-size: 12px; }
+.abdeen-carousel-status:empty { display: none; }
+.abdeen-carousel-retry { padding: 10px; border: 1px solid #dedbd7; background: #fff; }
+@media (max-width: 299px) {
+    .abdeen-carousel { --cards-per-page: 1; }
+}
+@media (min-width: 640px) {
+    .abdeen-carousel { --card-gap: 24px; }
+}
+@media (min-width: 768px) {
+    .abdeen-carousel { --cards-per-page: 3; }
+}
+@media (min-width: 1024px) {
+    .abdeen-carousel { --cards-per-page: 4; --card-gap: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .abdeen-carousel-track { scroll-behavior: auto; }
+    .abdeen-carousel-dots span { transition: none; }
+}

@@ -1,12 +1,13 @@
 <section id="best-sellers" class="abdeen-section" aria-labelledby="best-sellers-heading">
     <div class="abdeen-shell">
         {% include "oscar/partials/home/section_heading.html" with heading_id="best-sellers-heading" title="Best Sellers" only %}
-        <div class="abdeen-product-grid" id="best-sellers-grid">
-            {% for product in best_sellers %}
-                {% include "oscar/partials/home/product_card.html" with product=product badge="Best Seller" %}
-            {% empty %}
+        {% if best_sellers %}
+        {% include "oscar/partials/home/carousel.html" with products=best_sellers carousel_id="best-sellers" title="Best Sellers" badge="Best Seller" has_more=best_sellers_more total=best_sellers_count %}
+        {% else %}
+        <div>
                 <div class="abdeen-empty-state tw:col-span-full">{% include "oscar/partials/home/icon.html" with name="watch" %}<p>Our Best Sellers selection is being prepared.</p><a href="{% url 'catalogue:index' %}" class="abdeen-button abdeen-button-black">Browse all watches {% include "oscar/partials/home/icon.html" with name="arrow" %}</a></div>
-            {% endfor %}
+
         </div>
+        {% endif %}
     </div>
 </section>

@@ -1,12 +1,13 @@
 <section id="new-arrivals" class="abdeen-section" aria-labelledby="new-arrivals-heading">
     <div class="abdeen-shell">
         {% include "oscar/partials/home/section_heading.html" with heading_id="new-arrivals-heading" title="New Arrivals" only %}
-        <div class="abdeen-product-grid">
-            {% for product in new_arrivals %}
-                {% include "oscar/partials/home/product_card.html" with product=product badge="New Arrival" %}
-            {% empty %}
+        {% if new_arrivals %}
+        {% include "oscar/partials/home/carousel.html" with products=new_arrivals carousel_id="new-arrivals" title="New Arrivals" badge="New Arrival" has_more=new_arrivals_more total=new_arrivals_count %}
+        {% else %}
+        <div>
                 <div class="abdeen-empty-state tw:col-span-full">{% include "oscar/partials/home/icon.html" with name="sparkles" %}<p>Our New Arrivals selection is being prepared.</p><span>In the meantime, find something that speaks to you.</span><a href="{% url 'catalogue:index' %}" class="abdeen-button abdeen-button-black">Browse all watches {% include "oscar/partials/home/icon.html" with name="arrow" %}</a></div>
-            {% endfor %}
+
         </div>
+        {% endif %}
     </div>
 </section>

@@ -1,0 +1,9 @@
+<div class="abdeen-carousel" data-carousel="{{ carousel_id }}" data-total="{{ total }}" data-next-page="{% if has_more %}2{% endif %}">
+    <div class="abdeen-carousel-track" id="{{ carousel_id }}-grid" tabindex="0" role="region" aria-roledescription="carousel" aria-label="{{ title }} products">
+        {% include "oscar/partials/home/carousel_items.html" %}
+    </div>
+    <div class="abdeen-carousel-dots" role="group" aria-label="{{ title }} pages" hidden></div>
+    <p class="abdeen-carousel-status" role="status" aria-live="polite"></p>
+    <button type="button" class="abdeen-carousel-retry" hidden>Try loading more watches again</button>
+    {% if has_more %}<noscript><a href="{% url 'catalogue:index' %}">Browse more watches in the catalogue</a></noscript>{% endif %}
+</div>
