@@ -5,5 +5,9 @@
 {% block title %}{{ shop_name }}{% if shop_tagline %} - {{ shop_tagline }}{% endif %}{% endblock %}
 
 {% block favicon %}
-    <link rel="icon" type="image/png" href="{% static 'abdeen/images/favicon.png' %}">
+    {% with favicon_version="2459f4f1" %}
+        <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="{% static 'abdeen/images/favicon.ico' %}?v={{ favicon_version }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'abdeen/images/favicon.png' %}?v={{ favicon_version }}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'abdeen/images/apple-touch-icon.png' %}?v={{ favicon_version }}">
+    {% endwith %}
 {% endblock %}
