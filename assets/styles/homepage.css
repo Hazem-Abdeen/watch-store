@@ -170,6 +170,7 @@
 .abdeen-stores-copy, .abdeen-stores-images { min-width: 0; }
 .abdeen-stores-copy { max-width: 480px; }
 .abdeen-home .abdeen-stores h2 { max-width: 400px; text-wrap: balance; }
+.abdeen-stores-heading-break { display: none; }
 .abdeen-stores .abdeen-button { max-width: 100%; }
 .abdeen-home .abdeen-stores-location { margin-top: 18px; color: #aaa; font-size: 10px; line-height: 1.8; letter-spacing: .04em; }
 .abdeen-stores-location span { padding-inline: 4px; }
@@ -180,13 +181,73 @@
 .abdeen-stores-storefront img { object-position: 50% 30%; }
 .abdeen-stores-showroom { grid-column: 2 / -1; aspect-ratio: 3 / 2; }
 .abdeen-stores-showroom img { object-position: 50% 60%; }
-@media (min-width: 640px) {
+@media (min-width: 768px) {
     .abdeen-stores-layout { gap: 48px; }
     .abdeen-stores-storefront { grid-column: 1 / 12; }
     .abdeen-home .abdeen-stores-showroom { grid-column: 5 / -1; margin-top: -76px; border: 6px solid #141414; box-shadow: 0 16px 36px #0003; }
 }
 @media (min-width: 1024px) {
     .abdeen-stores-layout { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(48px, 6vw, 88px); }
+}
+@media (768px <= width < 1024px) {
+    .abdeen-stores-layout {
+        grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+        gap: clamp(32px, 5vw, 48px);
+        padding-inline: clamp(28px, 4vw, 40px);
+    }
+    .abdeen-home .abdeen-stores-showroom { margin-top: -56px; }
+    .abdeen-stores .abdeen-editorial-description { text-wrap: pretty; }
+}
+@media (width < 768px) {
+    .abdeen-stores { padding-block: clamp(38px, 10vw, 56px) 20px; }
+    .abdeen-stores-layout {
+        max-width: 568px;
+        padding-inline: clamp(20px, 5.5vw, 32px);
+        gap: 0;
+    }
+    .abdeen-stores-copy { max-width: 440px; margin-inline: auto; text-align: center; }
+    .abdeen-home .abdeen-stores .abdeen-eyebrow {
+        justify-content: center;
+        margin-bottom: 10px;
+        font-size: 11px;
+        letter-spacing: .2em;
+    }
+    .abdeen-home .abdeen-stores h2 {
+        max-width: none;
+        margin-bottom: 16px;
+        font-size: clamp(38px, 10.5vw, 46px);
+        line-height: 1.08;
+        letter-spacing: -.035em;
+    }
+    .abdeen-stores-heading-break { display: revert; }
+    .abdeen-home .abdeen-stores .abdeen-editorial-description {
+        max-width: 38ch;
+        margin: 0 auto 20px;
+        line-height: 1.65;
+        text-wrap: pretty;
+    }
+    .abdeen-home .abdeen-stores .abdeen-button {
+        width: min(100%, 288px);
+        min-height: 52px;
+        padding: 12px 20px;
+        border-radius: 4px;
+        border-color: #f2eee8;
+        background: #f2eee8;
+        color: #171717;
+        font-size: 11px;
+        letter-spacing: .12em;
+    }
+    .abdeen-home .abdeen-stores .abdeen-button:hover { background: #e3ddd4; border-color: #e3ddd4; }
+    .abdeen-stores .abdeen-button .abdeen-icon { width: 17px; height: 17px; }
+    .abdeen-home .abdeen-stores-location { margin-top: 10px; font-size: 11px; }
+
+    .abdeen-stores-images { margin-top: 24px; row-gap: 16px; }
+    .abdeen-stores-showroom { grid-column: 2 / -2; }
+    .abdeen-stores-images figure {
+        aspect-ratio: 4 / 3;
+        border-radius: 8px;
+    }
+    .abdeen-stores-images img { object-fit: contain; object-position: center; }
 }
 @media (min-width: 640px) {
     .abdeen-footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
