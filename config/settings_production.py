@@ -1,11 +1,13 @@
 """Environment-only production overrides; select explicitly via DJANGO_SETTINGS_MODULE."""
 import os
 import re
+from email.utils import formataddr, parseaddr
 from ipaddress import ip_address
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from django.core.exceptions import ImproperlyConfigured
+from django.core.exceptions import ImproperlyConfigured, ValidationError
+from django.core.validators import validate_email
 
 from .settings import *  # noqa: F403,F401
 
@@ -127,8 +129,53 @@ X_FRAME_OPTIONS = 'DENY'
 FILE_UPLOAD_PERMISSIONS = 0o644
 FILE_UPLOAD_DIRECTORY_PERMISSIONS = 0o755
 
-# Preserve existing COD mail settings. Console logging is intentional until SMTP
-# is configured explicitly; no exception-report emails or request-body logging.
+# Production mail must use SMTP; console would expose customer details in logs.
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+if EMAIL_BACKEND != 'django.core.mail.backends.smtp.EmailBackend':
+    raise ImproperlyConfigured('Production EMAIL_BACKEND must be django.core.mail.backends.smtp.EmailBackend.')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp-relay.brevo.com').strip()
+if not EMAIL_HOST or any(char.isspace() for char in EMAIL_HOST) or '://' in EMAIL_HOST:
+    raise ImproperlyConfigured('EMAIL_HOST must be an SMTP hostname.')
+EMAIL_PORT = integer('EMAIL_PORT', 587, 1, 65535)
+EMAIL_HOST_USER = required('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = required('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = boolean('EMAIL_USE_TLS', True)
+EMAIL_USE_SSL = boolean('EMAIL_USE_SSL', False)
+if EMAIL_USE_TLS == EMAIL_USE_SSL:
+    raise ImproperlyConfigured('Enable exactly one of EMAIL_USE_TLS or EMAIL_USE_SSL for production SMTP.')
+EMAIL_TIMEOUT = integer('EMAIL_TIMEOUT', 10, 1, 60)
+
+
+def mail_address(value, name):
+    try:
+        validate_email(value)
+        if '\r' in value or '\n' in value:
+            raise ValidationError('Invalid header')
+    except ValidationError:
+        raise ImproperlyConfigured(f'{name} must contain valid email addresses.') from None
+    return value
+
+
+# DEFAULT_FROM_EMAIL retains support for an existing "Name <address>" value.
+# EMAIL_FROM_NAME optionally overrides its display name.
+sender = required('DEFAULT_FROM_EMAIL')
+sender_name, sender_address = parseaddr(sender)
+sender_name = os.environ.get('EMAIL_FROM_NAME', sender_name or 'Abdeen Watches')
+if any(char in sender + sender_name for char in '\r\n'):
+    raise ImproperlyConfigured('Email sender fields must not contain newlines.')
+DEFAULT_FROM_EMAIL = formataddr((sender_name, mail_address(sender_address, 'DEFAULT_FROM_EMAIL')))
+OSCAR_FROM_EMAIL = DEFAULT_FROM_EMAIL
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+ABDEEN_ORDER_NOTIFICATION_EMAILS = list(dict.fromkeys(csv('ABDEEN_ORDER_NOTIFICATION_EMAILS')))
+if not ABDEEN_ORDER_NOTIFICATION_EMAILS:
+    raise ImproperlyConfigured('ABDEEN_ORDER_NOTIFICATION_EMAILS must contain at least one seller recipient.')
+for recipient in ABDEEN_ORDER_NOTIFICATION_EMAILS:
+    mail_address(recipient, 'ABDEEN_ORDER_NOTIFICATION_EMAILS')
+OSCAR_URL_SCHEMA = 'https' if HTTPS_ENABLED else 'http'
+# Oscar otherwise stores full account emails, including password-reset tokens.
+OSCAR_SAVE_SENT_EMAILS_TO_DB = False
+
+# No exception-report emails or request-body logging.
 LOGGING = {
     'version': 1, 'disable_existing_loggers': False,
     'handlers': {'console': {'class': 'logging.StreamHandler'}},

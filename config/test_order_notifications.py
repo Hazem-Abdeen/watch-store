@@ -18,12 +18,13 @@ from oscar.core.loading import get_model
 from config import test_checkout
 from config.checkout.models import OrderEmailNotification
 from config.checkout.notifications import dashboard_url, retry_failed_notification, schedule_order_emails
+from config.image_test_fixtures import ImageFixtureMedia
 
 Order = get_model('order', 'Order')
-MERCHANTS = ['hazem.abdeen39@gmail.com', 'hossam.abdeen199@gmail.com', 'emad11abdeen@gmail.com']
+MERCHANTS = ['ops@example.test', 'owner@example.test', 'sales@example.test']
 
 
-class EmailFixtures:
+class EmailFixtures(ImageFixtureMedia):
     def setUp(self):
         super().setUp()
         test_checkout.CODCheckoutTests.setUpTestData.__func__(type(self))
@@ -91,6 +92,16 @@ class OrderNotificationTests(EmailFixtures, TestCase):
         self.assert_messages(order, email=self.user.email)
         self.assertEqual(order.user_id, self.user.pk)
         self.assertNotIn(order.email, mail.outbox[1].to)
+
+    def test_quantities_and_delivery_notes_in_customer_and_seller_messages(self):
+        self.add(quantity=1)
+        order = self.place(data={'notes': 'Call on arrival <please>\nUse side entrance'})
+        self.assertEqual(order.lines.get().quantity, 2)
+        for message in mail.outbox:
+            self.assertIn('Quantity: 2', message.body)
+            self.assertIn('Final total: 253 JOD', message.body)
+            self.assertIn('Call on arrival <please>\nUse side entrance', message.body)
+            self.assertIn('Call on arrival &lt;please&gt;<br>Use side entrance', message.alternatives[0].content)
 
     def test_account_can_choose_order_email_without_changing_login(self):
         self.client.force_login(self.user)

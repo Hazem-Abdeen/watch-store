@@ -59,6 +59,7 @@ def email_context(order, kind):
         'customer_name': name or 'Customer', 'customer_email': order_contact_email(order),
         'phone': str(address.phone_number) if address else '',
         'address': list(address.active_address_fields()) if address else [],
+        'delivery_notes': address.notes if address else '',
         'currency': order.currency,
         'lines': [{'title': line.title, 'quantity': line.quantity,
                    'unit_price': line.unit_price_incl_tax,

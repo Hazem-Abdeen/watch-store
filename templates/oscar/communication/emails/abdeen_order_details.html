@@ -16,4 +16,5 @@
 <p style="margin:0 0 12px;">Customer: {{ notification.customer_name }}<br>Email: {{ notification.customer_email }}<br>Phone: {{ notification.phone }}</p>
 <p style="margin:0 0 12px;"><strong>Shipping address</strong><br>{% for field in notification.address %}{{ field }}<br>{% endfor %}</p>
 <p style="margin:0 0 12px;">Shipping method: {{ notification.shipping_method }}<br>Delivery within 1–2 business days</p>
+{% if notification.delivery_notes %}<p style="margin:0 0 12px;"><strong>Delivery notes</strong><br>{{ notification.delivery_notes|linebreaksbr }}</p>{% endif %}
 <p style="margin:0;">Payment method: <strong>Cash on Delivery</strong><br>Payment is due when the order arrives.</p>

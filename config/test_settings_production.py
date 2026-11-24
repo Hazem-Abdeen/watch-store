@@ -17,6 +17,9 @@ ENVIRONMENT = {
     'DJANGO_CSRF_TRUSTED_ORIGINS': 'http://203.0.113.10,https://example.com',
     'DB_NAME': 'test_configuration_only', 'DB_USER': 'test_user',
     'DB_PASSWORD': 'test-only-not-a-real-password',
+    'EMAIL_HOST_USER': 'smtp-test-user', 'EMAIL_HOST_PASSWORD': 'test-only-smtp-key',
+    'DEFAULT_FROM_EMAIL': 'sender@example.test',
+    'ABDEEN_ORDER_NOTIFICATION_EMAILS': 'ops@example.test',
 }
 
 

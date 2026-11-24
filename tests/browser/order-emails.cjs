@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const base = 'http://127.0.0.1:8023';
 const log = process.env.CONSOLE_EMAIL_LOG;
 assert.ok(log, 'Set CONSOLE_EMAIL_LOG to the preview server stdout log');
-const merchants = ['hazem.abdeen39@gmail.com', 'hossam.abdeen199@gmail.com', 'emad11abdeen@gmail.com'];
+const merchants = ['ops@example.test', 'owner@example.test', 'sales@example.test'];
 const recipients = () => (fs.readFileSync(log, 'utf8').replace(/\r?\n[ \t]+/g, ' ')
   .match(/^To: .*$/gm) || []).map(line => line.slice(4).split(',').map(address => address.trim()));
 (async () => {

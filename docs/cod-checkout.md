@@ -43,15 +43,15 @@ placements and confirmation-page visits do not send email. Sending is synchronou
 after commit; backend latency can delay the checkout response, but mail failures
 do not undo the order, stock allocation, or unpaid COD source.
 
-Customer mail uses `order.email`: guest checkout email or the authenticated
-account's email. Merchant mail uses `ABDEEN_ORDER_NOTIFICATION_EMAILS`, defaulting
-to `hazem.abdeen39@gmail.com`, `hossam.abdeen199@gmail.com`, and
-`emad11abdeen@gmail.com`, together in `To`. A comma-separated environment variable
-of the same name replaces that list. Customers only receive merchant mail if
-explicitly configured in the merchant list. Exact duplicate addresses are removed.
+Customer mail uses the persisted checkout contact (`order.guest_email`), falling
+back to `order.email` for legacy orders. Merchant recipients are configured through
+`ABDEEN_ORDER_NOTIFICATION_EMAILS`; there are no hardcoded defaults. Customers
+only receive merchant mail if explicitly configured in that list. Exact duplicate
+addresses are removed.
 
-The development backend is Django's console backend. Real SMTP remains
-unconfigured. Emails include order lines, discounts, shipping and final totals,
+Development uses Django's console backend. Production requires SMTP configuration;
+see [Brevo configuration, safe probes and deployment](transactional-email.md).
+Emails include order lines, discounts, shipping and final totals,
 contact/address information and COD wording. A merchant dashboard link is only
 included when the Django Site has a suitable configured domain; `example.com`
 intentionally produces no link. Backend acceptance is not proof of inbox delivery,

@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-import os
 from pathlib import Path
 
 from oscar.defaults import *  # noqa: F403
@@ -232,24 +231,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 OSCAR_SEND_REGISTRATION_EMAIL = False
 
-# Development prints emails locally; production must explicitly select SMTP.
-EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
-EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
-EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'true').lower() == 'true'
-EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'false').lower() == 'true'
-EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', '10'))
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Abdeen Watches <orders@localhost>')
-SERVER_EMAIL = os.environ.get('SERVER_EMAIL', 'server@localhost')
+# Development never uses SMTP, even if production mail variables are present.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'Abdeen Watches <orders@localhost>'
+SERVER_EMAIL = 'server@localhost'
 OSCAR_FROM_EMAIL = DEFAULT_FROM_EMAIL
-ABDEEN_ORDER_NOTIFICATION_EMAILS = [
-    'hazem.abdeen39@gmail.com',
-    'hossam.abdeen199@gmail.com',
-    'emad11abdeen@gmail.com',
-]
-if 'ABDEEN_ORDER_NOTIFICATION_EMAILS' in os.environ:
-    ABDEEN_ORDER_NOTIFICATION_EMAILS = [
-        email.strip() for email in os.environ['ABDEEN_ORDER_NOTIFICATION_EMAILS'].split(',') if email.strip()
-    ]
+ABDEEN_ORDER_NOTIFICATION_EMAILS = []

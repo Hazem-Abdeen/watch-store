@@ -17,6 +17,7 @@ settings.DATABASES['default']['NAME'] = Path(preview_directory.name) / 'db.sqlit
 settings.EMAIL_BACKEND = ('django.core.mail.backends.console.EmailBackend'
                           if os.environ.get('CONSOLE_ORDER_EMAILS') == '1'
                           else 'django.core.mail.backends.locmem.EmailBackend')
+settings.ABDEEN_ORDER_NOTIFICATION_EMAILS = ['ops@example.test', 'owner@example.test', 'sales@example.test']
 settings.ROOT_URLCONF = __name__
 
 import django
